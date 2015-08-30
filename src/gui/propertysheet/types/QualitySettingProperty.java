@@ -1,4 +1,4 @@
-/* zet evacuation tool copyright (c) 2007-14 zet evacuation team
+/* zet evacuation tool copyright (c) 2007-15 zet evacuation team
  *
  * This program is free software; you can redistribute it and/or
  * as published by the Free Software Foundation; either version 2
@@ -13,38 +13,31 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-
-/**
- * Class StringPropertyConverter
- * Erstellt 05.09.2009, 17:42:52
- */
-
-package gui.propertysheet.types;
-
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamConverter;
-import gui.propertysheet.BasicProperty;
-import gui.propertysheet.types.QualitySettingPropertyConverter;
-import gui.visualization.QualityPreset;
-import javax.swing.JPanel;
-
-
-/**
- * A property that allows to switch the quality of visualization. The quality
- * is stored in an enumeration {@link QualityPreset}. There, several presets are
- * defined. The property allows to store one of the presets and provides a
- * {@link JPanel} containing a combo box to select the quality.
- * @author Jan-Philipp Kappmeier
- */
-@XStreamAlias( "comboBoxNodeQuality" )
-@XStreamConverter( QualitySettingPropertyConverter.class )
-public class QualitySettingProperty extends BasicProperty<QualityPreset> {
-
-	/**
-	 * Creates a panel containing explaining labels and a combo box for the
-	 * provided qualities.
-	 * @return the panel to select a quality.
-	 */
+//package gui.propertysheet.types;
+//
+//import com.thoughtworks.xstream.annotations.XStreamAlias;
+//import com.thoughtworks.xstream.annotations.XStreamConverter;
+//import gui.propertysheet.BasicProperty;
+//import gui.visualization.QualityPreset;
+//import javax.swing.JPanel;
+//
+//
+///**
+// * A property that allows to switch the quality of visualization. The quality
+// * is stored in an enumeration {@link QualityPreset}. There, several presets are
+// * defined. The property allows to store one of the presets and provides a
+// * {@link JPanel} containing a combo box to select the quality.
+// * @author Jan-Philipp Kappmeier
+// */
+//@XStreamAlias( "comboBoxNodeQuality" )
+//@XStreamConverter( QualitySettingPropertyConverter.class )
+//public class QualitySettingProperty extends BasicProperty<QualityPreset> {
+//
+//	/**
+//	 * Creates a panel containing explaining labels and a combo box for the
+//	 * provided qualities.
+//	 * @return the panel to select a quality.
+//	 */
 //	@Override
 //	public JPanel getPanel() {
 //		JPanel panel = new JPanel();
@@ -85,5 +78,5 @@ public class QualitySettingProperty extends BasicProperty<QualityPreset> {
 //		return def;
 //
 //	}
-
-}
+//
+//}
