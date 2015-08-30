@@ -43,8 +43,8 @@ public class BasicProperty<T> extends DefaultProperty implements PropertyValue<T
 
     public void store() {
         try {
-            if( getName() != null && PropertyContainer.getInstance().isDefined( getName() ) )
-                PropertyContainer.getInstance().set( getName(), getValue() );
+            if( getName() != null && PropertyContainer.getGlobal().isDefined( getName() ) )
+                PropertyContainer.getGlobal().set( getName(), getValue() );
             else
                 System.out.println( "NOT DEFINED: " + getName() );
             
@@ -54,7 +54,7 @@ public class BasicProperty<T> extends DefaultProperty implements PropertyValue<T
     }
 
     public void reloadFromPropertyContainer() {
-        setPropertyValue( (T)PropertyContainer.getInstance().get( getName() ) );
+        setPropertyValue( (T)PropertyContainer.getGlobal().get( getName() ) );
     }
 
     /**

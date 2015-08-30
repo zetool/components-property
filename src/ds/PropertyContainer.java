@@ -39,227 +39,241 @@ import java.util.Map;
 import org.zetool.common.localization.CommonLocalization;
 import org.zetool.common.localization.Localization;
 
-
 /**
  * Stores properties of arbitrary type accessible via a string.
  */
 public class PropertyContainer {
-    /** The instance of the singleton {@code PropertyContainer}.*/
-    private static PropertyContainer instance;
-    private Localization loc = CommonLocalization.LOC;
 
-    /**
-     * Returns the instance of the singleton {@code PropertyContainer}.
-     * @return the instance of the singleton {@code PropertyContainer}
-     */
-    public static PropertyContainer getInstance() {
-        if( instance == null )
-            instance = new PropertyContainer();
-        return instance;
-    }
-    protected Map<String, Object> properties;
-    protected Map<String, Class<?>> propertyTypes;
+    private final Localization loc = CommonLocalization.LOC;
+    private final Map<String, Object> properties;
+    private final Map<String, Class<?>> propertyTypes;
 
-    private PropertyContainer() {
+    public PropertyContainer() {
         properties = new HashMap<>();
         propertyTypes = new HashMap<>();
     }
 
-    public <T> void define( String key, Class<T> type, T defaultValue ) {
-        if( propertyTypes.containsKey( key ) )
-            throw new IllegalArgumentException( loc.getString( "ds.PropertyAlreadyDefinedException: " + key ) );
-        else {
-            properties.put( key, defaultValue );
-            if( key.equals( "abcd" ) ) {
-                System.out.println( "---------------------------------------------- abcd" );
-            }
-            if( key.equals( "abcbool" ) )
-                System.out.println( "---------------------------------------------- abcbool" );
-            propertyTypes.put( key, type );
+    /**
+     * Returns the instance of the singleton {@code PropertyContainer}.
+     *
+     * @return the instance of the singleton {@code PropertyContainer}
+     */
+    public static PropertyContainer getGlobal() {
+        return GlobalInstanceHolder.INSTANCE;
+    }
+
+    public <T> void define(String key, Class<T> type, T defaultValue) {
+        if (propertyTypes.containsKey(key)) {
+            throw new IllegalArgumentException(loc.getString("ds.PropertyAlreadyDefinedException: " + key));
+        } else {
+            properties.put(key, defaultValue);
+            propertyTypes.put(key, type);
         }
     }
 
-    public Object get( String key ) {
-        if( !propertyTypes.containsKey( key ) )
-            throw new IllegalArgumentException( loc.getString( "ds.PropertyNotDefinedException: " + key ) );
-        return properties.get( key );
+    public Object get(String key) {
+        if (!propertyTypes.containsKey(key)) {
+            throw new IllegalArgumentException(loc.getString("ds.PropertyNotDefinedException: " + key));
+        }
+        return properties.get(key);
     }
 
-    public <T> T getAs( String key, Class<T> type ) {
-        if( !propertyTypes.containsKey( key ) )
-            throw new IllegalArgumentException( loc.getString( "ds.PropertyNotDefinedException: " + key ) );
-        else
-            if( !type.isAssignableFrom( propertyTypes.get( key ) ) )
-                throw new IllegalArgumentException( loc.getString( "ds.PropertyTypeCastException: " + key + ", " + propertyTypes.get( key ) + ", " + type ) );
-            else
-                return type.cast( properties.get( key ) );
+    public <T> T getAs(String key, Class<T> type) {
+        if (!propertyTypes.containsKey(key)) {
+            throw new IllegalArgumentException(loc.getString("ds.PropertyNotDefinedException: " + key));
+        } else if (!type.isAssignableFrom(propertyTypes.get(key))) {
+            throw new IllegalArgumentException(loc.getString("ds.PropertyTypeCastException: " + key + ", " + propertyTypes.get(key) + ", " + type));
+        } else {
+            return type.cast(properties.get(key));
+        }
     }
 
-    public boolean getAsBoolean( String key ) {
-        return getAs( key, Boolean.class );
+    public boolean getAsBoolean(String key) {
+        return getAs(key, Boolean.class);
     }
 
-    public Color getAsColor( String key ) {
-        return getAs( key, Color.class );
+    public Color getAsColor(String key) {
+        return getAs(key, Color.class);
     }
 
-    public double getAsDouble( String key ) {
-        return getAs( key, Double.class );
+    public double getAsDouble(String key) {
+        return getAs(key, Double.class);
     }
 
-    public int getAsInt( String key ) {
-        return getAs( key, Integer.class );
+    public int getAsInt(String key) {
+        return getAs(key, Integer.class);
     }
 
-    public Font getAsFont( String key ) {
-        return getAs( key, Font.class );
+    public Font getAsFont(String key) {
+        return getAs(key, Font.class);
     }
 
-    public String getAsString( String key ) {
-        return getAs( key, String.class );
+    public String getAsString(String key) {
+        return getAs(key, String.class);
     }
 
-    public ArrayList<String> getAsStringList( String key ) {
-        return (ArrayList<String>)getAs( key, ArrayList.class );
+    public ArrayList<String> getAsStringList(String key) {
+        return (ArrayList<String>) getAs(key, ArrayList.class);
     }
 
     /**
      * Toggles a boolean value and returns the new value.
+     *
      * @param key
      * @return
      */
-    public boolean toggle( String key ) {
-        final boolean temp = !getAsBoolean( key );
-        set( key, temp );
+    public boolean toggle(String key) {
+        final boolean temp = !getAsBoolean(key);
+        set(key, temp);
         return temp;
     }
 
-    public void set( String key, Object value ) {
-        if( !propertyTypes.containsKey( key ) )
-            throw new IllegalArgumentException( loc.getString( "ds.PropertyNotDefinedException: " + key ) );
-        else
-            if( !propertyTypes.get( key ).isInstance( value ) )
-                throw new IllegalArgumentException( loc.getString( "ds.PropertyValueException: " + key + ", " + propertyTypes.get( key ) + ", " + value ) );
-            else
-                properties.put( key, value );
+    public void set(String key, Object value) {
+        if (!propertyTypes.containsKey(key)) {
+            throw new IllegalArgumentException(loc.getString("ds.PropertyNotDefinedException: " + key));
+        } else if (!propertyTypes.get(key).isInstance(value)) {
+            throw new IllegalArgumentException(loc.getString("ds.PropertyValueException: " + key + ", " + propertyTypes.get(key) + ", " + value));
+        } else {
+            properties.put(key, value);
+        }
     }
 
-    public boolean isDefined( String key ) {
-        return propertyTypes.containsKey( key );
+    public boolean isDefined(String key) {
+        return propertyTypes.containsKey(key);
     }
 
-    public Class<?> getType( String key ) {
-        return propertyTypes.get( key );
+    public Class<?> getType(String key) {
+        return propertyTypes.get(key);
     }
 
     /**
      * Loads a file containing the configuration in XML-Format.
+     *
      * @param file the property file
      * @return the tree model containing the properties
      * @throws PropertyLoadException if an xstream error occured when the file is read
      */
-    public static PropertyTreeModel loadConfigFile( File file ) throws PropertyLoadException {
+    public static PropertyTreeModel loadConfigFile(File file) throws PropertyLoadException {
         PropertyTreeModel propertyTreeModel = null;
         try {
             XStream xstream = new XStream();
-            Annotations.configureAliases( xstream, PropertyTreeModel.class );
-            Annotations.configureAliases( xstream, PropertyTreeNode.class );
-            propertyTreeModel = (PropertyTreeModel)xstream.fromXML( new FileReader( file ) );
-        } catch( Exception ex ) {
-            throw new PropertyLoadException( file );
+            Annotations.configureAliases(xstream, PropertyTreeModel.class);
+            Annotations.configureAliases(xstream, PropertyTreeNode.class);
+            propertyTreeModel = (PropertyTreeModel) xstream.fromXML(new FileReader(file));
+        } catch (Exception ex) {
+            throw new PropertyLoadException(file);
         }
         return propertyTreeModel;
     }
 
     /**
-     * Saves a file containing the configuration given in a
-     * {@link PropertyTreeModel} in XML-Format.
+     * Saves a file containing the configuration given in a {@link PropertyTreeModel} in XML-Format.
+     *
      * @param propertyTreeModel the model that should be written to the file
      * @param file the file
      * @throws java.io.IOException if an error during writing occurs
      */
-    public static void saveConfigFile( PropertyTreeModel propertyTreeModel, File file ) throws IOException {
+    public static void saveConfigFile(PropertyTreeModel propertyTreeModel, File file) throws IOException {
         XStream xstream = new XStream();
-        Annotations.configureAliases( xstream, PropertyTreeModel.class );
-        Annotations.configureAliases( xstream, PropertyTreeNode.class );
+        Annotations.configureAliases(xstream, PropertyTreeModel.class);
+        Annotations.configureAliases(xstream, PropertyTreeNode.class);
         PropertyTreeNode root = propertyTreeModel.getRoot();
         List<BasicProperty<?>> props = root.getProperties();
-        if( props.size() > 0 ) {
-            StringProperty name = (StringProperty)props.get( 0 );
-            propertyTreeModel.setPropertyName( name.getValue() );
+        if (props.size() > 0) {
+            StringProperty name = (StringProperty) props.get(0);
+            propertyTreeModel.setPropertyName(name.getValue());
         }
-        xstream.toXML( propertyTreeModel, new FileWriter( file ) );
+        xstream.toXML(propertyTreeModel, new FileWriter(file));
     }
 
     /**
-     * Loads properties from an XML-file into the {@link PropertyContainer} and
-     * returns a {@link PropertyTreeModel} of the properties. This can be used to
-     * store the same (maybe changed) data later.
+     * Loads properties from an XML-file into the {@link PropertyContainer} and returns a {@link PropertyTreeModel} of
+     * the properties. This can be used to store the same (maybe changed) data later.
+     *
      * @param file the property XML-file
      * @return a model of the loaded properties
      * @throws PropertyLoadException if an error occurs during loading of the specified file
      */
-    public PropertyTreeModel applyParameters( File file ) throws PropertyLoadException {
-        final PropertyTreeModel ptm = loadConfigFile( file );
-        applyParameters( ptm );
+    public PropertyTreeModel applyParameters(File file) throws PropertyLoadException {
+        final PropertyTreeModel ptm = loadConfigFile(file);
+        applyParameters(ptm);
         return ptm;
     }
 
     /**
-     * Loads properties from an {@link PropertyTreeModel} into the
-     * {@link PropertyContainer}.
+     * Loads properties from an {@link PropertyTreeModel} into the {@link PropertyContainer}.
+     *
      * @param propertyTreeModel the tree model containing the properties
      */
-    public void applyParameters( PropertyTreeModel propertyTreeModel ) {
-        applyParameters( propertyTreeModel.getRoot() );
+    public void applyParameters(PropertyTreeModel propertyTreeModel) {
+        applyParameters(propertyTreeModel.getRoot());
     }
 
     /**
-     * Loads properties stored in an node of an {@link PropertyTreeModel} into the
-     * {@link PropertyContainer}.
+     * Loads properties stored in an node of an {@link PropertyTreeModel} into the {@link PropertyContainer}.
+     *
      * @param node the node at which recursive loading starts.
      */
-    protected void applyParameters( PropertyTreeNode node ) {
-        for( int i = 0; i < node.getChildCount(); i++ )
-            applyParameters( node.getChildAt( i ));
-        PropertyContainer pc = PropertyContainer.getInstance();
-        for( BasicProperty<?> property : node.getProperties() )
-            if( property instanceof BooleanProperty )
-                if( !pc.isDefined( property.getName() ) )
-                    pc.define( property.getName(), Boolean.class, (Boolean)property.getValue() );
-                else
-                    pc.set( property.getName(), (Boolean)property.getValue() );
-            else if( property instanceof IntegerProperty )
-                if( !pc.isDefined( property.getName() ) )
-                    pc.define( property.getName(), Integer.class, (Integer)property.getValue() );
-                else
-                    pc.set( property.getName(), (Integer)property.getValue() );
-            else if( property instanceof DoubleProperty )
-                if( !pc.isDefined( property.getName() ) )
-                    pc.define( property.getName(), Double.class, (Double)property.getValue() );
-                else
-                    pc.set( property.getName(), (Double)property.getValue() );
-            else if( property instanceof StringProperty )
-                if( !pc.isDefined( property.getName() ) )
-                    pc.define( property.getName(), String.class, (String)property.getValue() );
-                else
-                    pc.set( property.getName(), (String)property.getValue() );
-            else if( property instanceof StringListProperty ) {
-                if( !pc.isDefined( property.getName() ) )
-                    pc.define( property.getName(), ArrayList.class, (ArrayList)property.getValue() );
-                else
-                    pc.set( property.getName(), (ArrayList)property.getValue() );
+    protected void applyParameters(PropertyTreeNode node) {
+        for (int i = 0; i < node.getChildCount(); i++) {
+            applyParameters(node.getChildAt(i));
+        }
+        PropertyContainer pc = PropertyContainer.getGlobal();
+        for (BasicProperty<?> property : node.getProperties()) {
+            if (property instanceof BooleanProperty) {
+                if (!pc.isDefined(property.getName())) {
+                    pc.define(property.getName(), Boolean.class, (Boolean) property.getValue());
+                } else {
+                    pc.set(property.getName(), (Boolean) property.getValue());
+                }
+            } else if (property instanceof IntegerProperty) {
+                if (!pc.isDefined(property.getName())) {
+                    pc.define(property.getName(), Integer.class, (Integer) property.getValue());
+                } else {
+                    pc.set(property.getName(), (Integer) property.getValue());
+                }
+            } else if (property instanceof DoubleProperty) {
+                if (!pc.isDefined(property.getName())) {
+                    pc.define(property.getName(), Double.class, (Double) property.getValue());
+                } else {
+                    pc.set(property.getName(), (Double) property.getValue());
+                }
+            } else if (property instanceof StringProperty) {
+                if (!pc.isDefined(property.getName())) {
+                    pc.define(property.getName(), String.class, (String) property.getValue());
+                } else {
+                    pc.set(property.getName(), (String) property.getValue());
+                }
+            } else if (property instanceof StringListProperty) {
+                if (!pc.isDefined(property.getName())) {
+                    pc.define(property.getName(), ArrayList.class, (ArrayList) property.getValue());
+                } else {
+                    pc.set(property.getName(), (ArrayList) property.getValue());
+                }
 //            else if( property instanceof QualitySettingProperty ) {
 //                if( !pc.isDefined( property.getName() ) )
 //                    pc.define( property.getName(), QualityPreset.class, (QualityPreset)property.getValue() );
 //                else
 //                    pc.set( property.getName(), (QualityPreset)property.getValue() );
-            } else if( property instanceof ColorProperty ) {
-                if( !pc.isDefined( property.getName() ) )
-                    pc.define( property.getName(), Color.class, (Color)property.getValue() );
-                else
-                    pc.set( property.getName(), (Color)property.getValue() );
-            } else
-                throw new UnsupportedOperationException( "Type " + property.getName() + " not supported." );
+            } else if (property instanceof ColorProperty) {
+                if (!pc.isDefined(property.getName())) {
+                    pc.define(property.getName(), Color.class, (Color) property.getValue());
+                } else {
+                    pc.set(property.getName(), (Color) property.getValue());
+                }
+            } else {
+                throw new UnsupportedOperationException("Type " + property.getName() + " not supported.");
+            }
+        }
+    }
+
+    /**
+     * The instance of the single global instance of {@code PropertyContainer}. Initializes the global property
+     * container lazily only if it is accessed.
+     *
+     * @see #getGlobal()
+     */
+    private static class GlobalInstanceHolder {
+        private static final PropertyContainer INSTANCE = new PropertyContainer();
     }
 }
