@@ -23,25 +23,25 @@ import com.thoughtworks.xstream.annotations.XStreamConverter;
  *
  * @author Martin Groß, Jan-Philipp Kappmeier
  */
-@XStreamAlias( "zp" )
-@XStreamConverter( PropertyTreeConverter.class )
-public class PropertyTreeModel  {
-	private String propertyName = "";
-	private PropertyTreeNode root;
+@XStreamAlias("zp")
+//@XStreamConverter(PropertyTreeConverter.class)
+public class PropertyTreeModel {
+    private String propertyName = "";
+    private final PropertyTreeNode root;
 
-  public PropertyTreeModel( PropertyTreeNode root ) {
-		this.root = root;
-  }
+    public PropertyTreeModel(PropertyTreeNode root) {
+        this.root = root;
+    }
 
-	public String getPropertyName() {
-		return propertyName == null ? "" : propertyName;
-	}
+    public String getPropertyName() {
+        return propertyName == null ? "" : propertyName;
+    }
 
-	public void setPropertyName( String propertyName ) {
-		this.propertyName = propertyName;
-	}
+    public void setPropertyName(String propertyName) {
+        this.propertyName = propertyName;
+    }
 
-  public PropertyTreeNode getRoot() {
-    return root;
-  }
+    public PropertyTreeNode getRoot() {
+        return root;
+    }
 }

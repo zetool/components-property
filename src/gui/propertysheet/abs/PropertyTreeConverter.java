@@ -28,58 +28,63 @@ import gui.propertysheet.PropertyTreeModel;
  * @author Jan-Philipp Kappmeier, Martin Groß
  */
 public class PropertyTreeConverter implements Converter {
+    private final DefaultPropertyTreeNodeConverter treeNodeConverter;
 
-  /**
-   *
-   * @param type
-   * @return {@code true} if the class can be converted, {@code false} otherwise
-   */
-	@Override
-  public boolean canConvert( Class type ) {
-    return type.equals( PropertyTreeModel.class );
-  }
-
-  /**
-   *
-   * @param source
-   * @param writer
-   * @param context
-   */
-	@Override
-  public void marshal( Object source, HierarchicalStreamWriter writer, MarshallingContext context ) {
-    PropertyTreeModel treeModel = (PropertyTreeModel) source;
-    // Root node has at most one property!
-		PropertyTreeNode root = treeModel.getRoot();
-    writer.addAttribute( "name", root.getDisplayNameTag() );
-    writer.addAttribute( "useAsLocString", Boolean.toString( root.isUsedAsLocString() ) );
-		writer.addAttribute( "propertyName", treeModel.getPropertyName() );
-    for( int i = 0; i < root.getChildCount(); i++ ) {
-      PropertyTreeNode child =  root.getChildAt( i );
-      context.convertAnother( child, new DefaultPropertyTreeNodeConverter() );
+    public PropertyTreeConverter(DefaultPropertyTreeNodeConverter treeNodeConverter) {
+        this.treeNodeConverter = treeNodeConverter;
     }
-  }
-
-  /**
-   *
-   * @param reader
-   * @param context
-   * @return the converted property tree node
-   */
-	@Override
-  public Object unmarshal( HierarchicalStreamReader reader, UnmarshallingContext context ) {
-    PropertyTreeNode root = new PropertyTreeNode( "" );
-    root.setDisplayName( reader.getAttribute( "name" ) );
-    root.useAsLocString( (reader.getAttribute( "useAsLocString" ).equals("true") ) );
-		String propertyName = reader.getAttribute( "propertyName" );
-    while( reader.hasMoreChildren() ) {
-      reader.moveDown();
-      PropertyTreeNode node = (PropertyTreeNode)context.convertAnother( root, PropertyTreeNode.class, new DefaultPropertyTreeNodeConverter() );
-      root.add( node );
-      reader.moveUp();
+    
+    /**
+     *
+     * @param type
+     * @return {@code true} if the class can be converted, {@code false} otherwise
+     */
+    @Override
+    public boolean canConvert(Class type) {
+        return type.equals(PropertyTreeModel.class);
     }
-		PropertyTreeModel ptm = new PropertyTreeModel( root );
-		ptm.setPropertyName( propertyName );
 
-    return ptm;
-  }
+    /**
+     *
+     * @param source
+     * @param writer
+     * @param context
+     */
+    @Override
+    public void marshal(Object source, HierarchicalStreamWriter writer, MarshallingContext context) {
+        PropertyTreeModel treeModel = (PropertyTreeModel) source;
+        // Root node has at most one property!
+        PropertyTreeNode root = treeModel.getRoot();
+        writer.addAttribute("name", root.getDisplayNameTag());
+        writer.addAttribute("useAsLocString", Boolean.toString(root.isUsedAsLocString()));
+        writer.addAttribute("propertyName", treeModel.getPropertyName());
+        for (int i = 0; i < root.getChildCount(); i++) {
+            PropertyTreeNode child = root.getChildAt(i);
+            context.convertAnother(child, treeNodeConverter);
+        }
+    }
+
+    /**
+     *
+     * @param reader
+     * @param context
+     * @return the converted property tree node
+     */
+    @Override
+    public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
+        PropertyTreeNode root = new PropertyTreeNode("");
+        root.setDisplayName(reader.getAttribute("name"));
+        root.useAsLocString((reader.getAttribute("useAsLocString").equals("true")));
+        String propertyName = reader.getAttribute("propertyName");
+        while (reader.hasMoreChildren()) {
+            reader.moveDown();
+            PropertyTreeNode node = (PropertyTreeNode) context.convertAnother(root, PropertyTreeNode.class, treeNodeConverter);
+            root.add(node);
+            reader.moveUp();
+        }
+        PropertyTreeModel ptm = new PropertyTreeModel(root);
+        ptm.setPropertyName(propertyName);
+
+        return ptm;
+    }
 }

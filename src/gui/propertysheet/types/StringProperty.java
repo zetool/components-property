@@ -16,7 +16,6 @@
 package gui.propertysheet.types;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamConverter;
 import gui.propertysheet.BasicProperty;
 
 /**
@@ -24,7 +23,6 @@ import gui.propertysheet.BasicProperty;
  * @author Jan-Philipp Kappmeier
  */
 @XStreamAlias( "stringNode" )
-@XStreamConverter( StringPropertyConverter.class )
 public class StringProperty extends BasicProperty<String> {
 	
 	public StringProperty() {

@@ -22,6 +22,7 @@ import com.l2fprod.common.propertysheet.PropertySheetTableModel;
 import com.l2fprod.common.swing.JButtonBar;
 import com.l2fprod.common.swing.plaf.ButtonBarUI;
 import com.l2fprod.common.swing.plaf.blue.BlueishButtonBarUI;
+import ds.PropertyContainer;
 import info.clearthought.layout.TableLayout;
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -134,7 +135,7 @@ public class JOptionsDialog extends JDialog {
             ((JButton)jbb.getComponent( 0 )).doClick();
     }
 
-    private ActionListener aclButton = new ActionListener() {
+    private final ActionListener aclButton = new ActionListener() {
         @Override
         public void actionPerformed( ActionEvent e ) {
             if( e.getActionCommand().equals( "ok" ) ) {
@@ -144,7 +145,7 @@ public class JOptionsDialog extends JDialog {
                     for( Property p : pb.pstm.getProperties() ) {
                         BasicProperty p2 = (BasicProperty)p;
                         System.out.println( p2.getName() + ": " + p2.getValue() );
-                        p2.store();
+                        PropertyContainer.getGlobal().store(p2);
                     }
                 }
             }

@@ -15,12 +15,11 @@
  */
 package ds;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.annotations.Annotations;
 import gui.propertysheet.BasicProperty;
 import gui.propertysheet.PropertyTreeModel;
 import gui.propertysheet.types.BooleanProperty;
 import gui.propertysheet.PropertyTreeNode;
+import gui.propertysheet.abs.PropertyValue;
 import gui.propertysheet.types.ColorProperty;
 import gui.propertysheet.types.IntegerProperty;
 import gui.propertysheet.types.DoubleProperty;
@@ -29,12 +28,8 @@ import gui.propertysheet.types.StringListProperty;
 import java.awt.Color;
 import java.awt.Font;
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import org.zetool.common.localization.CommonLocalization;
 import org.zetool.common.localization.Localization;
@@ -147,46 +142,6 @@ public class PropertyContainer {
     }
 
     /**
-     * Loads a file containing the configuration in XML-Format.
-     *
-     * @param file the property file
-     * @return the tree model containing the properties
-     * @throws PropertyLoadException if an xstream error occured when the file is read
-     */
-    public static PropertyTreeModel loadConfigFile(File file) throws PropertyLoadException {
-        PropertyTreeModel propertyTreeModel = null;
-        try {
-            XStream xstream = new XStream();
-            Annotations.configureAliases(xstream, PropertyTreeModel.class);
-            Annotations.configureAliases(xstream, PropertyTreeNode.class);
-            propertyTreeModel = (PropertyTreeModel) xstream.fromXML(new FileReader(file));
-        } catch (Exception ex) {
-            throw new PropertyLoadException(file);
-        }
-        return propertyTreeModel;
-    }
-
-    /**
-     * Saves a file containing the configuration given in a {@link PropertyTreeModel} in XML-Format.
-     *
-     * @param propertyTreeModel the model that should be written to the file
-     * @param file the file
-     * @throws java.io.IOException if an error during writing occurs
-     */
-    public static void saveConfigFile(PropertyTreeModel propertyTreeModel, File file) throws IOException {
-        XStream xstream = new XStream();
-        Annotations.configureAliases(xstream, PropertyTreeModel.class);
-        Annotations.configureAliases(xstream, PropertyTreeNode.class);
-        PropertyTreeNode root = propertyTreeModel.getRoot();
-        List<BasicProperty<?>> props = root.getProperties();
-        if (props.size() > 0) {
-            StringProperty name = (StringProperty) props.get(0);
-            propertyTreeModel.setPropertyName(name.getValue());
-        }
-        xstream.toXML(propertyTreeModel, new FileWriter(file));
-    }
-
-    /**
      * Loads properties from an XML-file into the {@link PropertyContainer} and returns a {@link PropertyTreeModel} of
      * the properties. This can be used to store the same (maybe changed) data later.
      *
@@ -195,7 +150,8 @@ public class PropertyContainer {
      * @throws PropertyLoadException if an error occurs during loading of the specified file
      */
     public PropertyTreeModel applyParameters(File file) throws PropertyLoadException {
-        final PropertyTreeModel ptm = loadConfigFile(file);
+        PropertyTreeModelLoader loader = new PropertyTreeModelLoader();
+        final PropertyTreeModel ptm = loader.loadConfigFile(file);
         applyParameters(ptm);
         return ptm;
     }
@@ -266,6 +222,19 @@ public class PropertyContainer {
             }
         }
     }
+    
+    public void store(PropertyValue p) {
+        try {
+            if (p.getName() != null && isDefined(p.getName())) {
+                set(p.getName(), p.getValue());
+            } else {
+                System.out.println("NOT DEFINED: " + p.getName());
+            }
+        } catch( Exception e ) {
+            System.out.println( "ERROR STORING THIS" );
+        }
+    }
+
 
     /**
      * The instance of the single global instance of {@code PropertyContainer}. Initializes the global property

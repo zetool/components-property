@@ -22,38 +22,27 @@ import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
  *
  * @author Jan-Philipp Kappmeier
  */
-public class IntegerRangePropertyConverter extends IntegerPropertyConverter {
+public class IntegerRangePropertyConverter extends GeneralPropertyConverter<IntegerRangeProperty, Integer> {
 
-	@Override
-	public boolean canConvert( Class type ) {
-		return type.equals( IntegerRangeProperty.class );
-	}
+    public IntegerRangePropertyConverter() {
+        super(() -> new IntegerRangeProperty(), "intRangeNode", Integer.class);
+    }
 
-	@Override
-	public String getNodeName() {
-		return "intRangeNode";
-	}
-	
-	@Override
-	public void createNewProp() {
-		prop = new IntegerRangeProperty();
-	}
-	
-	@Override
-	public void readAttributes( HierarchicalStreamReader reader ) {
-		super.readAttributes( reader );
-		((IntegerRangeProperty)prop).setMinValue( Integer.parseInt( reader.getAttribute( "minValue" ) ) );
-		((IntegerRangeProperty)prop).setMaxValue( Integer.parseInt( reader.getAttribute( "maxValue" ) ) );
-		((IntegerRangeProperty)prop).setMinorTick( Integer.parseInt( reader.getAttribute( "minorTick" ) ) );
-		((IntegerRangeProperty)prop).setMajorTick( Integer.parseInt( reader.getAttribute( "majorTick" ) ) );
-	}
+    @Override
+    public void readAttributes(HierarchicalStreamReader reader) {
+        super.readAttributes(reader);
+        prop.setMinValue(Integer.parseInt(reader.getAttribute("minValue")));
+        prop.setMaxValue(Integer.parseInt(reader.getAttribute("maxValue")));
+        prop.setMinorTick(Integer.parseInt(reader.getAttribute("minorTick")));
+        prop.setMajorTick(Integer.parseInt(reader.getAttribute("majorTick")));
+    }
 
-	@Override
-	public void writeAttributes( HierarchicalStreamWriter writer ) {
-		super.writeAttributes( writer );
-		writer.addAttribute( "minValue", Integer.toString( ((IntegerRangeProperty)prop).getMinValue() ) );
-		writer.addAttribute( "maxValue", Integer.toString( ((IntegerRangeProperty)prop).getMaxValue() ) );
-		writer.addAttribute( "minorTick", Integer.toString( ((IntegerRangeProperty)prop).getMinorTick() ) );
-		writer.addAttribute( "majorTick", Integer.toString( ((IntegerRangeProperty)prop).getMajorTick() ) );
-	}
+    @Override
+    public void writeAttributes(HierarchicalStreamWriter writer) {
+        super.writeAttributes(writer);
+        writer.addAttribute("minValue", Integer.toString(prop.getMinValue()));
+        writer.addAttribute("maxValue", Integer.toString(prop.getMaxValue()));
+        writer.addAttribute("minorTick", Integer.toString(prop.getMinorTick()));
+        writer.addAttribute("majorTick", Integer.toString(prop.getMajorTick()));
+    }
 }

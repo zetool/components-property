@@ -16,51 +16,47 @@
 package gui.propertysheet.types;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamConverter;
-import javax.swing.JSlider;
 
 /**
  *
  * @author Jan-Philipp Kappmeier
  */
 @XStreamAlias( "intRangeNode" )
-@XStreamConverter( IntegerPropertyConverter.class )
 public class IntegerRangeProperty extends IntegerProperty {
-	final JSlider slider = new JSlider();
-	int minValue;
-	int maxValue;
-	int minorTick;
-	int majorTick;
-	
-	public int getMajorTick() {
-		return majorTick;
-	}
+    int minValue;
+    int maxValue;
+    int minorTick;
+    int majorTick;
+    
+    public int getMajorTick() {
+        return majorTick;
+    }
 
-	public void setMajorTick( int majorTick ) {
-		this.majorTick = majorTick;
-	}
+    public void setMajorTick( int majorTick ) {
+        this.majorTick = majorTick;
+    }
 
-	public int getMinorTick() {
-		return minorTick;
-	}
+    public int getMinorTick() {
+        return minorTick;
+    }
 
-	public void setMinorTick( int minorTick ) {
-		this.minorTick = minorTick;
-	}
+    public void setMinorTick( int minorTick ) {
+        this.minorTick = minorTick;
+    }
 
-	public int getMaxValue() {
-		return maxValue;
-	}
+    public int getMaxValue() {
+        return maxValue;
+    }
 
-	public void setMaxValue( int maxValue ) {
-		this.maxValue = maxValue;
-	}
+    public void setMaxValue( int maxValue ) {
+        this.maxValue = maxValue;
+    }
 
-	public int getMinValue() {
-		return minValue;
-	}
+    public int getMinValue() {
+        return minValue;
+    }
 
-	public void setMinValue( int minValue ) {
-		this.minValue = minValue;
-	}
+    public void setMinValue( int minValue ) {
+        this.minValue = minValue;
+    }
 }

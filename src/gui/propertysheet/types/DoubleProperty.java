@@ -16,20 +16,18 @@
 package gui.propertysheet.types;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamConverter;
 import gui.propertysheet.BasicProperty;
 
 /**
  *
  * @author Jan-Philipp Kappmeier
  */
-@XStreamAlias( "doubleNode" )
-@XStreamConverter( IntegerPropertyConverter.class )
-@SuppressWarnings( "serial" )
+@XStreamAlias("doubleNode")
+@SuppressWarnings("serial")
 public class DoubleProperty extends BasicProperty<Double> {
-	
-	public DoubleProperty() {
-		setValue( 1.0 );
-		setType( Double.class );
-	}
+
+    public DoubleProperty() {
+        setValue(1.0);
+        setType(Double.class);
+    }
 }

@@ -12,25 +12,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */
-package gui.propertysheet.types;
+ */package gui.propertysheet.abs;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 import gui.propertysheet.BasicProperty;
-import java.awt.Color;
+import gui.propertysheet.types.GeneralPropertyConverter;
+import java.util.function.Supplier;
 
 /**
  *
  * @author Jan-Philipp Kappmeier
+ * @param <P>
+ * @param <T>
  */
-@XStreamAlias("colorNode")
-@SuppressWarnings("serial")
-public class ColorProperty extends BasicProperty<Color> {
+public class DefaultConverterFactory<P extends BasicProperty<T>, T> extends AbstractConverterFactory<P, T> {
+    private final Supplier<P> sup;
+    private final Class<T> type;
 
-    public ColorProperty() {
-        super();
-        setPropertyValue(Color.black);
-        setType(Color.class);
+    public DefaultConverterFactory(String name, Supplier<P> sup, Class<P> propertyType, Class<T> type) {
+        super(name, propertyType);
+        this.sup = sup;
+        this.type = type;
     }
-
+    
+    @Override
+    public AbstractPropertyConverter<P, T> getConverter() {
+        return new GeneralPropertyConverter<>(sup, getName(), type);
+    }
 }

@@ -15,23 +15,67 @@
  */
 package gui.propertysheet.types;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamConverter;
 import gui.propertysheet.BasicProperty;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 
 /**
  *
  * @author Jan-Philipp Kappmeier
  */
-@XStreamAlias( "stringListNode" )
-@XStreamConverter( StringListPropertyConverter.class )
-public class StringListProperty extends BasicProperty<ArrayList<String>> {
-	
-	/**
-	 * 
-	 */
-	public StringListProperty() {
-		setValue( new ArrayList<String>() );
-	}
+public class StringListProperty extends BasicProperty<ArrayList<String>> implements Iterable<String> {
+    private final ArrayList<String> list = new ArrayList<>();
+    /**
+     * 
+     */
+    public StringListProperty() {
+    }
+
+    public void add(String string) {
+        list.add(string);
+    }
+
+    public int size() {
+        return list.size();
+    }
+
+    public boolean contains(String o) {
+        return list.contains(o);
+    }
+
+    public boolean remove(String o) {
+        return list.remove(o);
+    }
+
+    public void clear() {
+        list.clear();
+    }
+
+    public boolean addAll(Collection<? extends String> c) {
+        return list.addAll(c);
+    }
+
+    public boolean removeAll(Collection<String> c) {
+        return list.removeAll(c);
+    }
+
+    @Override
+    public void setValue(Object strings) {
+        if(strings instanceof Collection) {
+            clear();
+            ((Collection<?>) strings).stream().filter(object -> object instanceof String).forEach(stringObject ->
+                    add((String) stringObject));
+        }
+    }
+
+    @Override
+    public ArrayList<String> getValue() {
+        return list;
+    }
+
+    @Override
+    public Iterator<String> iterator() {
+        return list.iterator();
+    }
 }

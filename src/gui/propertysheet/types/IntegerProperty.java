@@ -16,7 +16,6 @@
 package gui.propertysheet.types;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamConverter;
 import gui.propertysheet.BasicProperty;
 
 /**
@@ -24,12 +23,11 @@ import gui.propertysheet.BasicProperty;
  * @author Jan-Philipp Kappmeier
  */
 @XStreamAlias( "intNode" )
-@XStreamConverter( IntegerPropertyConverter.class )
 @SuppressWarnings( "serial" )
 public class IntegerProperty extends BasicProperty<Integer> {
 
-	public IntegerProperty() {
-		setValue( 1 );
-		setType( Integer.class );
-	}
+    public IntegerProperty() {
+        setValue( 1 );
+        setType( Integer.class );
+    }
 }

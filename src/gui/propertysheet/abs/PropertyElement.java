@@ -20,14 +20,14 @@ package gui.propertysheet.abs;
  * @author Jan-Philipp Kappmeier
  */
 public interface PropertyElement {
-	
-	public boolean isUsedAsLocString();
-	
-	public void useAsLocString( boolean useAsLocString );
-	
-	public String getDisplayName();
-	
-	public String getDisplayNameTag();
-	
-	public void setDisplayName( String name );
+    
+    public boolean isUsedAsLocString();
+    
+    public void useAsLocString( boolean useAsLocString );
+    
+    public String getDisplayName();
+    
+    public String getDisplayNameTag();
+    
+    public void setDisplayName( String name );
 }

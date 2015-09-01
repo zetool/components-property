@@ -24,31 +24,31 @@ import java.util.ArrayList;
  *
  * @author Jan-Philipp Kappmeier
  */
-public class StringListPropertyConverter extends AbstractPropertyConverter<StringListProperty, ArrayList<String>>  {
+public class StringListPropertyConverter extends AbstractPropertyConverter<StringListProperty, ArrayList<String>> {
 
-	public boolean canConvert( Class type ) {
-		return type.equals( StringListProperty.class );
-	}
+    @Override
+    public boolean canConvert(Class type) {
+        return type.equals(StringListProperty.class);
+    }
 
-	@Override
-	public String getNodeName() {
-		return "stringListNode";
-	}
+    @Override
+    public String getNodeName() {
+        return "stringListNode";
+    }
 
-	@Override
-	public void createNewProp() {
-		prop = new StringListProperty();
-	}
+    @Override
+    public void createNewProp() {
+        prop = new StringListProperty();
+    }
 
-	@Override
-	public void writeValue( MarshallingContext context ) {
-		context.convertAnother( prop.getValue() );
-	}
+    @Override
+    public void writeValue(MarshallingContext context) {
+        context.convertAnother(prop.getValue());
+    }
 
-	@Override
-	public void readValue( UnmarshallingContext context ) {
-		ArrayList<String> string = (ArrayList<String>)context.convertAnother( prop, ArrayList.class );
-		prop.setValue( string );
-	}
-
+    @Override
+    public void readValue(UnmarshallingContext context) {
+        ArrayList<String> string = (ArrayList<String>) context.convertAnother(prop, ArrayList.class);
+        prop.setValue(string);
+    }
 }

@@ -31,7 +31,7 @@ import org.zetool.common.localization.Localization;
  * @author Jan-Philipp Kappmeier
  */
 @XStreamAlias("treeNode")
-@XStreamConverter(DefaultPropertyTreeNodeConverter.class)
+//@XStreamConverter(DefaultPropertyTreeNodeConverter.class)
 public class PropertyTreeNode  implements PropertyElement {
     private Localization loc = CommonLocalization.LOC;
     boolean useAsLocString = false;

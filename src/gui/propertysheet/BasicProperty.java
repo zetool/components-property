@@ -41,18 +41,6 @@ public class BasicProperty<T> extends DefaultProperty implements PropertyValue<T
         setDisplayName( displayName );
     }
 
-    public void store() {
-        try {
-            if( getName() != null && PropertyContainer.getGlobal().isDefined( getName() ) )
-                PropertyContainer.getGlobal().set( getName(), getValue() );
-            else
-                System.out.println( "NOT DEFINED: " + getName() );
-            
-        } catch( Exception e ) {
-            System.out.println( "ERROR STORING THIS" );
-        }
-    }
-
     public void reloadFromPropertyContainer() {
         setPropertyValue( (T)PropertyContainer.getGlobal().get( getName() ) );
     }
@@ -96,31 +84,10 @@ public class BasicProperty<T> extends DefaultProperty implements PropertyValue<T
      * case, you can only change the tag.
      * @param text the description
      */
-    
+    @Override
     public void setShortDescription( String text ) {
         super.setShortDescription( text );
     }
-
-    /**
-     * Returns the name of the property. That is the name by which it can be
-     * accessed in the {@link PropertyContainer}.
-     * @return the name of the property
-     */
-//    @Override
-//    public String getPropertyName() {
-//        return property;
-//    }
-
-    /**
-     * Sets the name of the property. That is the name by which it can be accessed
-     * using the {@link PropertyContainer}.
-     * @param property the name of the property
-     * @return  
-     */
-//    @Override
-//    public void setPropertyName( String property ) {
-//        this.property = property;
-//    }
 
     @Override
     public boolean isUsedAsLocString() {
@@ -131,11 +98,6 @@ public class BasicProperty<T> extends DefaultProperty implements PropertyValue<T
     public void useAsLocString( boolean useAsLocString ) {
         this.useAsLocString = useAsLocString;
     }
-
-//    @Override
-//    public String getNameTag() {
-//        return getName();
-//    }    
 
     @Override
     public void setPropertyValue( T defaultValue ) {

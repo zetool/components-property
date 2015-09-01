@@ -16,7 +16,6 @@
 package gui.propertysheet.types;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamConverter;
 import gui.propertysheet.BasicProperty;
 
 /**
@@ -24,13 +23,12 @@ import gui.propertysheet.BasicProperty;
  * @author Jan-Philipp Kappmeier
  */
 @XStreamAlias( "boolNode" )
-@XStreamConverter( BooleanPropertyConverter.class )
 @SuppressWarnings( "serial" )
 public class BooleanProperty extends BasicProperty<Boolean> {
 
-	public BooleanProperty() {
-		super();
-		setPropertyValue( false );
-		setType( Boolean.class );
-	}
+    public BooleanProperty() {
+        super();
+        setPropertyValue( false );
+        setType( Boolean.class );
+    }
 }

@@ -18,35 +18,56 @@ package gui.propertysheet.types;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import gui.propertysheet.abs.AbstractPropertyConverter;
+import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
- * A property that allows to store one {@code String}.
+ * A converter that reads and writes {@link QualitySettingProperty} to
+ * XML-files.
  * @author Jan-Philipp Kappmeier
  */
-public class StringPropertyConverter extends AbstractPropertyConverter<StringProperty, String> {
-
-	public boolean canConvert( Class type ) {
-		return type.equals( StringProperty.class );
-	}
+public class EnumConverter extends AbstractPropertyConverter<EnumProperty, Enum> {
 
 	@Override
 	public String getNodeName() {
-		return "stringNode";
+		return "enumNode";
 	}
 
 	@Override
 	public void createNewProp() {
-		prop = new StringProperty();
+		prop = new EnumProperty();
 	}
 
 	@Override
 	public void writeValue( MarshallingContext context ) {
+		context.convertAnother( prop.getType() );
+                context.convertAnother( "#");
 		context.convertAnother( prop.getValue() );
 	}
 
 	@Override
 	public void readValue( UnmarshallingContext context ) {
-		String string = (String)context.convertAnother( prop, String.class );
-		prop.setValue( string );
+            String sa = new String();
+            String s = (String)context.convertAnother( sa, String.class );
+            StringTokenizer st = new StringTokenizer(s, "#");
+            String classname = st.nextToken();
+            String enumtype = st.nextToken();
+            
+            Class a;
+            try {
+                a = Class.forName(classname);
+                Enum finalEnum = Enum.valueOf(a, enumtype);
+                prop.setValue(finalEnum);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(EnumConverter.class.getName()).log(Level.SEVERE, null, ex);
+                prop.setValue( null );
+            }
 	}
+
+        @Override
+	public boolean canConvert( Class type ) {
+		return type.equals(EnumProperty.class );
+	}
+
 }

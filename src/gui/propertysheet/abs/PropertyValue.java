@@ -17,28 +17,38 @@ package gui.propertysheet.abs;
 
 /**
  *
- * @param <T> 
+ * @param <T>
  * @author Jan-Philipp Kappmeier
  */
 public interface PropertyValue<T> {
 
-	public String getDisplayName();
+    public String getDisplayName();
 
-	public String getDisplayNameTag();
-	
-	public void setDisplayName( String text);
-	
-	public T getValue();
-	
-	public void setPropertyValue( T defaultValue);
-	
-	public String getShortDescription();
-	
-	public String getShortDescriptionTag();
-	
-	public void setShortDescription( String text );
+    public String getDisplayNameTag();
 
-	public String getName();
-	
-	public void setName( String name );
+    public void setDisplayName(String text);
+
+    public T getValue();
+
+    public void setPropertyValue(T defaultValue);
+
+    /**
+     * Returns a description for the property. If the description text is used as a tag, the method automatically
+     * generates the actual description out of the tag.
+     * @return the description text (possibly transformed by a tag)
+     */
+    public String getShortDescription();
+
+    /**
+     * Returns the value for the short description text. In case the description text is used as a tag, the method
+     * returns the tag and not the transformed description (unlike {@link #getShortDescription() }).
+     * @return the description tag if used as a tag, the description otherwise
+     */
+    public String getShortDescriptionTag();
+
+    public void setShortDescription(String text);
+
+    public String getName();
+
+    public void setName(String name);
 }
