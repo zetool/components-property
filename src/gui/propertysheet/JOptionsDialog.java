@@ -31,6 +31,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -239,6 +240,9 @@ public class JOptionsDialog extends JDialog {
 
                 @Override
                 public ChildPropertyTuple next() {
+                    if (!hasNext()) {
+                        throw new NoSuchElementException();
+                    }
                     final PropertyTreeNode child = node.getChildAt(index);
                     return new ChildPropertyTuple(child, newProperty(child, category));
                 }
