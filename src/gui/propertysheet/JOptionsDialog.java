@@ -20,7 +20,6 @@ import com.l2fprod.common.propertysheet.PropertySheetPanel;
 import com.l2fprod.common.propertysheet.PropertySheetTable;
 import com.l2fprod.common.propertysheet.PropertySheetTableModel;
 import com.l2fprod.common.swing.JButtonBar;
-import com.l2fprod.common.swing.plaf.ButtonBarUI;
 import com.l2fprod.common.swing.plaf.blue.BlueishButtonBarUI;
 import ds.PropertyContainer;
 import info.clearthought.layout.TableLayout;
@@ -31,8 +30,7 @@ import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import java.util.Iterator;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -47,181 +45,235 @@ import org.zetool.components.framework.Button;
  * @author Jan-Philipp Kappmeier
  */
 public class JOptionsDialog extends JDialog {
-    private static final long serialVersionUID = 1L;
-    private Localization loc = CommonLocalization.LOC;
-    boolean useButtonBar = true;
-    PropertySheetTableModel pstm = new PropertySheetTableModel();
-    PropertySheetTable pst = new PropertySheetTable( pstm );
-    PropertySheetPanel ps = new PropertySheetPanel( pst );
 
-    JOptionsDialog parent;
-    JButtonBar jbb;
+    private static final long serialVersionUID = 1L;
+    private final Localization loc = CommonLocalization.LOC;
+    private PropertySheetTableModel propertyTableModel = new PropertySheetTableModel();
+    private final PropertySheetPanel propertyPanel = new PropertySheetPanel(new PropertySheetTable(propertyTableModel));
+
+    private JButtonBar buttonBar;
 
     private final static String path = "./icons/";
     private final static String name = "open.png";
-    Icon icon = new ImageIcon( path + name );
+    Icon icon = new ImageIcon(path + name);
+
+    public JOptionsDialog(PropertyTreeModel ptm) {
+        this(ptm, true);
+    }
     
-    public JOptionsDialog( PropertyTreeModel ptm ) {
-        super( (Frame)null, "test" );
+    public JOptionsDialog(PropertyTreeModel ptm, boolean useButtonBar) {
+        super((Frame) null, "test");
 
-        parent = this;
-
-        setSize( 650, 450 );
+        setSize(650, 450);
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-        setLocation( (d.width - getSize().width) / 2, (d.height - getSize().height) / 2 );
+        setLocation((d.width - getSize().width) / 2, (d.height - getSize().height) / 2);
 
-        this.setLayout( new BorderLayout() );
+        this.setLayout(new BorderLayout());
 
-        if( useButtonBar ) {
-            jbb = new JButtonBar( 1 );
-            add( jbb, BorderLayout.WEST );
-            ButtonBarUI b = new BlueishButtonBarUI();
-            jbb.setUI( b );
+        if(useButtonBar) {
+            initButtonBar();        
         }
-
-        add( ps, BorderLayout.CENTER );
-        init( ptm );
-
-        ps.setDescriptionVisible( true );
-        ps.setMode( 1 );
-
-        ps.addPropertySheetChangeListener( new PropertyChangeListener() {
-
-            @Override
-            public void propertyChange( PropertyChangeEvent evt ) {
-                BasicProperty p = (BasicProperty)evt.getSource();
-                System.out.println( p.getName() );
-            }
-        });
-
-        int space = 10;
-        JPanel buttonPanel = new JPanel( );
-        JButton btnOK = Button.newButton( loc.getString( "gui.OK" ), aclButton, "ok"  );
-        JButton btnCancel = Button.newButton( loc.getString( "gui.Cancel" ), aclButton, "cancel" );
-        double size2[][] = { {TableLayout.FILL, TableLayout.PREFERRED, space, TableLayout.PREFERRED, space }, {space, TableLayout.PREFERRED, space } };
-        buttonPanel.setLayout( new TableLayout( size2 ) );
-        buttonPanel.add( btnOK, "1,1" );
-        buttonPanel.add( btnCancel, "3,1" );
-        add( buttonPanel, BorderLayout.SOUTH );
+        initProperties(ptm);
+        initNavigation();
     }
 
-    final protected void init( PropertyTreeModel ptm ) {
-        System.out.println( "Loading property " + ptm.getPropertyName() );
-        PropertyTreeNode node = ptm.getRoot();
+    private void initButtonBar() {
+        buttonBar = new JButtonBar(1);
+        add(buttonBar, BorderLayout.WEST);
+        buttonBar.setUI(new BlueishButtonBarUI());
+    }
 
-        jbb.removeAll();
-        for( Property p : pstm.getProperties() ) {
-            pstm.removeProperty( p );
+    private void initProperties(PropertyTreeModel ptm) {
+        loadProperties(ptm);
+        propertyPanel.setDescriptionVisible(true);
+        propertyPanel.setMode(1);
+        add(propertyPanel, BorderLayout.CENTER);
+    }
+
+    private void initNavigation() {
+        int space = 10;
+        JPanel buttonPanel = new JPanel();
+        JButton okButton = Button.newButton(loc.getString("gui.OK"), buttonListener, "ok");
+        JButton cancelButton = Button.newButton(loc.getString("gui.Cancel"), buttonListener, "cancel");
+        double size2[][] = {{TableLayout.FILL, TableLayout.PREFERRED, space, TableLayout.PREFERRED, space}, {space, TableLayout.PREFERRED, space}};
+        buttonPanel.setLayout(new TableLayout(size2));
+        buttonPanel.add(okButton, "1,1");
+        buttonPanel.add(cancelButton, "3,1");
+        add(buttonPanel, BorderLayout.SOUTH);
+   }
+
+    protected final void loadProperties(PropertyTreeModel ptm) {
+        System.out.println("Loading property " + ptm.getPropertyName());
+        PropertyTreeNode root = ptm.getRoot();
+
+        buttonBar.removeAll();
+        for (Property p : propertyTableModel.getProperties()) {
+            propertyTableModel.removeProperty(p);
         }
 
         // we are at root level
-        if( useButtonBar ) {
-            for( int i = 0; i < node.getChildCount(); i++ ) {
-                PropertyTreeNode n = node.getChildAt( i );
-                JButton newButton = new JPropertyButton( n );
-                newButton.setIcon( icon ); // ZETIconSet.Open.icon() );
-                jbb.add( newButton );
+        if (useButtonBar()) {
+            addRootLevelChildrenToButtonBar(root);
+            if (root.getChildCount() > 0) {
+                ((JButton) buttonBar.getComponent(0)).doClick();
             }
         } else {
-            for( BasicProperty<?> p : node.getProperties() )
-                p.setCategory( "General" );
-            for( int i = 0; i < node.getChildCount(); i++ ) {
-                PropertyTreeNode n = node.getChildAt( i );
-                addD( n, pstm, n.getDisplayName() );
+            for (BasicProperty<?> p : root.getProperties()) {
+                p.setCategory("General");
+            }
+            for (int i = 0; i < root.getChildCount(); i++) {
+                PropertyTreeNode n = root.getChildAt(i);
+                addPropertyRootLevel(n, n.getDisplayName());
             }
         }
-
-        if( jbb != null && jbb.getComponents().length > 0 )
-            ((JButton)jbb.getComponent( 0 )).doClick();
+    }
+    
+    private void addRootLevelChildrenToButtonBar(PropertyTreeNode root) {
+        for (int i = 0; i < root.getChildCount(); i++) {
+            PropertyTreeNode child = root.getChildAt(i);
+            JButton newButton = new JPropertyButton(child);
+            newButton.setIcon(icon); // ZETIconSet.Open.icon() );
+            buttonBar.add(newButton);
+        }
     }
 
-    private final ActionListener aclButton = new ActionListener() {
+    private final ActionListener buttonListener = new ActionListener() {
         @Override
-        public void actionPerformed( ActionEvent e ) {
-            if( e.getActionCommand().equals( "ok" ) ) {
+        public void actionPerformed(ActionEvent e) {
+            if (e.getActionCommand().equals("ok")) {
                 // Store results in the Property container
-                for( Component c : jbb.getComponents() ) {
-                    JPropertyButton pb = (JPropertyButton)c;
-                    for( Property p : pb.pstm.getProperties() ) {
-                        BasicProperty p2 = (BasicProperty)p;
-                        System.out.println( p2.getName() + ": " + p2.getValue() );
+                for (Component c : buttonBar.getComponents()) {
+                    JPropertyButton pb = (JPropertyButton) c;
+                    for (Property p : pb.pstm.getProperties()) {
+                        BasicProperty p2 = (BasicProperty) p;
+                        System.out.println(p2.getName() + ": " + p2.getValue());
                         PropertyContainer.getGlobal().store(p2);
                     }
                 }
             }
-            parent.setVisible( false );
+            JOptionsDialog.this.setVisible(false);
         }
     };
 
     protected ActionListener getDefaultButtonsListener() {
-        return aclButton;
+        return buttonListener;
     }
 
+    private boolean useButtonBar() {
+        return buttonBar != null;
+    }
+    
+    private BasicProperty<?> newProperty(PropertyTreeNode n, String category) {
+        BasicProperty<?> def = new BasicProperty<>(n.getDisplayNameTag(), n.getDisplayName());
 
-    private BasicProperty<?> newProperty( PropertyTreeNode n, String category ) {
-        BasicProperty<?> def = new BasicProperty<>( n.getDisplayNameTag(), n.getDisplayName() );
-
-        if( !category.isEmpty() )
-            def.setCategory( category );
+        if (!category.isEmpty()) {
+            def.setCategory(category);
+        }
         return def;
     }
 
-    private void addD( PropertyTreeNode node, PropertySheetTableModel pstm, String category ) {
-        for( int i = 0; i < node.getChildCount(); i++ ) {
-            PropertyTreeNode n = node.getChildAt( i );
-            BasicProperty<?> def = newProperty( n, category );
-            pstm.addProperty( def );
-            addD( n, def, pstm );
+    /**
+     * Displays a (sub-)tree of properties in the {@link #propertyPanel} starting at a given node.
+     * @param node the root node that is displayed.
+     * @param category the heading for the group belonging to the {@code node}
+     */
+    private void addPropertyRootLevel(PropertyTreeNode node, String category) {        
+        for( ChildPropertyTuple tuple : new ChildPropertyIterator(node, category)) {
+            propertyTableModel.addProperty(tuple.property);
+            addProperty(tuple.child, tuple.property);
         }
 
-        for( BasicProperty<?> p : node.getProperties() ) {
-            p.setCategory( category );
-            pstm.addProperty( p );
-        }
-    }
-
-    private void addD( PropertyTreeNode node, BasicProperty<?> property, PropertySheetTableModel pstm ) {
-        for( int i = 0; i < node.getChildCount(); i++ ) {
-            PropertyTreeNode n = node.getChildAt( i );
-            BasicProperty<?> def = newProperty( n, "" );
-            def.setParentProperty( property );
-            property.addSubProperty( def );
-            addD( n, def, pstm );
-        }
-
-        for( BasicProperty<?> p : node.getProperties() ) {
-            property.addSubProperty( p );
-            p.setParentProperty( property );
+        for (BasicProperty<?> p : node.getProperties()) {
+            p.setCategory(category);
+            propertyTableModel.addProperty(p);
         }
     }
 
+    /**
+     * Displays a (sub-)tree of properties in the {@link #propertyPanel} under an existing property.
+     * @param node the node from which the properties are displayed
+     * @param property the parent property belonging to the {@code node}
+     */
+    private void addProperty(PropertyTreeNode node, BasicProperty<?> property) {
+        for( ChildPropertyTuple tuple : new ChildPropertyIterator(node, "")) {
+            tuple.property.setParentProperty(property);
+            property.addSubProperty(tuple.property);
+            addProperty(tuple.child, tuple.property);
+        }
+
+        for (BasicProperty<?> p : node.getProperties()) {
+            property.addSubProperty(p);
+            p.setParentProperty(property);
+        }
+    }
+
+
+    private static class ChildPropertyTuple {
+        private final PropertyTreeNode child;
+        private final BasicProperty<?> property;
+
+        public ChildPropertyTuple(PropertyTreeNode child, BasicProperty<?> def) {
+            this.child = child;
+            this.property = def;
+        }
+        
+    }
+    private class ChildPropertyIterator implements Iterable<ChildPropertyTuple> {
+        private final PropertyTreeNode node;
+        private final String category;
+
+        public ChildPropertyIterator(PropertyTreeNode node, String category) {
+            this.node = node;
+            this.category = category;
+        }
+
+        @Override
+        public Iterator<ChildPropertyTuple> iterator() {
+            return new Iterator<ChildPropertyTuple>() {
+                private int index = 0;
+
+                @Override
+                public boolean hasNext() {
+                    return index++ < node.getChildCount();
+                }
+
+                @Override
+                public ChildPropertyTuple next() {
+                    final PropertyTreeNode child = node.getChildAt(index);
+                    return new ChildPropertyTuple(child, newProperty(child, category));
+                }
+            };
+        }
+    }
+    
     private class JPropertyButton extends JButton {
+
         private static final long serialVersionUID = 1L;
         final PropertyTreeNode n;
 
         private PropertySheetTableModel pstm;
 
-        JPropertyButton( final PropertyTreeNode n ) {
-            super( n.getDisplayName() );
+        JPropertyButton(final PropertyTreeNode n) {
+            super(n.getDisplayName());
             this.n = n;
 
             pstm = new PropertySheetTableModel();
-            for( BasicProperty<?> p : n.getProperties() ) {
-                p.setCategory( "General" );
-                pstm.addProperty( p );
+
+            for (int i = 0; i < n.getChildCount(); i++) {
+                PropertyTreeNode node = n.getChildAt(i);
+                addPropertyRootLevel(node, node.getDisplayName());
+            }
+            for (BasicProperty<?> p : n.getProperties()) {
+                p.setCategory("General");
+                pstm.addProperty(p);
             }
 
-            for( int i = 0; i < n.getChildCount(); i++ ) {
-                PropertyTreeNode node = n.getChildAt( i );
-                addD( node, pstm, node.getDisplayName() );
-            }
-
-            this.addActionListener( new ActionListener() {
+            this.addActionListener(new ActionListener() {
                 @Override
-                public void actionPerformed( ActionEvent e ) {
-                    pst.setModel( pstm );
-                    ps.setTable( pst );
-                    ps.setMode( 1 );
+                public void actionPerformed(ActionEvent e) {
+                    propertyTableModel = pstm;
+                    propertyPanel.setTable(new PropertySheetTable(pstm));
+                    propertyPanel.setMode(1);
                 }
             });
         }
