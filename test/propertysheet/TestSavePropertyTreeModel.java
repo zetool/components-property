@@ -1,8 +1,9 @@
 package propertysheet;
 
-import ds.PropertyTreeModelLoader;
-import ds.PropertyTreeModelWriter;
+import org.zetool.components.property.PropertyTreeModelLoader;
+import org.zetool.components.property.PropertyTreeModelWriter;
 import gui.propertysheet.BasicProperty;
+import gui.propertysheet.GenericProperty;
 import gui.propertysheet.JOptionsDialog;
 import gui.propertysheet.PropertyTreeModel;
 import gui.propertysheet.PropertyTreeNode;
@@ -34,6 +35,8 @@ public class TestSavePropertyTreeModel {
     
     
     
+
+    @Test
     public void testRead() throws IOException {
         PropertyTreeModelLoader loader = new PropertyTreeModelLoader();
         PropertyTreeModel ptm = loader.loadConfigFile(new File("./ptm.txt"));
@@ -46,14 +49,12 @@ public class TestSavePropertyTreeModel {
             System.out.println( "Child " + i + ": " + childNode.getDisplayName() + "(use as loc string: " + childNode.isUsedAsLocString() + ")");
             iterateNode(childNode);
         }
-        for( BasicProperty bp : node.getProperties()) {
+        for( GenericProperty bp : node.getProperties()) {
             String out = String.format("%s %s %s %s", bp.getValue(), bp.getShortDescription(), bp.getShortDescriptionTag(), bp.getDisplayName(), bp.getDisplayNameTag());
             System.out.println(out);
         }
     }
-    
 
-    @Test
     public void testSimple() throws IOException {
         PropertyTreeNode root = new PropertyTreeNode("my_root_name");
         PropertyTreeModel ptm = new PropertyTreeModel(root);
@@ -120,7 +121,16 @@ public class TestSavePropertyTreeModel {
         cp.setShortDescription("color-desc");
         cp.setName("mycolor-name");
         cp.setValue(Color.RED);
-        child1.addProperty(cp);        
+        child1.addProperty(cp);
+
+        PropertyTreeNode child3 = new PropertyTreeNode("child3");
+        root.add(child3);
+        BooleanProperty cbp3 = new BooleanProperty();
+        cbp3.setDisplayName("cbp3");
+        cbp3.setShortDescription("cbp3-short");
+        cbp3.setName("cbp3-name");
+        root.addProperty(cbp3);
+        child3.addProperty(cbp3);
 
         PropertyTreeModelWriter writer = new PropertyTreeModelWriter();
         writer.saveConfigFile(ptm, new File("./ptm.txt"));
