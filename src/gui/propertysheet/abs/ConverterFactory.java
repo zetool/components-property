@@ -18,9 +18,9 @@ import gui.propertysheet.BasicProperty;
 
 /**
  *
- * @param <P>
- * @param <T>
- * @author kapman
+ * @param <P> The property type.
+ * @param <T> The type of data stored by the property.
+ * @author Jan-Philipp Kappmeier
  */
 public interface ConverterFactory<P extends BasicProperty<T>, T> {
 

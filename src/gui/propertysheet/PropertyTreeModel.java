@@ -15,30 +15,27 @@
  */
 package gui.propertysheet;
 
-import gui.propertysheet.abs.PropertyTreeConverter;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamConverter;
+import java.util.Objects;
 
 /**
  *
- * @author Martin Groß, Jan-Philipp Kappmeier
+ * @author Martin Groß
+ * @author Jan-Philipp Kappmeier
  */
-@XStreamAlias("zp")
-//@XStreamConverter(PropertyTreeConverter.class)
 public class PropertyTreeModel {
     private String propertyName = "";
     private final PropertyTreeNode root;
 
     public PropertyTreeModel(PropertyTreeNode root) {
-        this.root = root;
+        this.root = Objects.requireNonNull(root);
     }
 
     public String getPropertyName() {
-        return propertyName == null ? "" : propertyName;
+        return propertyName;
     }
 
     public void setPropertyName(String propertyName) {
-        this.propertyName = propertyName;
+        this.propertyName = Objects.requireNonNull(propertyName);
     }
 
     public PropertyTreeNode getRoot() {

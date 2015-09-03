@@ -15,22 +15,17 @@
  */
 package gui.propertysheet;
 
-import com.l2fprod.common.propertysheet.DefaultProperty;
 import ds.PropertyContainer;
-import gui.propertysheet.abs.PropertyElement;
 import gui.propertysheet.abs.PropertyValue;
-import org.zetool.common.localization.CommonLocalization;
-import org.zetool.common.localization.Localization;
 
 /**
  *
  * @param <T> 
  * @author Jan-Philipp Kappmeier
  */
-public class BasicProperty<T> extends DefaultProperty implements PropertyValue<T>, PropertyElement {
+public class BasicProperty<T> extends GenericProperty implements PropertyValue<T> {
+
     private static final long serialVersionUID = 1L;
-    boolean useAsLocString = false;
-    private Localization loc = CommonLocalization.LOC;
     public BasicProperty( ) {
         super();
     }
@@ -41,22 +36,8 @@ public class BasicProperty<T> extends DefaultProperty implements PropertyValue<T
         setDisplayName( displayName );
     }
 
-    public void reloadFromPropertyContainer() {
-        setPropertyValue( (T)PropertyContainer.getGlobal().get( getName() ) );
-    }
-
-    /**
-     * Returns the detailed description for the property.
-     * @return the detailed description for the property
-     */
-    @Override
-    public String getDisplayName() {
-        return isUsedAsLocString() ? loc.getString( super.getDisplayName() ) : super.getDisplayName();
-    }
-
-    @Override
-    public String getDisplayNameTag() {
-        return super.getDisplayName();
+    public static void reloadFromPropertyContainer(GenericProperty pe) {
+        pe.setValue( PropertyContainer.getGlobal().get( pe.getName() ) );
     }
 
     /**
@@ -68,40 +49,7 @@ public class BasicProperty<T> extends DefaultProperty implements PropertyValue<T
         return (T)super.getValue();
     }
 
-    @Override
-    public String getShortDescription() {
-        return isUsedAsLocString() ? loc.getString( super.getShortDescription() ) : super.getShortDescription();
-    }
-
-    @Override
-    public String getShortDescriptionTag() {
-        return super.getShortDescription();
-    }
-
-    /**
-     * Sets the description for the property. Note that you cannot change the
-     * description if it shall be used as a tag for localized string. In that
-     * case, you can only change the tag.
-     * @param text the description
-     */
-    @Override
-    public void setShortDescription( String text ) {
-        super.setShortDescription( text );
-    }
-
-    @Override
-    public boolean isUsedAsLocString() {
-        return useAsLocString;
-    }
-
-    @Override
-    public void useAsLocString( boolean useAsLocString ) {
-        this.useAsLocString = useAsLocString;
-    }
-
-    @Override
     public void setPropertyValue( T defaultValue ) {
         setValue( defaultValue );
     }
-
 }

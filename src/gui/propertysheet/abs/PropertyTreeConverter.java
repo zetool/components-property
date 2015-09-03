@@ -28,9 +28,9 @@ import gui.propertysheet.PropertyTreeModel;
  * @author Jan-Philipp Kappmeier, Martin Groß
  */
 public class PropertyTreeConverter implements Converter {
-    private final DefaultPropertyTreeNodeConverter treeNodeConverter;
+    private final PropertyTreeNodeConverter treeNodeConverter;
 
-    public PropertyTreeConverter(DefaultPropertyTreeNodeConverter treeNodeConverter) {
+    public PropertyTreeConverter(PropertyTreeNodeConverter treeNodeConverter) {
         this.treeNodeConverter = treeNodeConverter;
     }
     
@@ -55,9 +55,9 @@ public class PropertyTreeConverter implements Converter {
         PropertyTreeModel treeModel = (PropertyTreeModel) source;
         // Root node has at most one property!
         PropertyTreeNode root = treeModel.getRoot();
-        writer.addAttribute("name", root.getDisplayNameTag());
-        writer.addAttribute("useAsLocString", Boolean.toString(root.isUsedAsLocString()));
-        writer.addAttribute("propertyName", treeModel.getPropertyName());
+        writer.addAttribute(PropertyTreeNodeConverter.ATTRIBUTE_NAME, root.getDisplayNameTag());
+        writer.addAttribute(PropertyTreeNodeConverter.ATTRIBUTE_LOC_STRING, Boolean.toString(root.isUsedAsLocString()));
+        writer.addAttribute(PropertyTreeNodeConverter.ATTRIBUTE_PROPERTY_NAME, treeModel.getPropertyName());
         for (int i = 0; i < root.getChildCount(); i++) {
             PropertyTreeNode child = root.getChildAt(i);
             context.convertAnother(child, treeNodeConverter);

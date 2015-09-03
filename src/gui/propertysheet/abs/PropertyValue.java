@@ -30,7 +30,6 @@ public interface PropertyValue<T> {
 
     public T getValue();
 
-    public void setPropertyValue(T defaultValue);
 
     /**
      * Returns a description for the property. If the description text is used as a tag, the method automatically

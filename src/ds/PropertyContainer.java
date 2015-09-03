@@ -15,7 +15,9 @@
  */
 package ds;
 
-import gui.propertysheet.BasicProperty;
+import gui.propertysheet.GenericProperty;
+import org.zetool.components.property.PropertyLoadException;
+import org.zetool.components.property.PropertyTreeModelLoader;
 import gui.propertysheet.PropertyTreeModel;
 import gui.propertysheet.types.BooleanProperty;
 import gui.propertysheet.PropertyTreeNode;
@@ -175,7 +177,7 @@ public class PropertyContainer {
             applyParameters(node.getChildAt(i));
         }
         PropertyContainer pc = PropertyContainer.getGlobal();
-        for (BasicProperty<?> property : node.getProperties()) {
+        for (GenericProperty property : node.getProperties()) {
             if (property instanceof BooleanProperty) {
                 if (!pc.isDefined(property.getName())) {
                     pc.define(property.getName(), Boolean.class, (Boolean) property.getValue());

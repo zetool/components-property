@@ -119,7 +119,7 @@ public class JOptionsDialog extends JDialog {
                 ((JButton) buttonBar.getComponent(0)).doClick();
             }
         } else {
-            for (BasicProperty<?> p : root.getProperties()) {
+            for (GenericProperty p : root.getProperties()) {
                 p.setCategory("General");
             }
             for (int i = 0; i < root.getChildCount(); i++) {
@@ -184,7 +184,7 @@ public class JOptionsDialog extends JDialog {
             addProperty(tuple.child, tuple.property);
         }
 
-        for (BasicProperty<?> p : node.getProperties()) {
+        for (GenericProperty p : node.getProperties()) {
             p.setCategory(category);
             propertyTableModel.addProperty(p);
         }
@@ -202,7 +202,7 @@ public class JOptionsDialog extends JDialog {
             addProperty(tuple.child, tuple.property);
         }
 
-        for (BasicProperty<?> p : node.getProperties()) {
+        for (GenericProperty p : node.getProperties()) {
             property.addSubProperty(p);
             p.setParentProperty(property);
         }
@@ -267,7 +267,7 @@ public class JOptionsDialog extends JDialog {
                 PropertyTreeNode node = n.getChildAt(i);
                 addPropertyRootLevel(node, node.getDisplayName());
             }
-            for (BasicProperty<?> p : n.getProperties()) {
+            for (GenericProperty p : n.getProperties()) {
                 p.setCategory("General");
                 pstm.addProperty(p);
             }

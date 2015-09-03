@@ -50,18 +50,18 @@ public abstract class AbstractPropertyConverter<T extends BasicProperty<U>, U ex
     }
 
     public void readAttributes(HierarchicalStreamReader reader) {
-        String name = reader.getAttribute("name");
+        String name = reader.getAttribute(PropertyTreeNodeConverter.ATTRIBUTE_NAME);
         prop.setDisplayName(name);
-        prop.useAsLocString((reader.getAttribute("useAsLocString").equals("true")));
-        prop.setShortDescription(reader.getAttribute("information"));
-        prop.setName(reader.getAttribute("parameter"));
+        prop.useAsLocString((reader.getAttribute(PropertyTreeNodeConverter.ATTRIBUTE_LOC_STRING).equals("true")));
+        prop.setShortDescription(reader.getAttribute(PropertyTreeNodeConverter.ATTRIBUTE_INFORMATION));
+        prop.setName(reader.getAttribute(PropertyTreeNodeConverter.ATTRIBUTE_PARAMETER));
     }
 
     public void writeAttributes(HierarchicalStreamWriter writer) {
-        writer.addAttribute("name", prop.getDisplayNameTag());
-        writer.addAttribute("useAsLocString", Boolean.toString(prop.isUsedAsLocString()));
-        writer.addAttribute("information", prop.getShortDescriptionTag());
-        writer.addAttribute("parameter", prop.getName());
+        writer.addAttribute(PropertyTreeNodeConverter.ATTRIBUTE_NAME, prop.getDisplayNameTag());
+        writer.addAttribute(PropertyTreeNodeConverter.ATTRIBUTE_LOC_STRING, Boolean.toString(prop.isUsedAsLocString()));
+        writer.addAttribute(PropertyTreeNodeConverter.ATTRIBUTE_INFORMATION, prop.getShortDescriptionTag());
+        writer.addAttribute(PropertyTreeNodeConverter.ATTRIBUTE_PARAMETER, prop.getName());
     }
 
     @Override

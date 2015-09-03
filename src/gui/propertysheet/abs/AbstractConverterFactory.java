@@ -18,14 +18,13 @@ import gui.propertysheet.BasicProperty;
 
 /**
  *
- * @author kapman
  * @param <P>
  * @param <T>
+ * @author Jan-Philipp Kappmeier
  */
 public abstract class AbstractConverterFactory<P extends BasicProperty<T>, T> implements ConverterFactory<P, T> {
 
     private final Class<P> propertyType;
-    //private final Class<T> type;
     private final String name;
 
     public AbstractConverterFactory(String name, Class<P> propertyType) {
@@ -41,10 +40,6 @@ public abstract class AbstractConverterFactory<P extends BasicProperty<T>, T> im
     public String getName() {
         return name;
     }
-
-//    public Class<T> getType() {
-//        return type;
-//    }
 
     @Override
     public Class<P> getPropertyType() {

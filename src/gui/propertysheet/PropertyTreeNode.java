@@ -15,10 +15,7 @@
  */
 package gui.propertysheet;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamConverter;
 import gui.propertysheet.abs.PropertyElement;
-import gui.propertysheet.abs.DefaultPropertyTreeNodeConverter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -28,48 +25,49 @@ import org.zetool.common.localization.Localization;
 
 /**
  * The user property is overridden with string.
+ *
  * @author Jan-Philipp Kappmeier
  */
-@XStreamAlias("treeNode")
-//@XStreamConverter(DefaultPropertyTreeNodeConverter.class)
-public class PropertyTreeNode  implements PropertyElement {
+public class PropertyTreeNode implements PropertyElement {
+
     private Localization loc = CommonLocalization.LOC;
     boolean useAsLocString = false;
     String name;
-    ArrayList<BasicProperty<?>> properties;
-    ArrayList<PropertyTreeNode> children;
+    List<GenericProperty> properties = new ArrayList<>();
+    List<PropertyTreeNode> children = new ArrayList<>();
 
-    public PropertyTreeNode( String name ) {
+    public PropertyTreeNode(String name) {
         this.name = name;
-        children = new ArrayList<>();
-        properties = new ArrayList<>();
     }
 
-    public void addProperty( BasicProperty<?> property ) {
-        properties.add( property );
+    public void addProperty(BasicProperty<?> property) {
+        properties.add(property);
     }
 
     public void clearProperties() {
         properties.clear();
     }
 
-    public List<BasicProperty<?>> getProperties() {
-        return Collections.unmodifiableList( properties );
+    public List<GenericProperty> getProperties() {
+        return Collections.unmodifiableList(properties);
     }
 
     public void reloadFromPropertyContainer() {
-        for( BasicProperty<?> apv : properties ) {
-            apv.reloadFromPropertyContainer(); // TODO
+        for (GenericProperty apv : properties) {
+            //apv.reloadFromPropertyContainer(); // TODO
+            BasicProperty.reloadFromPropertyContainer(apv);
         }
-        if( children != null)
-            for( Object ptn : children ) {
-                ((PropertyTreeNode)ptn).reloadFromPropertyContainer();
+        if (children != null) {
+            for (Object ptn : children) {
+                ((PropertyTreeNode) ptn).reloadFromPropertyContainer();
             }
+        }
     }
 
     /**
-     * Returns {@code true} if the strings for the name, information and
-     * description in the XML-file shall be tags used for localization.
+     * Returns {@code true} if the strings for the name, information and description in the XML-file shall be tags used
+     * for localization.
+     *
      * @return {@code true} if the XML-file contains localization tags, {@code false} otherwise
      * @see AbstractLocalization
      */
@@ -83,18 +81,19 @@ public class PropertyTreeNode  implements PropertyElement {
      * @param useAsLocString
      */
     @Override
-    public void useAsLocString( boolean useAsLocString ) {
+    public void useAsLocString(boolean useAsLocString) {
         this.useAsLocString = useAsLocString;
     }
 
     /**
-     * Returns the name of the property stored in this node. If it
-     * {@link #isUsedAsLocString()}, the localized string is returned.
+     * Returns the name of the property stored in this node. If it {@link #isUsedAsLocString()}, the localized string is
+     * returned.
+     *
      * @return the name of the property stored in this node
      */
     @Override
     public String getDisplayName() {
-        return isUsedAsLocString() ? loc.getString( name ) : name;
+        return isUsedAsLocString() ? loc.getString(name) : name;
     }
 
     @Override
@@ -104,23 +103,23 @@ public class PropertyTreeNode  implements PropertyElement {
 
     /**
      * Assigns a new name to the property stored in this node.
+     *
      * @param name the new name
      */
     @Override
-    public void setDisplayName( String name ) {
+    public void setDisplayName(String name) {
         this.name = name;
     }
 
     public int getChildCount() {
         return children.size();
     }
-    
-    public PropertyTreeNode getChildAt( int i ) {
-        return children.get( i );
+
+    public PropertyTreeNode getChildAt(int i) {
+        return children.get(i);
     }
 
-    public void add( PropertyTreeNode child ) {
-        children.add( child );
+    public void add(PropertyTreeNode child) {
+        children.add(child);
     }
-
 }
