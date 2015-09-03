@@ -22,7 +22,6 @@ import gui.propertysheet.BasicProperty;
  *
  * @author Jan-Philipp Kappmeier
  */
-@XStreamAlias("doubleNode")
 @SuppressWarnings("serial")
 public class DoubleProperty extends BasicProperty<Double> {
 

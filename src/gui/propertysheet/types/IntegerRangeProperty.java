@@ -15,18 +15,15 @@
  */
 package gui.propertysheet.types;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-
 /**
  *
  * @author Jan-Philipp Kappmeier
  */
-@XStreamAlias( "intRangeNode" )
 public class IntegerRangeProperty extends IntegerProperty {
-    int minValue;
-    int maxValue;
-    int minorTick;
-    int majorTick;
+    private int minValue;
+    private int maxValue;
+    private int minorTick;
+    private int majorTick;
     
     public int getMajorTick() {
         return majorTick;

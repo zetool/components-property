@@ -22,8 +22,6 @@ import gui.propertysheet.BasicProperty;
  *
  * @author Jan-Philipp Kappmeier
  */
-@XStreamAlias( "intNode" )
-@SuppressWarnings( "serial" )
 public class IntegerProperty extends BasicProperty<Integer> {
 
     public IntegerProperty() {

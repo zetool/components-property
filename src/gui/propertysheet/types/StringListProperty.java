@@ -26,11 +26,6 @@ import java.util.Iterator;
  */
 public class StringListProperty extends BasicProperty<ArrayList<String>> implements Iterable<String> {
     private final ArrayList<String> list = new ArrayList<>();
-    /**
-     * 
-     */
-    public StringListProperty() {
-    }
 
     public void add(String string) {
         list.add(string);

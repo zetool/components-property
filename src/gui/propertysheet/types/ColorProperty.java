@@ -15,7 +15,6 @@
  */
 package gui.propertysheet.types;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 import gui.propertysheet.BasicProperty;
 import java.awt.Color;
 
@@ -23,7 +22,6 @@ import java.awt.Color;
  *
  * @author Jan-Philipp Kappmeier
  */
-@XStreamAlias("colorNode")
 @SuppressWarnings("serial")
 public class ColorProperty extends BasicProperty<Color> {
 

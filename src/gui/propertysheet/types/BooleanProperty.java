@@ -15,14 +15,12 @@
  */
 package gui.propertysheet.types;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 import gui.propertysheet.BasicProperty;
 
 /**
  *
  * @author Jan-Philipp Kappmeier
  */
-@XStreamAlias( "boolNode" )
 @SuppressWarnings( "serial" )
 public class BooleanProperty extends BasicProperty<Boolean> {
 

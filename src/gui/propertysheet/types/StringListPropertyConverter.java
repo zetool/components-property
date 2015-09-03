@@ -25,6 +25,7 @@ import java.util.ArrayList;
  * @author Jan-Philipp Kappmeier
  */
 public class StringListPropertyConverter extends AbstractPropertyConverter<StringListProperty, ArrayList<String>> {
+    public final static String NODE_NAME = "stringListNode";
 
     @Override
     public boolean canConvert(Class type) {
@@ -33,7 +34,7 @@ public class StringListPropertyConverter extends AbstractPropertyConverter<Strin
 
     @Override
     public String getNodeName() {
-        return "stringListNode";
+        return NODE_NAME;
     }
 
     @Override

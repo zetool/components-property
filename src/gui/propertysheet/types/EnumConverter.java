@@ -23,51 +23,52 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A converter that reads and writes {@link QualitySettingProperty} to
- * XML-files.
+ * A converter that reads and writes {@link QualitySettingProperty} to XML-files.
+ *
  * @author Jan-Philipp Kappmeier
  */
 public class EnumConverter extends AbstractPropertyConverter<EnumProperty, Enum> {
+    public final static String NODE_NAME = "enumNode";
 
-	@Override
-	public String getNodeName() {
-		return "enumNode";
-	}
+    @Override
+    public String getNodeName() {
+        return NODE_NAME;
+    }
 
-	@Override
-	public void createNewProp() {
-		prop = new EnumProperty();
-	}
+    @Override
+    public void createNewProp() {
+        prop = new EnumProperty();
+    }
 
-	@Override
-	public void writeValue( MarshallingContext context ) {
-		context.convertAnother( prop.getType() );
-                context.convertAnother( "#");
-		context.convertAnother( prop.getValue() );
-	}
+    @Override
+    public void writeValue(MarshallingContext context) {
+        context.convertAnother(prop.getType());
+        context.convertAnother("#");
+        context.convertAnother(prop.getValue());
+    }
 
-	@Override
-	public void readValue( UnmarshallingContext context ) {
-            String sa = new String();
-            String s = (String)context.convertAnother( sa, String.class );
-            StringTokenizer st = new StringTokenizer(s, "#");
-            String classname = st.nextToken();
-            String enumtype = st.nextToken();
-            
-            Class a;
-            try {
-                a = Class.forName(classname);
-                Enum finalEnum = Enum.valueOf(a, enumtype);
-                prop.setValue(finalEnum);
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(EnumConverter.class.getName()).log(Level.SEVERE, null, ex);
-                prop.setValue( null );
-            }
-	}
+    @Override
+    public void readValue(UnmarshallingContext context) {
+        String sa = new String();
+        String s = (String) context.convertAnother(sa, String.class);
+        StringTokenizer st = new StringTokenizer(s, "#");
+        String classname = st.nextToken();
+        String enumtype = st.nextToken();
 
-        @Override
-	public boolean canConvert( Class type ) {
-		return type.equals(EnumProperty.class );
-	}
+        Class a;
+        try {
+            a = Class.forName(classname);
+            Enum finalEnum = Enum.valueOf(a, enumtype);
+            prop.setValue(finalEnum);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(EnumConverter.class.getName()).log(Level.SEVERE, null, ex);
+            prop.setValue(null);
+        }
+    }
+
+    @Override
+    public boolean canConvert(Class type) {
+        return type.equals(EnumProperty.class);
+    }
 
 }

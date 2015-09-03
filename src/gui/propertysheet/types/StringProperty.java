@@ -22,7 +22,6 @@ import gui.propertysheet.BasicProperty;
  *
  * @author Jan-Philipp Kappmeier
  */
-@XStreamAlias( "stringNode" )
 public class StringProperty extends BasicProperty<String> {
 	
 	public StringProperty() {
