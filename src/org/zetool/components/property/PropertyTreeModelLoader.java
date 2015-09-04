@@ -20,8 +20,8 @@ import gui.propertysheet.PropertyTreeModel;
 import gui.propertysheet.PropertyTreeNode;
 import gui.propertysheet.abs.PropertyTreeNodeConverter;
 import gui.propertysheet.abs.PropertyTreeConverter;
-import java.io.File;
 import java.io.FileReader;
+import java.io.Reader;
 
 /**
  *
@@ -45,7 +45,7 @@ public class PropertyTreeModelLoader {
      * @return the tree model containing the properties
      * @throws PropertyLoadException if an xstream error occured when the file is read
      */
-    public PropertyTreeModel loadConfigFile(File file) throws PropertyLoadException {
+    public PropertyTreeModel loadConfigFile(Reader file) throws PropertyLoadException {
         PropertyTreeModel propertyTreeModel = null;
         try {
             XStream xstream = new XStream();
@@ -56,7 +56,7 @@ public class PropertyTreeModelLoader {
             xstream.registerConverter(new PropertyTreeConverter(treeNodeConverter));
             xstream.registerConverter(treeNodeConverter);
 
-            propertyTreeModel = (PropertyTreeModel) xstream.fromXML(new FileReader(file));
+            propertyTreeModel = (PropertyTreeModel) xstream.fromXML(file);
         } catch (Exception ex) {
             throw new PropertyLoadException(file, ex);
         }

@@ -1,7 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* zet evacuation tool copyright (c) 2007-15 zet evacuation team
+ *
+ * This program is free software; you can redistribute it and/or
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 package gui.propertysheet;
 
@@ -16,6 +26,12 @@ import org.zetool.common.localization.Localization;
  */
 public class GenericProperty extends DefaultProperty implements PropertyElement {
 
+    public GenericProperty() {
+        super();
+        setDisplayName("");
+        super.setShortDescription("");
+    }
+
     boolean useAsLocString = false;
     private Localization loc = CommonLocalization.LOC;
 
@@ -25,7 +41,7 @@ public class GenericProperty extends DefaultProperty implements PropertyElement 
     }
 
     @Override
-    public void useAsLocString( boolean useAsLocString ) {
+    public void useAsLocString(boolean useAsLocString) {
         this.useAsLocString = useAsLocString;
     }
 
@@ -36,16 +52,17 @@ public class GenericProperty extends DefaultProperty implements PropertyElement 
 
     /**
      * Returns the detailed description for the property.
+     *
      * @return the detailed description for the property
      */
     @Override
     public String getDisplayName() {
-        return isUsedAsLocString() ? loc.getString( super.getDisplayName() ) : super.getDisplayName();
+        return isUsedAsLocString() ? loc.getString(super.getDisplayName()) : super.getDisplayName();
     }
 
     @Override
     public String getShortDescription() {
-        return isUsedAsLocString() ? loc.getString( super.getShortDescription() ) : super.getShortDescription();
+        return isUsedAsLocString() ? loc.getString(super.getShortDescription()) : super.getShortDescription();
     }
 
     public String getShortDescriptionTag() {
@@ -53,14 +70,14 @@ public class GenericProperty extends DefaultProperty implements PropertyElement 
     }
 
     /**
-     * Sets the description for the property. Note that you cannot change the
-     * description if it shall be used as a tag for localized string. In that
-     * case, you can only change the tag.
+     * Sets the description for the property. Note that you cannot change the description if it
+     * shall be used as a tag for localized string. In that case, you can only change the tag.
+     *
      * @param text the description
      */
     @Override
-    public void setShortDescription( String text ) {
-        super.setShortDescription( text );
+    public void setShortDescription(String text) {
+        super.setShortDescription(text);
     }
 
 }

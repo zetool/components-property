@@ -66,25 +66,37 @@ public class PropertyTreeNodeConverter implements Converter {
     public void marshal(Object source, HierarchicalStreamWriter writer, MarshallingContext context) {
         PropertyTreeNode node = (PropertyTreeNode) source;
         writer.startNode(NODE_NAME);
+        writeAttributes(node, writer);
+        writeChildren(node, context);
+        writeNodeProperties(node, context);
+        writer.endNode();
+    }
+    
+    private void writeAttributes(PropertyTreeNode node, HierarchicalStreamWriter writer) {
         writer.addAttribute(ATTRIBUTE_NAME, node.getDisplayNameTag());
-        writer.addAttribute(ATTRIBUTE_LOC_STRING, Boolean.toString(node.isUsedAsLocString()));
+        writer.addAttribute(ATTRIBUTE_LOC_STRING, Boolean.toString(node.isUsedAsLocString()));        
+    }
+    
+    private void writeChildren(PropertyTreeNode node, MarshallingContext context) {
         for (int i = 0; i < node.getChildCount(); i++) {
             PropertyTreeNode child = node.getChildAt(i);
             context.convertAnother(child);
         }
-        for (PropertyElement property : node.getProperties()) {
-            System.out.println("Looking for converter for " + property);
-            for (ConverterFactory cf : converter) {
-                if (cf.getPropertyType().equals(property.getClass())) {
-                    System.out.println("Known property found: " + cf.getPropertyType());
-                    context.convertAnother(property, cf.getConverter());
-                    break;
-                } else {
-                    System.out.println("Different property: " + cf.getPropertyType());
-                }
+    }
+
+    private void writeNodeProperties(PropertyTreeNode node, MarshallingContext context) {
+        node.getProperties().stream().forEach((property) -> {
+            marshalProperty(property, context);
+        });
+    }
+    
+    private void marshalProperty(PropertyElement property, MarshallingContext context) {
+        for (ConverterFactory cf : converter) {
+            if (cf.getPropertyType().equals(property.getClass())) {
+                context.convertAnother(property, cf.getConverter());
+                break;
             }
         }
-        writer.endNode();
     }
 
     /**
@@ -105,13 +117,11 @@ public class PropertyTreeNodeConverter implements Converter {
             String nodeName = reader.getNodeName();
             if (nodeName.equals(NODE_NAME)) {
                 PropertyTreeNode child = (PropertyTreeNode) context.convertAnother(node, PropertyTreeNode.class, this);
-                System.out.println("Converted: " + child.getDisplayName() + " (" + child.getProperties().size() + " properties)");
                 node.add(child);
             } else {
                 ConverterFactory<? extends BasicProperty<?>, ?> cf = converter.getFactoryFor(nodeName);
                 if (cf != null) {
                     BasicProperty property = (BasicProperty) context.convertAnother(node, cf.getPropertyType(), cf.getConverter());
-                    System.out.println("Adding " + property.getValue() + " to node " + node.getDisplayName());
                     node.addProperty(property);
                 } else {
                     Logger logger = Logger.getGlobal();
@@ -122,5 +132,4 @@ public class PropertyTreeNodeConverter implements Converter {
         }
         return node;
     }
-
 }

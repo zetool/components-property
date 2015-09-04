@@ -16,6 +16,7 @@
 package org.zetool.components.property;
 
 import gui.propertysheet.BasicProperty;
+import gui.propertysheet.GenericProperty;
 import gui.propertysheet.abs.ConverterFactory;
 import gui.propertysheet.abs.DefaultConverterFactory;
 import gui.propertysheet.abs.ManualConverterFactory;
@@ -87,6 +88,11 @@ public class PropertyConverterLibrary implements Iterable<ConverterFactory<? ext
 
     public ConverterFactory<? extends BasicProperty<?>, ?> getFactoryFor(String nodeName) {
         return propertyConverterMap.get(nodeName);
+    }
+    
+    public boolean canConvert(Class propertyClass) {
+        return propertyConverterMap.values().stream().anyMatch((factory) ->
+                (factory.getPropertyType().equals(propertyClass)));
     }
     
 }

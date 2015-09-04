@@ -30,6 +30,7 @@ import gui.propertysheet.types.StringListProperty;
 import java.awt.Color;
 import java.awt.Font;
 import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -151,7 +152,7 @@ public class PropertyContainer {
      * @return a model of the loaded properties
      * @throws PropertyLoadException if an error occurs during loading of the specified file
      */
-    public PropertyTreeModel applyParameters(File file) throws PropertyLoadException {
+    public PropertyTreeModel applyParameters(FileReader file) throws PropertyLoadException {
         PropertyTreeModelLoader loader = new PropertyTreeModelLoader();
         final PropertyTreeModel ptm = loader.loadConfigFile(file);
         applyParameters(ptm);

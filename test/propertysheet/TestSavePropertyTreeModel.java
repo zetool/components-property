@@ -1,3 +1,18 @@
+/* zet evacuation tool copyright (c) 2007-15 zet evacuation team
+ *
+ * This program is free software; you can redistribute it and/or
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
 package propertysheet;
 
 import org.zetool.components.property.PropertyTreeModelLoader;
@@ -14,6 +29,7 @@ import gui.propertysheet.types.StringListProperty;
 import gui.propertysheet.types.StringProperty;
 import java.awt.Color;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,27 +42,29 @@ import org.junit.Test;
 public class TestSavePropertyTreeModel {
 
     public enum PropertyEnum {
+
         EnumA, EnumB;
     }
-    
+
     public enum PropertyEnumAlt {
+
         EnumA, EnumB;
     }
 
     @Test
     public void testRead() throws IOException {
         PropertyTreeModelLoader loader = new PropertyTreeModelLoader();
-        PropertyTreeModel ptm = loader.loadConfigFile(new File("./ptm.txt"));
+        PropertyTreeModel ptm = loader.loadConfigFile(new FileReader("./ptm.txt"));
         iterateNode(ptm.getRoot());
     }
-    
+
     public void iterateNode(PropertyTreeNode node) {
-        for( int i = 0; i < node.getChildCount(); ++i) {
+        for (int i = 0; i < node.getChildCount(); ++i) {
             PropertyTreeNode childNode = node.getChildAt(i);
-            System.out.println( "Child " + i + ": " + childNode.getDisplayName() + "(use as loc string: " + childNode.isUsedAsLocString() + ")");
+            System.out.println("Child " + i + ": " + childNode.getDisplayName() + "(use as loc string: " + childNode.isUsedAsLocString() + ")");
             iterateNode(childNode);
         }
-        for( GenericProperty bp : node.getProperties()) {
+        for (GenericProperty bp : node.getProperties()) {
             String out = String.format("%s %s %s %s", bp.getValue(), bp.getShortDescription(), bp.getShortDescriptionTag(), bp.getDisplayName(), bp.getDisplayNameTag());
             System.out.println(out);
         }
@@ -64,7 +82,7 @@ public class TestSavePropertyTreeModel {
         BooleanProperty bp2 = new BooleanProperty();
         bp2.setValue(true);
         root.addProperty(bp2);
-        
+
         PropertyTreeNode child1 = new PropertyTreeNode("child1");
         root.add(child1);
         BooleanProperty cbp1 = new BooleanProperty();
@@ -73,17 +91,17 @@ public class TestSavePropertyTreeModel {
         cbp1.setName("cbp1-name");
         root.addProperty(cbp1);
         child1.addProperty(cbp1);
-        
+
         PropertyTreeNode child2 = new PropertyTreeNode("child2");
         child1.add(child2);
-        
+
         BooleanProperty cbp2 = new BooleanProperty();
         cbp2.setDisplayName("cbp2");
         cbp2.setShortDescription("cbp2-short");
         cbp2.setName("cbp2-name");
         cbp2.setValue(true);
         child2.addProperty(cbp2);
-        
+
         StringListProperty slp = new StringListProperty();
         slp.add("string1");
         slp.add("kpd");
@@ -94,14 +112,14 @@ public class TestSavePropertyTreeModel {
         slp.setShortDescription("stringshort");
         slp.setName("mystringlist");
         child2.addProperty(slp);
-        
+
         EnumProperty ep = new EnumProperty();
         ep.setDisplayName("enum");
         ep.setShortDescription("enum-short");
         ep.setName("enum");
         ep.setValue(PropertyEnum.EnumA);
         child1.addProperty(ep);
-        
+
         IntegerRangeProperty irp = new IntegerRangeProperty();
         irp.setMinValue(5);
         irp.setMaxValue(45);
@@ -112,7 +130,7 @@ public class TestSavePropertyTreeModel {
         irp.setDisplayName("irp-dn");
         irp.setShortDescription("irp-short");
         child1.addProperty(irp);
-        
+
         ColorProperty cp = new ColorProperty();
         cp.setDisplayName("mycolor");
         cp.setShortDescription("color-desc");
@@ -132,11 +150,11 @@ public class TestSavePropertyTreeModel {
         PropertyTreeModelWriter writer = new PropertyTreeModelWriter();
         FileWriter fileWriter = new FileWriter(new File("./ptm.txt"));
         writer.saveConfigFile(ptm, fileWriter);
-        
+
         JOptionsDialog d = new JOptionsDialog(ptm);
         d.setVisible(true);
     }
-    
+
     public static void main(String[] args) {
         PropertyTreeNode root = new PropertyTreeNode("my_root_name");
         PropertyTreeModel ptm = new PropertyTreeModel(root);
@@ -149,7 +167,7 @@ public class TestSavePropertyTreeModel {
         BooleanProperty bp2 = new BooleanProperty();
         bp2.setValue(true);
         root.addProperty(bp2);
-        
+
         PropertyTreeNode child1 = new PropertyTreeNode("child1");
         root.add(child1);
         BooleanProperty cbp1 = new BooleanProperty();
@@ -158,17 +176,17 @@ public class TestSavePropertyTreeModel {
         cbp1.setName("cbp1-name");
         root.addProperty(cbp1);
         child1.addProperty(cbp1);
-        
+
         PropertyTreeNode child2 = new PropertyTreeNode("child2");
         child1.add(child2);
-        
+
         BooleanProperty cbp2 = new BooleanProperty();
         cbp2.setDisplayName("cbp2");
         cbp2.setShortDescription("cbp2-short");
         cbp2.setName("cbp2-name");
         cbp2.setValue(true);
         child2.addProperty(cbp2);
-        
+
         StringListProperty slp = new StringListProperty();
         slp.add("string1");
         slp.add("kpd");
@@ -180,14 +198,14 @@ public class TestSavePropertyTreeModel {
         slp.setShortDescription("stringshort");
         slp.setName("mystringlist");
         child2.addProperty(slp);
-        
+
         EnumProperty ep = new EnumProperty();
         ep.setDisplayName("enum");
         ep.setShortDescription("enum-short");
         ep.setName("enum");
         ep.setValue(PropertyEnum.EnumA);
         child1.addProperty(ep);
-        
+
         IntegerRangeProperty irp = new IntegerRangeProperty();
         irp.setMinValue(5);
         irp.setMaxValue(45);
@@ -198,7 +216,7 @@ public class TestSavePropertyTreeModel {
         irp.setDisplayName("irp-dn");
         irp.setShortDescription("irp-short");
         child1.addProperty(irp);
-        
+
         ColorProperty cp = new ColorProperty();
         cp.setDisplayName("mycolor");
         cp.setShortDescription("color-desc");
@@ -215,7 +233,6 @@ public class TestSavePropertyTreeModel {
         root.addProperty(cbp3);
         child3.addProperty(cbp3);
 
-        
         JOptionsDialog d = new JOptionsDialog(ptm);
         d.setVisible(true);
     }

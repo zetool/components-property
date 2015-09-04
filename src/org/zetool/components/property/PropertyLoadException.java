@@ -13,29 +13,25 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-/**
- * Class PropertyLoadException Erstellt 21.11.2008, 19:19:50
- */
 package org.zetool.components.property;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.Reader;
 
 /**
- * A {@code PropertyLoadException} is thrown if an error during loading of a property file occured. It is possible to
- * submit the file that created the error.
+ * A {@code PropertyLoadException} is thrown if an error during loading of a property file occured.
+ * It is possible to submit the file that created the error.
  *
  * @author Jan-Philipp Kappmeier
  */
 public class PropertyLoadException extends IOException {
 
-    /**
-     * The file that created the error.
-     */
-    private File file;
+    /** The file that created the error. */
+    private Reader file;
 
     /**
      * Creates a new {@code PropertyLoadException} with default error string.
+     * @param t
      */
     public PropertyLoadException(Throwable t) {
         this("Error loading properties.", t);
@@ -45,6 +41,7 @@ public class PropertyLoadException extends IOException {
      * Creates a new {@code PropertyLoadException} with an error string.
      *
      * @param s the error string
+     * @param t
      */
     public PropertyLoadException(String s, Throwable t) {
         super(s, t);
@@ -54,10 +51,10 @@ public class PropertyLoadException extends IOException {
      * Creates a new {@code PropertyLoadException}, sets the file and sets an error message containing the filename.
      *
      * @param f the file
+     * @param t
      */
-    public PropertyLoadException(File f, Throwable t) {
-        this(f == null ? "" : "Error loading properties from file '" + f.getName() + "'", t);
-        file = f;
+    public PropertyLoadException(Reader f, Throwable t) {
+        this(f == null ? "" : "Error loading properties from '" + f + "'", t);
     }
 
     /**
@@ -65,7 +62,7 @@ public class PropertyLoadException extends IOException {
      *
      * @return the file that created the error.
      */
-    public File getFile() {
+    public Reader getFile() {
         return file;
     }
 }
