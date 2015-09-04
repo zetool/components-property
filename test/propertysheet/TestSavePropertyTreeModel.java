@@ -2,7 +2,6 @@ package propertysheet;
 
 import org.zetool.components.property.PropertyTreeModelLoader;
 import org.zetool.components.property.PropertyTreeModelWriter;
-import gui.propertysheet.BasicProperty;
 import gui.propertysheet.GenericProperty;
 import gui.propertysheet.JOptionsDialog;
 import gui.propertysheet.PropertyTreeModel;
@@ -15,6 +14,7 @@ import gui.propertysheet.types.StringListProperty;
 import gui.propertysheet.types.StringProperty;
 import java.awt.Color;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import org.junit.Test;
@@ -32,9 +32,6 @@ public class TestSavePropertyTreeModel {
     public enum PropertyEnumAlt {
         EnumA, EnumB;
     }
-    
-    
-    
 
     @Test
     public void testRead() throws IOException {
@@ -133,7 +130,8 @@ public class TestSavePropertyTreeModel {
         child3.addProperty(cbp3);
 
         PropertyTreeModelWriter writer = new PropertyTreeModelWriter();
-        writer.saveConfigFile(ptm, new File("./ptm.txt"));
+        FileWriter fileWriter = new FileWriter(new File("./ptm.txt"));
+        writer.saveConfigFile(ptm, fileWriter);
         
         JOptionsDialog d = new JOptionsDialog(ptm);
         d.setVisible(true);

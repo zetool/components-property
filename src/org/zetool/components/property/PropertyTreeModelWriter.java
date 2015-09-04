@@ -19,13 +19,11 @@ import com.thoughtworks.xstream.XStream;
 import gui.propertysheet.GenericProperty;
 import gui.propertysheet.PropertyTreeModel;
 import gui.propertysheet.PropertyTreeNode;
-import gui.propertysheet.abs.PropertyElement;
 import gui.propertysheet.abs.PropertyTreeNodeConverter;
 import gui.propertysheet.abs.PropertyTreeConverter;
 import gui.propertysheet.types.StringProperty;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.List;
 
 /**
@@ -47,10 +45,10 @@ public class PropertyTreeModelWriter {
      * Saves a file containing the configuration given in a {@link PropertyTreeModel} in XML-Format.
      *
      * @param propertyTreeModel the model that should be written to the file
-     * @param file the file
+     * @param writer the writer
      * @throws java.io.IOException if an error during writing occurs
      */
-    public void saveConfigFile(PropertyTreeModel propertyTreeModel, File file) throws IOException {
+    public void saveConfigFile(PropertyTreeModel propertyTreeModel, Writer writer) throws IOException {
         XStream xstream = new XStream();
         xstream.processAnnotations(new Class[] {PropertyTreeModel.class, PropertyTreeNode.class});
         xstream.alias("zp", PropertyTreeModel.class);
@@ -66,6 +64,6 @@ public class PropertyTreeModelWriter {
             propertyTreeModel.setPropertyName(name.getValue());
         }
 
-        xstream.toXML(propertyTreeModel, new FileWriter(file));
+        xstream.toXML(propertyTreeModel, writer);
     }
 }
