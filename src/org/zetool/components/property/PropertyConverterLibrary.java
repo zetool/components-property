@@ -46,15 +46,15 @@ public class PropertyConverterLibrary implements Iterable<ConverterFactory<? ext
     private final Map<String, ConverterFactory<? extends BasicProperty<?>, ?>> propertyConverterMap = new HashMap<>();
     
     public static final ConverterFactory<BooleanProperty, Boolean> BOOL_CONVERTER_FACTORY
-            = new DefaultConverterFactory<>("boolNode", () -> new BooleanProperty(), BooleanProperty.class, Boolean.class);
+            = new DefaultConverterFactory<>("boolNode", () -> new BooleanProperty(), BooleanProperty.class);
     public static final ConverterFactory<IntegerProperty, Integer> INT_CONVERTER_FACTORY
-            = new DefaultConverterFactory<>("intNode", () -> new IntegerProperty(), IntegerProperty.class, Integer.class);
+            = new DefaultConverterFactory<>("intNode", () -> new IntegerProperty(), IntegerProperty.class);
     public static final ConverterFactory<DoubleProperty, Double> DOUBLE_CONVERTER_FACTORY
-            = new DefaultConverterFactory<>("doubleNode", () -> new DoubleProperty(), DoubleProperty.class, Double.class);
+            = new DefaultConverterFactory<>("doubleNode", () -> new DoubleProperty(), DoubleProperty.class);
     public static final ConverterFactory<StringProperty, String> STRING_CONVERTER_FACTORY
-            = new DefaultConverterFactory<>("stringNode", () -> new StringProperty(), StringProperty.class, String.class);
+            = new DefaultConverterFactory<>("stringNode", () -> new StringProperty(), StringProperty.class);
     public static final ConverterFactory<ColorProperty, Color> COLOR_CONVERTER_FACTORY
-            = new DefaultConverterFactory<>(ColorPropertyConverter.NODE_NAME, () -> new ColorProperty(), ColorProperty.class, Color.class);
+            = new DefaultConverterFactory<>(ColorPropertyConverter.NODE_NAME, () -> new ColorProperty(), ColorProperty.class);
     public static final ConverterFactory<EnumProperty, Enum> ENUM_CONVERTER_FACTORY
             = new ManualConverterFactory<>(new EnumConverter(), EnumProperty.class);
     public static final ConverterFactory<IntegerRangeProperty, Integer> INT_RANGE_CONVERTER_FACTORY

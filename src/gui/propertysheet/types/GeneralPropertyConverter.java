@@ -15,7 +15,7 @@ import java.util.function.Supplier;
  */
 public class GeneralPropertyConverter<P extends BasicProperty<T>, T> extends AbstractPropertyConverter<P, T> {
 
-    public GeneralPropertyConverter(Supplier<P> propGenerator, String name, Class<T> type) {
+    public GeneralPropertyConverter(Supplier<P> propGenerator, String name, Class<P> type) {
         this.propGenerator = propGenerator;
         this.name = name;
         this.type = type;
@@ -23,7 +23,7 @@ public class GeneralPropertyConverter<P extends BasicProperty<T>, T> extends Abs
     
     Supplier<P> propGenerator;
     String name;
-    Class<T> type;
+    Class<P> type;
     
     @Override
     public String getNodeName() {
@@ -48,6 +48,6 @@ public class GeneralPropertyConverter<P extends BasicProperty<T>, T> extends Abs
 
     @Override
     public boolean canConvert(Class type) {
-        return type.equals(type);
+        return this.type.equals(type);
     }
 }

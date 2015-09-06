@@ -28,7 +28,7 @@ public class ColorPropertyConverter extends GeneralPropertyConverter<ColorProper
     public final static String NODE_NAME = "colorNode";
     
     public ColorPropertyConverter() {
-        super(() -> new ColorProperty(), NODE_NAME, Color.class);
+        super(() -> new ColorProperty(), NODE_NAME, ColorProperty.class);
     }
 
     @Override
