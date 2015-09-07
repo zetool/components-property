@@ -16,7 +16,6 @@
 package org.zetool.components.property;
 
 import gui.propertysheet.BasicProperty;
-import gui.propertysheet.GenericProperty;
 import gui.propertysheet.abs.ConverterFactory;
 import gui.propertysheet.abs.DefaultConverterFactory;
 import gui.propertysheet.abs.ManualConverterFactory;
@@ -46,15 +45,15 @@ public class PropertyConverterLibrary implements Iterable<ConverterFactory<? ext
     private final Map<String, ConverterFactory<? extends BasicProperty<?>, ?>> propertyConverterMap = new HashMap<>();
     
     public static final ConverterFactory<BooleanProperty, Boolean> BOOL_CONVERTER_FACTORY
-            = new DefaultConverterFactory<>("boolNode", () -> new BooleanProperty(), BooleanProperty.class);
+            = new DefaultConverterFactory<>("boolNode", () -> new BooleanProperty(), BooleanProperty.class, Boolean.class);
     public static final ConverterFactory<IntegerProperty, Integer> INT_CONVERTER_FACTORY
-            = new DefaultConverterFactory<>("intNode", () -> new IntegerProperty(), IntegerProperty.class);
+            = new DefaultConverterFactory<>("intNode", () -> new IntegerProperty(), IntegerProperty.class, Integer.class);
     public static final ConverterFactory<DoubleProperty, Double> DOUBLE_CONVERTER_FACTORY
-            = new DefaultConverterFactory<>("doubleNode", () -> new DoubleProperty(), DoubleProperty.class);
+            = new DefaultConverterFactory<>("doubleNode", () -> new DoubleProperty(), DoubleProperty.class, Double.class);
     public static final ConverterFactory<StringProperty, String> STRING_CONVERTER_FACTORY
-            = new DefaultConverterFactory<>("stringNode", () -> new StringProperty(), StringProperty.class);
+            = new DefaultConverterFactory<>("stringNode", () -> new StringProperty(), StringProperty.class, String.class);
     public static final ConverterFactory<ColorProperty, Color> COLOR_CONVERTER_FACTORY
-            = new DefaultConverterFactory<>(ColorPropertyConverter.NODE_NAME, () -> new ColorProperty(), ColorProperty.class);
+            = new DefaultConverterFactory<>(ColorPropertyConverter.NODE_NAME, () -> new ColorProperty(), ColorProperty.class, Color.class);
     public static final ConverterFactory<EnumProperty, Enum> ENUM_CONVERTER_FACTORY
             = new ManualConverterFactory<>(new EnumConverter(), EnumProperty.class);
     public static final ConverterFactory<IntegerRangeProperty, Integer> INT_RANGE_CONVERTER_FACTORY

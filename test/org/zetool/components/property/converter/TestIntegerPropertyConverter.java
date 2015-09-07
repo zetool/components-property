@@ -16,42 +16,42 @@
 package org.zetool.components.property.converter;
 
 import com.thoughtworks.xstream.converters.Converter;
-import gui.propertysheet.types.ColorProperty;
-import gui.propertysheet.types.ColorPropertyConverter;
-import java.awt.Color;
+import gui.propertysheet.types.GeneralPropertyConverter;
+import gui.propertysheet.types.IntegerProperty;
 
 /**
  *
  * @author Jan-Philipp Kappmeier
  */
-public class TestColorPropertyConverter extends AbstractConverterTest<ColorProperty> {
+public class TestIntegerPropertyConverter extends AbstractConverterTest<IntegerProperty> {
     @Override
     protected Converter getConverter() {
-        return new ColorPropertyConverter();
+        return new GeneralPropertyConverter<>(() -> new IntegerProperty(), "intNode", IntegerProperty.class, Integer.class);
     }
 
     @Override
-    public ColorProperty getProperty() {
-        return new ColorProperty();
+    public IntegerProperty getProperty() {
+        return new IntegerProperty();
     }
 
     @Override
     protected Object getPropertyValue() {
-        return Color.RED;
+        return 12778;
     }
 
     @Override
-    protected Class<ColorProperty> getType() {
-        return ColorProperty.class;
+    protected Class<IntegerProperty> getType() {
+        return IntegerProperty.class;
     }
 
     @Override
     protected String getExpectedNodeName() {
-        return "colorNode";
+        return "intNode";
     }
 
     @Override
     protected String getPropertyString() {
-        return "#ff0000";
+        return "12778";
     }
+
 }

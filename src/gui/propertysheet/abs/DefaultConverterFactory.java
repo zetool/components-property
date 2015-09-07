@@ -26,14 +26,16 @@ import java.util.function.Supplier;
  */
 public class DefaultConverterFactory<P extends BasicProperty<T>, T> extends AbstractConverterFactory<P, T> {
     private final Supplier<P> sup;
+    private final Class<T> valueType;
     
-    public DefaultConverterFactory(String name, Supplier<P> sup, Class<P> propertyType) {
+    public DefaultConverterFactory(String name, Supplier<P> sup, Class<P> propertyType, Class<T> valueType) {
         super(name, propertyType);
         this.sup = sup;
+        this.valueType = valueType;
     }
     
     @Override
     public AbstractPropertyConverter<P, T> getConverter() {
-        return new GeneralPropertyConverter<>(sup, getName(), super.getPropertyType());
+        return new GeneralPropertyConverter<>(sup, getName(), super.getPropertyType(), valueType);
     }
 }

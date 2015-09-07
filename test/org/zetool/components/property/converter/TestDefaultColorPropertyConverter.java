@@ -17,17 +17,17 @@ package org.zetool.components.property.converter;
 
 import com.thoughtworks.xstream.converters.Converter;
 import gui.propertysheet.types.ColorProperty;
-import gui.propertysheet.types.ColorPropertyConverter;
+import gui.propertysheet.types.GeneralPropertyConverter;
 import java.awt.Color;
 
 /**
  *
  * @author Jan-Philipp Kappmeier
  */
-public class TestColorPropertyConverter extends AbstractConverterTest<ColorProperty> {
+public class TestDefaultColorPropertyConverter extends AbstractConverterTest<ColorProperty> {
     @Override
     protected Converter getConverter() {
-        return new ColorPropertyConverter();
+        return new GeneralPropertyConverter<>(() -> new ColorProperty(), "colorNode", ColorProperty.class, Color.class);
     }
 
     @Override
@@ -52,6 +52,9 @@ public class TestColorPropertyConverter extends AbstractConverterTest<ColorPrope
 
     @Override
     protected String getPropertyString() {
-        return "#ff0000";
+        return "\n    <red>255</red>\n"
+                + "    <green>0</green>\n"
+                + "    <blue>0</blue>\n"
+                + "    <alpha>255</alpha>\n  ";
     }
 }

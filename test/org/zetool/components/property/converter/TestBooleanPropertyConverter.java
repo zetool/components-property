@@ -16,42 +16,42 @@
 package org.zetool.components.property.converter;
 
 import com.thoughtworks.xstream.converters.Converter;
-import gui.propertysheet.types.ColorProperty;
-import gui.propertysheet.types.ColorPropertyConverter;
-import java.awt.Color;
+import gui.propertysheet.types.BooleanProperty;
+import gui.propertysheet.types.GeneralPropertyConverter;
 
 /**
  *
  * @author Jan-Philipp Kappmeier
  */
-public class TestColorPropertyConverter extends AbstractConverterTest<ColorProperty> {
+public class TestBooleanPropertyConverter extends AbstractConverterTest<BooleanProperty> {
     @Override
     protected Converter getConverter() {
-        return new ColorPropertyConverter();
+        return new GeneralPropertyConverter<>(() -> new BooleanProperty(), "boolNode", BooleanProperty.class, Boolean.class);
     }
 
     @Override
-    public ColorProperty getProperty() {
-        return new ColorProperty();
+    public BooleanProperty getProperty() {
+        return new BooleanProperty();
     }
 
     @Override
     protected Object getPropertyValue() {
-        return Color.RED;
+        return Boolean.TRUE;
     }
 
     @Override
-    protected Class<ColorProperty> getType() {
-        return ColorProperty.class;
+    protected Class<BooleanProperty> getType() {
+        return BooleanProperty.class;
     }
 
     @Override
     protected String getExpectedNodeName() {
-        return "colorNode";
+        return "boolNode";
     }
 
     @Override
     protected String getPropertyString() {
-        return "#ff0000";
+        return "true";
     }
+
 }

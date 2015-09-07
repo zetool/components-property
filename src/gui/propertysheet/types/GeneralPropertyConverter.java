@@ -14,16 +14,18 @@ import java.util.function.Supplier;
  * @param <T>
  */
 public class GeneralPropertyConverter<P extends BasicProperty<T>, T> extends AbstractPropertyConverter<P, T> {
+    private final Class<T> valueType;
+    private final Supplier<P> propGenerator;
+    private final String name;
+    private final Class<P> type;
 
-    public GeneralPropertyConverter(Supplier<P> propGenerator, String name, Class<P> type) {
+    public GeneralPropertyConverter(Supplier<P> propGenerator, String name, Class<P> type, Class<T> valueType) {
         this.propGenerator = propGenerator;
         this.name = name;
         this.type = type;
+        this.valueType = valueType;
     }
     
-    Supplier<P> propGenerator;
-    String name;
-    Class<P> type;
     
     @Override
     public String getNodeName() {
@@ -42,7 +44,7 @@ public class GeneralPropertyConverter<P extends BasicProperty<T>, T> extends Abs
 
     @Override
     public void readValue(UnmarshallingContext context) {
-        T bool = (T) context.convertAnother(prop, type);
+        T bool = (T) context.convertAnother(prop, valueType);
         prop.setValue(bool);
     }
 

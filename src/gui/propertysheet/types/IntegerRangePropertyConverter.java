@@ -26,7 +26,7 @@ public class IntegerRangePropertyConverter extends GeneralPropertyConverter<Inte
     public final static String NODE_NAME = "intRangeNode";
 
     public IntegerRangePropertyConverter() {
-        super(() -> new IntegerRangeProperty(), NODE_NAME, IntegerRangeProperty.class);
+        super(() -> new IntegerRangeProperty(), NODE_NAME, IntegerRangeProperty.class, Integer.class);
     }
 
     @Override
