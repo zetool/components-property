@@ -30,6 +30,7 @@ import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import javax.swing.Icon;
@@ -208,6 +209,15 @@ public class JOptionsDialog extends JDialog {
         }
     }
 
+    /** Prohibits serialization. */
+    private synchronized void writeObject(java.io.ObjectOutputStream s) throws IOException {
+        throw new UnsupportedOperationException("Serialization not supported");
+    }
+    
+    /** Prohibits serialization. */
+    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+        throw new UnsupportedOperationException("Serialization not supported");
+    }
 
     private static class ChildPropertyTuple {
         private final PropertyTreeNode child;

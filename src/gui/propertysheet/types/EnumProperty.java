@@ -30,7 +30,6 @@ public class EnumProperty extends BasicProperty<Enum> {
     @Override
     public void setValue(Object value) {
         super.setValue(value);
-        Enum en = (Enum)value;
         setType(value.getClass());
     }
 }
