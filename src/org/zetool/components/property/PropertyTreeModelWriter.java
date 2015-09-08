@@ -59,7 +59,7 @@ public class PropertyTreeModelWriter {
 
         PropertyTreeNode root = propertyTreeModel.getRoot();
         List<GenericProperty> props = root.getProperties();
-        if (props.size() > 0) {
+        if (!props.isEmpty()) {
             StringProperty name = (StringProperty) props.get(0);
             propertyTreeModel.setPropertyName(name.getValue());
         }

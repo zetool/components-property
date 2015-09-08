@@ -14,27 +14,25 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */package gui.propertysheet.abs;
 
-import gui.propertysheet.BasicProperty;
+import gui.propertysheet.GenericProperty;
 
 /**
  *
- * @param <P>
- * @param <T>
+ * @param <P> The property type.
  * @author Jan-Philipp Kappmeier
  */
-public abstract class AbstractConverterFactory<P extends BasicProperty<T>, T> implements ConverterFactory<P, T> {
+public abstract class AbstractConverterFactory<P extends GenericProperty> implements ConverterFactory<P> {
 
     private final Class<P> propertyType;
     private final String name;
 
     public AbstractConverterFactory(String name, Class<P> propertyType) {
         this.propertyType = propertyType;
-        //this.type = type;
         this.name = name;
     }
 
     @Override
-    public abstract AbstractPropertyConverter<P, T> getConverter();
+    public abstract AbstractPropertyConverter<P> getConverter();
 
     @Override
     public String getName() {

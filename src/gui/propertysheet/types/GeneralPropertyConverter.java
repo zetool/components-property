@@ -10,10 +10,10 @@ import java.util.function.Supplier;
 /**
  *
  * @author Jan-Philipp Kappmeier
- * @param <P>
- * @param <T>
+ * @param <P> The property type.
+ * @param <T> The type of the value stored by the property.
  */
-public class GeneralPropertyConverter<P extends BasicProperty<T>, T> extends AbstractPropertyConverter<P, T> {
+public class GeneralPropertyConverter<P extends BasicProperty<T>, T> extends AbstractPropertyConverter<P> {
     private final Class<T> valueType;
     private final Supplier<P> propGenerator;
     private final String name;

@@ -20,7 +20,6 @@ import gui.propertysheet.PropertyTreeModel;
 import gui.propertysheet.PropertyTreeNode;
 import gui.propertysheet.abs.PropertyTreeNodeConverter;
 import gui.propertysheet.abs.PropertyTreeConverter;
-import java.io.FileReader;
 import java.io.Reader;
 
 /**

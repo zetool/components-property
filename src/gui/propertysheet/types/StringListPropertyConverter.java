@@ -24,7 +24,7 @@ import java.util.ArrayList;
  *
  * @author Jan-Philipp Kappmeier
  */
-public class StringListPropertyConverter extends AbstractPropertyConverter<StringListProperty, ArrayList<String>> {
+public class StringListPropertyConverter extends AbstractPropertyConverter<StringListProperty> {
     public static final String NODE_NAME = "stringListNode";
 
     @Override
@@ -49,7 +49,6 @@ public class StringListPropertyConverter extends AbstractPropertyConverter<Strin
 
     @Override
     public void readValue(UnmarshallingContext context) {
-        ArrayList<String> string = (ArrayList<String>) context.convertAnother(prop, ArrayList.class);
-        prop.setValue(string);
+        prop.setValue((ArrayList<String>) context.convertAnother(prop, ArrayList.class));
     }
 }

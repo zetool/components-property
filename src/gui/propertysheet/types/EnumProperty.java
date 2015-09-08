@@ -30,10 +30,7 @@ public class EnumProperty extends BasicProperty<Enum> {
     @Override
     public void setValue(Object value) {
         super.setValue(value);
-        System.out.println(value.getClass());
         Enum en = (Enum)value;
-        System.out.println( en.getClass());
-        System.out.println(en.name());
         setType(value.getClass());
     }
 }

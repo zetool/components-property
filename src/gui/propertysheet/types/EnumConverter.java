@@ -27,7 +27,7 @@ import java.util.logging.Logger;
  *
  * @author Jan-Philipp Kappmeier
  */
-public class EnumConverter extends AbstractPropertyConverter<EnumProperty, Enum> {
+public class EnumConverter extends AbstractPropertyConverter<EnumProperty> {
     public static final String NODE_NAME = "enumNode";
 
     @Override

@@ -22,6 +22,7 @@ import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import org.zetool.components.property.PropertyConverterLibrary;
 import gui.propertysheet.BasicProperty;
+import gui.propertysheet.GenericProperty;
 import gui.propertysheet.PropertyTreeNode;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,6 +38,7 @@ public class PropertyTreeNodeConverter implements Converter {
     static final String ATTRIBUTE_INFORMATION = "information";
     static final String ATTRIBUTE_PARAMETER = "parameter";
     public static final String NODE_NAME = "treeNode";
+    private static final Logger LOG = Logger.getGlobal();
 
     private final PropertyConverterLibrary converter;
 
@@ -111,7 +113,7 @@ public class PropertyTreeNodeConverter implements Converter {
 
         String name = reader.getAttribute(ATTRIBUTE_NAME);
         PropertyTreeNode node = new PropertyTreeNode(name); // this is the displayName
-        node.useAsLocString((reader.getAttribute(ATTRIBUTE_LOC_STRING).equals("true")));
+        node.useAsLocString("true".equals(reader.getAttribute(ATTRIBUTE_LOC_STRING)));
         while (reader.hasMoreChildren()) {
             reader.moveDown();
             String nodeName = reader.getNodeName();
@@ -119,13 +121,12 @@ public class PropertyTreeNodeConverter implements Converter {
                 PropertyTreeNode child = (PropertyTreeNode) context.convertAnother(node, PropertyTreeNode.class, this);
                 node.add(child);
             } else {
-                ConverterFactory<? extends BasicProperty<?>, ?> cf = converter.getFactoryFor(nodeName);
+                ConverterFactory<? extends GenericProperty> cf = converter.getFactoryFor(nodeName);
                 if (cf != null) {
                     BasicProperty property = (BasicProperty) context.convertAnother(node, cf.getPropertyType(), cf.getConverter());
                     node.addProperty(property);
                 } else {
-                    Logger logger = Logger.getGlobal();
-                    logger.log(Level.SEVERE, "No property defined for ''{0}''.", nodeName);
+                    LOG.log(Level.SEVERE, "No property defined for ''{0}''.", nodeName);
                 }
             }
             reader.moveUp();

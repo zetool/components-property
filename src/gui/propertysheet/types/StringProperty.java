@@ -15,7 +15,6 @@
  */
 package gui.propertysheet.types;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 import gui.propertysheet.BasicProperty;
 
 /**
@@ -23,10 +22,10 @@ import gui.propertysheet.BasicProperty;
  * @author Jan-Philipp Kappmeier
  */
 public class StringProperty extends BasicProperty<String> {
-	
-	public StringProperty() {
-		setValue( "" );
-		setType( String.class );
-	}
+
+    public StringProperty() {
+        setValue("");
+        setType(String.class);
+    }
 
 }

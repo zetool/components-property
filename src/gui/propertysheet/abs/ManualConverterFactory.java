@@ -19,20 +19,20 @@ import gui.propertysheet.BasicProperty;
 
 /**
  *
- * @param <P>
- * @param <T>
+ * @param <P> The property type.
+ * @param <T> The value stored by the property.
  * @author Jan-Philipp Kappmeier
  */
-public class ManualConverterFactory<P extends BasicProperty<T>, T> extends AbstractConverterFactory<P, T> {
-    private final AbstractPropertyConverter<P,T> converter;
+public class ManualConverterFactory<P extends BasicProperty<T>, T> extends AbstractConverterFactory<P> {
+    private final AbstractPropertyConverter<P> converter;
 
-    public ManualConverterFactory(AbstractPropertyConverter<P,T> converter, Class<P> propertyType) {
+    public ManualConverterFactory(AbstractPropertyConverter<P> converter, Class<P> propertyType) {
         super(converter.getNodeName(), propertyType);
         this.converter = converter;
     }
     
     @Override
-    public AbstractPropertyConverter<P, T> getConverter() {
+    public AbstractPropertyConverter<P> getConverter() {
         return converter;
     }
 }

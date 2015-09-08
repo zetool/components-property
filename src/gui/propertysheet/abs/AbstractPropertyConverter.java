@@ -20,17 +20,16 @@ import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
-import gui.propertysheet.BasicProperty;
+import gui.propertysheet.GenericProperty;
 
 /**
  *
- * @param <T> the property class
- * @param <U> the class of the property itself
+ * @param <P> the property class
  * @author Jan-Philipp Kappmeier
  */
-public abstract class AbstractPropertyConverter<T extends BasicProperty<U>, U extends Object> implements Converter {
+public abstract class AbstractPropertyConverter<P extends GenericProperty> implements Converter {
 
-    protected T prop;
+    protected P prop;
 
     public abstract String getNodeName();
 
@@ -42,7 +41,7 @@ public abstract class AbstractPropertyConverter<T extends BasicProperty<U>, U ex
 
     @Override
     public void marshal(Object source, HierarchicalStreamWriter writer, MarshallingContext context) {
-        prop = (T) source;
+        prop = (P) source;
         writer.startNode(getNodeName());
         writeAttributes(writer);
         writeValue(context);
@@ -52,7 +51,7 @@ public abstract class AbstractPropertyConverter<T extends BasicProperty<U>, U ex
     public void readAttributes(HierarchicalStreamReader reader) {
         String name = reader.getAttribute(PropertyTreeNodeConverter.ATTRIBUTE_NAME);
         prop.setDisplayName(name);
-        prop.useAsLocString((reader.getAttribute(PropertyTreeNodeConverter.ATTRIBUTE_LOC_STRING).equals("true")));
+        prop.useAsLocString("true".equals(reader.getAttribute(PropertyTreeNodeConverter.ATTRIBUTE_LOC_STRING)));
         prop.setShortDescription(reader.getAttribute(PropertyTreeNodeConverter.ATTRIBUTE_INFORMATION));
         prop.setName(reader.getAttribute(PropertyTreeNodeConverter.ATTRIBUTE_PARAMETER));
     }

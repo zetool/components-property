@@ -15,7 +15,7 @@
  */
 package org.zetool.components.property;
 
-import gui.propertysheet.BasicProperty;
+import gui.propertysheet.GenericProperty;
 import gui.propertysheet.abs.ConverterFactory;
 import gui.propertysheet.abs.DefaultConverterFactory;
 import gui.propertysheet.abs.ManualConverterFactory;
@@ -32,7 +32,6 @@ import gui.propertysheet.types.StringListProperty;
 import gui.propertysheet.types.StringListPropertyConverter;
 import gui.propertysheet.types.StringProperty;
 import java.awt.Color;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -41,26 +40,26 @@ import java.util.Map;
  *
  * @author Jan-Philipp Kappmeier
  */
-public class PropertyConverterLibrary implements Iterable<ConverterFactory<? extends BasicProperty<?>, ?>> {
-    private final Map<String, ConverterFactory<? extends BasicProperty<?>, ?>> propertyConverterMap = new HashMap<>();
+public class PropertyConverterLibrary implements Iterable<ConverterFactory<? extends GenericProperty>> {
+    private final Map<String, ConverterFactory<? extends GenericProperty>> converterMap = new HashMap<>();
     
-    public static final ConverterFactory<BooleanProperty, Boolean> BOOL_CONVERTER_FACTORY
+    public static final ConverterFactory<BooleanProperty> BOOL_CONVERTER_FACTORY
             = new DefaultConverterFactory<>("boolNode", () -> new BooleanProperty(), BooleanProperty.class, Boolean.class);
-    public static final ConverterFactory<IntegerProperty, Integer> INT_CONVERTER_FACTORY
+    public static final ConverterFactory<IntegerProperty> INT_CONVERTER_FACTORY
             = new DefaultConverterFactory<>("intNode", () -> new IntegerProperty(), IntegerProperty.class, Integer.class);
-    public static final ConverterFactory<DoubleProperty, Double> DOUBLE_CONVERTER_FACTORY
+    public static final ConverterFactory<DoubleProperty> DOUBLE_CONVERTER_FACTORY
             = new DefaultConverterFactory<>("doubleNode", () -> new DoubleProperty(), DoubleProperty.class, Double.class);
-    public static final ConverterFactory<StringProperty, String> STRING_CONVERTER_FACTORY
+    public static final ConverterFactory<StringProperty> STRING_CONVERTER_FACTORY
             = new DefaultConverterFactory<>("stringNode", () -> new StringProperty(), StringProperty.class, String.class);
-    public static final ConverterFactory<ColorProperty, Color> COLOR_CONVERTER_FACTORY
+    public static final ConverterFactory<ColorProperty> COLOR_CONVERTER_FACTORY
             = new DefaultConverterFactory<>(ColorPropertyConverter.NODE_NAME, () -> new ColorProperty(), ColorProperty.class, Color.class);
-    public static final ConverterFactory<EnumProperty, Enum> ENUM_CONVERTER_FACTORY
+    public static final ConverterFactory<EnumProperty> ENUM_CONVERTER_FACTORY
             = new ManualConverterFactory<>(new EnumConverter(), EnumProperty.class);
-    public static final ConverterFactory<IntegerRangeProperty, Integer> INT_RANGE_CONVERTER_FACTORY
+    public static final ConverterFactory<IntegerRangeProperty> INT_RANGE_CONVERTER_FACTORY
             = new ManualConverterFactory<>(new IntegerRangePropertyConverter(), IntegerRangeProperty.class);
-    public static final ConverterFactory<StringListProperty, ArrayList<String>> STRING_LIST_CONVERTER_FACTORY
+    public static final ConverterFactory<StringListProperty> STRING_LIST_CONVERTER_FACTORY
             = new ManualConverterFactory<>(new StringListPropertyConverter(), StringListProperty.class);
-    public static final ConverterFactory<ColorProperty, Color> COLOR_CONVERTER_FACTORY_ALTERNATIVE
+    public static final ConverterFactory<ColorProperty> COLOR_CONVERTER_FACTORY_ALTERNATIVE
             = new ManualConverterFactory<>(new ColorPropertyConverter(), ColorProperty.class);
 
     public static final PropertyConverterLibrary createDefaultConverters() {
@@ -76,22 +75,21 @@ public class PropertyConverterLibrary implements Iterable<ConverterFactory<? ext
         return converters;
     }
     
-    public final void registerPropertyConverterFactory(ConverterFactory<? extends BasicProperty<?>, ?> factory) {
-        propertyConverterMap.put(factory.getName(), factory);
+    public final void registerPropertyConverterFactory(ConverterFactory<? extends GenericProperty> factory) {
+        converterMap.put(factory.getName(), factory);
     }
 
     @Override
-    public Iterator<ConverterFactory<? extends BasicProperty<?>, ?>> iterator() {
-        return propertyConverterMap.values().iterator();
+    public Iterator<ConverterFactory<? extends GenericProperty>> iterator() {
+        return converterMap.values().iterator();
     }
 
-    public ConverterFactory<? extends BasicProperty<?>, ?> getFactoryFor(String nodeName) {
-        return propertyConverterMap.get(nodeName);
+    public ConverterFactory<? extends GenericProperty> getFactoryFor(String nodeName) {
+        return converterMap.get(nodeName);
     }
     
     public boolean canConvert(Class propertyClass) {
-        return propertyConverterMap.values().stream().anyMatch((factory) ->
-                (factory.getPropertyType().equals(propertyClass)));
+        return converterMap.values().stream().anyMatch(factory -> factory.getPropertyType().equals(propertyClass));
     }
     
 }

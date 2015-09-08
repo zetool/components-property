@@ -74,7 +74,7 @@ public class PropertyTreeConverter implements Converter {
     public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
         PropertyTreeNode root = new PropertyTreeNode("");
         root.setDisplayName(reader.getAttribute("name"));
-        root.useAsLocString((reader.getAttribute("useAsLocString").equals("true")));
+        root.useAsLocString("true".equals(reader.getAttribute("useAsLocString")));
         String propertyName = reader.getAttribute("propertyName");
         while (reader.hasMoreChildren()) {
             reader.moveDown();
