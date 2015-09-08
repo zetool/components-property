@@ -81,20 +81,14 @@ public abstract class AbstractConverterTest<U extends GenericProperty> {
         StringWriter sw = new StringWriter();
         xstream.toXML(dh, sw);
         String result = getXml(sw);
-        System.out.println(result);
-        System.out.println(String.join("\n", xmlLine));
         assertThat(result, is(equalTo(String.join("\n", xmlLine))));
     }
     
     private String getXml(Writer sw) {
-        String all = sw.toString();
-        
+        String all = sw.toString();        
         int first = all.indexOf("\n");
         int last = all.lastIndexOf("\n");
-        System.out.println(all);
-        all = all.substring(first+1, last).trim();
-        return all;
-        
+        return all.substring(first+1, last).trim();        
     }
 
     @Test
@@ -102,6 +96,7 @@ public abstract class AbstractConverterTest<U extends GenericProperty> {
         String text = "<converterTest>\n  " + xmlLine + "\n</converterTest>";        
         DataHolder dh = (DataHolder) xstream.fromXML(text);
         assertThat(dh.property, is(equalTo(property)));
+        assertThat(dh.property.getValue(), is(equalTo(property.getValue())));
     }
 
     static class DataHolder {
