@@ -19,13 +19,14 @@ import gui.propertysheet.BasicProperty;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  *
  * @author Jan-Philipp Kappmeier
  */
-public class StringListProperty extends BasicProperty<ArrayList<String>> implements Iterable<String> {
-    private final ArrayList<String> list = new ArrayList<>();
+public class StringListProperty extends BasicProperty<List<String>> implements Iterable<String> {
+    private final List<String> list = new ArrayList<>();
 
     public void add(String string) {
         list.add(string);
@@ -65,7 +66,7 @@ public class StringListProperty extends BasicProperty<ArrayList<String>> impleme
     }
 
     @Override
-    public ArrayList<String> getValue() {
+    public List<String> getValue() {
         return list;
     }
 

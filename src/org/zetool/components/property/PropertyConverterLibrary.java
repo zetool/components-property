@@ -84,8 +84,8 @@ public class PropertyConverterLibrary implements Iterable<ConverterFactory<? ext
         return converterMap.values().iterator();
     }
 
-    public ConverterFactory<? extends GenericProperty> getFactoryFor(String nodeName) {
-        return converterMap.get(nodeName);
+    public ConverterFactory<GenericProperty> getFactoryFor(String nodeName) {
+        return (ConverterFactory<GenericProperty>) converterMap.get(nodeName);
     }
     
     public boolean canConvert(Class propertyClass) {

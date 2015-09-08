@@ -87,9 +87,7 @@ public class PropertyTreeNodeConverter implements Converter {
     }
 
     private void writeNodeProperties(PropertyTreeNode node, MarshallingContext context) {
-        node.getProperties().stream().forEach((property) -> {
-            marshalProperty(property, context);
-        });
+        node.getProperties().stream().forEach(property -> marshalProperty(property, context));
     }
     
     private void marshalProperty(PropertyElement property, MarshallingContext context) {
