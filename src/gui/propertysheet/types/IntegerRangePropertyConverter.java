@@ -23,7 +23,7 @@ import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
  * @author Jan-Philipp Kappmeier
  */
 public class IntegerRangePropertyConverter extends GeneralPropertyConverter<IntegerRangeProperty, Integer> {
-    public final static String NODE_NAME = "intRangeNode";
+    public static final String NODE_NAME = "intRangeNode";
 
     public IntegerRangePropertyConverter() {
         super(() -> new IntegerRangeProperty(), NODE_NAME, IntegerRangeProperty.class, Integer.class);

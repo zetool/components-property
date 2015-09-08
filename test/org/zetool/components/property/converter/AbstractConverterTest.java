@@ -46,7 +46,7 @@ import org.junit.Test;
 @Ignore
 public abstract class AbstractConverterTest<U extends GenericProperty> {
 
-    private final static String PROPERTY_NAME = "test-property-name";
+    private static final String PROPERTY_NAME = "test-property-name";
     private String xmlLine;
     private U property;
     private Converter converter;

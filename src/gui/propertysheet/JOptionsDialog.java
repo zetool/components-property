@@ -54,8 +54,8 @@ public class JOptionsDialog extends JDialog {
 
     private JButtonBar buttonBar;
 
-    private final static String path = "./icons/";
-    private final static String name = "open.png";
+    private static final String path = "./icons/";
+    private static final String name = "open.png";
     Icon icon = new ImageIcon(path + name);
 
     public JOptionsDialog(PropertyTreeModel ptm) {

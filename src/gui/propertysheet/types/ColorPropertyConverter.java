@@ -25,7 +25,7 @@ import java.awt.Color;
  * @author Jan-Philipp Kappmeier
  */
 public class ColorPropertyConverter extends GeneralPropertyConverter<ColorProperty, Color> {
-    public final static String NODE_NAME = "colorNode";
+    public static final String NODE_NAME = "colorNode";
     
     public ColorPropertyConverter() {
         super(() -> new ColorProperty(), NODE_NAME, ColorProperty.class, Color.class);
