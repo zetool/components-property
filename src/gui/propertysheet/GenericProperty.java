@@ -17,7 +17,7 @@ package gui.propertysheet;
 
 import com.l2fprod.common.propertysheet.DefaultProperty;
 import gui.propertysheet.abs.PropertyElement;
-import java.util.Objects;
+import java.io.IOException;
 import org.zetool.common.localization.CommonLocalization;
 import org.zetool.common.localization.Localization;
 
@@ -27,14 +27,14 @@ import org.zetool.common.localization.Localization;
  */
 public class GenericProperty extends DefaultProperty implements PropertyElement {
 
+    private boolean useAsLocString = false;
+    private Localization loc = CommonLocalization.LOC;
+
     public GenericProperty() {
         super();
         setDisplayName("");
         super.setShortDescription("");
     }
-
-    boolean useAsLocString = false;
-    private Localization loc = CommonLocalization.LOC;
 
     @Override
     public boolean isUsedAsLocString() {
@@ -52,7 +52,8 @@ public class GenericProperty extends DefaultProperty implements PropertyElement 
     }
 
     /**
-     * Returns the detailed description for the property.
+     * Returns the name of the property for displaying in components. If localization is active the displayed name is
+     * the localized text according to the tag ({@link #getDisplayNameTag()}.
      *
      * @return the detailed description for the property
      */
@@ -61,6 +62,12 @@ public class GenericProperty extends DefaultProperty implements PropertyElement 
         return isUsedAsLocString() ? loc.getString(super.getDisplayName()) : super.getDisplayName();
     }
 
+    /**
+     * Returns the detailed description for the property. If localization is active the description is the localized
+     * text according to the tag ({@link #getShortDescriptionTag()}.
+     *
+     * @return the detailed description for the property
+     */
     @Override
     public String getShortDescription() {
         return isUsedAsLocString() ? loc.getString(super.getShortDescription()) : super.getShortDescription();
@@ -70,15 +77,13 @@ public class GenericProperty extends DefaultProperty implements PropertyElement 
         return super.getShortDescription();
     }
 
-    /**
-     * Sets the description for the property. Note that you cannot change the description if it
-     * shall be used as a tag for localized string. In that case, you can only change the tag.
-     *
-     * @param text the description
-     */
-    @Override
-    public void setShortDescription(String text) {
-        super.setShortDescription(text);
-        
+    /** Prohibits serialization. */
+    private synchronized void writeObject(java.io.ObjectOutputStream s) throws IOException {
+        throw new UnsupportedOperationException("Serialization not supported");
+    }
+    
+    /** Prohibits serialization. */
+    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+        throw new UnsupportedOperationException("Serialization not supported");
     }
 }

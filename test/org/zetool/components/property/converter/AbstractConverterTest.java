@@ -1,7 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* zet evacuation tool copyright (c) 2007-15 zet evacuation team
+ *
+ * This program is free software; you can redistribute it and/or
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 package org.zetool.components.property.converter;
 
@@ -24,7 +34,12 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 /**
- *
+ * An abstract test class providing test cases to convert a specialized {@link GenericProperty} to XML and vice versa.
+ * The abstract test implementation requires each subclass (which tests a special type of property) to provide a
+ * {@link Converter}, a {@code value} and a string that should encode the value in XML.
+ * 
+ * The implemented tests then convert the value to XML and assert the result is equal to the given string as well as
+ * generates a value out of the string and checks if it is equal with the original given value.
  * @author Jan-Philipp Kappmeier
  * @param <U> The property type
  */

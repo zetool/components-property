@@ -54,7 +54,6 @@ public class PropertyTreeNode implements PropertyElement {
 
     public void reloadFromPropertyContainer() {
         for (GenericProperty apv : properties) {
-            //apv.reloadFromPropertyContainer(); // TODO
             BasicProperty.reloadFromPropertyContainer(apv);
         }
         if (children != null) {
