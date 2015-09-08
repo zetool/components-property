@@ -14,6 +14,8 @@ import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import gui.propertysheet.GenericProperty;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -59,14 +61,19 @@ public abstract class AbstractConverterTest<U extends GenericProperty> {
 
     private void buildNodeString() {
         final String nodeName = getExpectedNodeName();
+        final String additionalparameters = getAdditionalParameters().map(s -> " " + s).collect(Collectors.joining());
         xmlLine = "<" + nodeName
                 + " name=\"\" useAsLocString=\"false\" information=\"\" parameter=\""
-                + PROPERTY_NAME + "\">" + getPropertyString() + "</" + nodeName + ">";
+                + PROPERTY_NAME + "\"" + additionalparameters + ">" + getPropertyString() + "</" + nodeName + ">";
     }
 
     protected abstract String getExpectedNodeName();
 
     protected abstract String getPropertyString();
+    
+    protected Stream<String> getAdditionalParameters() {
+        return Stream.<String>empty();
+    }
 
     private void initXstream() {
         xstream = new XStream();
