@@ -28,6 +28,7 @@ public class StringListPropertyConverter extends AbstractPropertyConverter<Strin
     public static final String NODE_NAME = "stringListNode";
 
     @Override
+    @SuppressWarnings({"rawtypes"})
     public boolean canConvert(Class type) {
         return type.equals(StringListProperty.class);
     }
@@ -48,6 +49,7 @@ public class StringListPropertyConverter extends AbstractPropertyConverter<Strin
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void readValue(UnmarshallingContext context) {
         prop.setValue((ArrayList<String>) context.convertAnother(prop, ArrayList.class));
     }

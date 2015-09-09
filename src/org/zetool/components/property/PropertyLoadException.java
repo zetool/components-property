@@ -24,6 +24,7 @@ import java.io.Reader;
  *
  * @author Jan-Philipp Kappmeier
  */
+@SuppressWarnings("serial")
 public class PropertyLoadException extends IOException {
 
     /** The file that created the error. */

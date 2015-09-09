@@ -52,6 +52,7 @@ public class PropertyTreeNodeConverter implements Converter {
      * @return true, if the given type can be converted.
      */
     @Override
+    @SuppressWarnings("rawtypes")
     public boolean canConvert(Class type) {
         return type.equals(PropertyTreeNode.class);
     }
@@ -120,7 +121,7 @@ public class PropertyTreeNodeConverter implements Converter {
             } else {
                 ConverterFactory cf = converter.getFactoryFor(nodeName);
                 if (cf != null) {
-                    BasicProperty property = (BasicProperty) context.convertAnother(node, cf.getPropertyType(), cf.getConverter());
+                    BasicProperty<?> property = (BasicProperty<?>) context.convertAnother(node, cf.getPropertyType(), cf.getConverter());
                     node.addProperty(property);
                 } else {
                     LOG.log(Level.SEVERE, "No property defined for ''{0}''.", nodeName);

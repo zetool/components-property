@@ -41,11 +41,16 @@ public abstract class AbstractPropertyConverter<P extends GenericProperty> imple
 
     @Override
     public void marshal(Object source, HierarchicalStreamWriter writer, MarshallingContext context) {
-        prop = (P) source;
+        prop = getProp(source);
         writer.startNode(getNodeName());
         writeAttributes(writer);
         writeValue(context);
         writer.endNode();
+    }
+    
+    @SuppressWarnings("unchecked")
+    private P getProp(Object source) {
+        return (P) source;
     }
 
     public void readAttributes(HierarchicalStreamReader reader) {

@@ -25,6 +25,7 @@ import org.zetool.common.localization.Localization;
  *
  * @author Jan-Philipp Kappmeier
  */
+@SuppressWarnings("serial")
 public class GenericProperty extends DefaultProperty implements PropertyElement {
 
     private boolean useAsLocString = false;

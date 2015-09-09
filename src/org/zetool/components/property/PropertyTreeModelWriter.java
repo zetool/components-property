@@ -50,7 +50,7 @@ public class PropertyTreeModelWriter {
      */
     public void saveConfigFile(PropertyTreeModel propertyTreeModel, Writer writer) throws IOException {
         XStream xstream = new XStream();
-        xstream.processAnnotations(new Class[] {PropertyTreeModel.class, PropertyTreeNode.class});
+        xstream.processAnnotations(new Class<?>[] {PropertyTreeModel.class, PropertyTreeNode.class});
         xstream.alias("zp", PropertyTreeModel.class);
 
         PropertyTreeNodeConverter treeNodeConverter = new PropertyTreeNodeConverter(converterLibrary);

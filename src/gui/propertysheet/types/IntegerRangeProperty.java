@@ -19,6 +19,7 @@ package gui.propertysheet.types;
  *
  * @author Jan-Philipp Kappmeier
  */
+@SuppressWarnings("serial")
 public class IntegerRangeProperty extends IntegerProperty {
     private int minValue;
     private int maxValue;

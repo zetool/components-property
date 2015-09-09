@@ -45,6 +45,7 @@ public class BasicProperty<T> extends GenericProperty implements PropertyValue<T
      * @return the value for the property
      */
     @Override
+    @SuppressWarnings("unchecked")
     public T getValue() {
         return (T)super.getValue();
     }

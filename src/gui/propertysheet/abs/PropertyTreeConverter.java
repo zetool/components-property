@@ -40,6 +40,7 @@ public class PropertyTreeConverter implements Converter {
      * @return {@code true} if the class can be converted, {@code false} otherwise
      */
     @Override
+    @SuppressWarnings("rawtypes")
     public boolean canConvert(Class type) {
         return type.equals(PropertyTreeModel.class);
     }

@@ -15,6 +15,7 @@
  */
 package gui.propertysheet.types;
 
+import com.thoughtworks.xstream.converters.ConversionException;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import gui.propertysheet.abs.AbstractPropertyConverter;
@@ -49,26 +50,33 @@ public class EnumConverter extends AbstractPropertyConverter<EnumProperty> {
 
     @Override
     public void readValue(UnmarshallingContext context) {
-        String sa = new String();
-        String s = (String) context.convertAnother(sa, String.class);
-        StringTokenizer st = new StringTokenizer(s, "#");
-        String classname = st.nextToken();
-        String enumtype = st.nextToken();
+        String enumString = (String) context.convertAnother(new String(), String.class);
+        StringTokenizer enumStringTokenizer = new StringTokenizer(enumString, "#");
+        final String classname = enumStringTokenizer.nextToken();
+        final String enumtype = enumStringTokenizer.nextToken();
 
-        Class a;
         try {
-            a = Class.forName(classname);
-            Enum finalEnum = Enum.valueOf(a, enumtype);
-            prop.setValue(finalEnum);
+            Enum<?> enumValue = getEnum(classname, enumtype);
+            prop.setValue(enumValue);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(EnumConverter.class.getName()).log(Level.SEVERE, null, ex);
-            prop.setValue(null);
+            throw new ConversionException("Cannot convert '" + enumString + "' into enum.", ex);
         }
+    }
+    
+    private <F extends Enum<F>> Enum<F> getEnum(String className, String enumName) throws ClassNotFoundException {
+        Class<F> enumType = getEnumType(className);
+        return Enum.valueOf(enumType, enumName);
+    }
+    
+    @SuppressWarnings("unchecked")
+    private <F extends Enum<F>> Class<F> getEnumType(String className) throws ClassNotFoundException {
+        return (Class<F>) Class.forName(className);
     }
 
     @Override
+    @SuppressWarnings("rawtypes")
     public boolean canConvert(Class type) {
         return type.equals(EnumProperty.class);
     }
-
 }

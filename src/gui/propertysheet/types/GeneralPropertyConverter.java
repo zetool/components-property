@@ -43,11 +43,13 @@ public class GeneralPropertyConverter<P extends BasicProperty<T>, T> extends Abs
 
     @Override
     public void readValue(UnmarshallingContext context) {
+        @SuppressWarnings("unchecked")
         T bool = (T) context.convertAnother(prop, valueType);
         prop.setValue(bool);
     }
 
     @Override
+    @SuppressWarnings("rawtypes")
     public boolean canConvert(Class type) {
         return this.type.equals(type);
     }

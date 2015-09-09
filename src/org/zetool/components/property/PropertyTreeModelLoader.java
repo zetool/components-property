@@ -48,7 +48,7 @@ public class PropertyTreeModelLoader {
         PropertyTreeModel propertyTreeModel = null;
         try {
             XStream xstream = new XStream();
-            xstream.processAnnotations(new Class[] {PropertyTreeModel.class, PropertyTreeNode.class});
+            xstream.processAnnotations(new Class<?>[] {PropertyTreeModel.class, PropertyTreeNode.class});
             xstream.alias("zp", PropertyTreeModel.class);
             
             PropertyTreeNodeConverter treeNodeConverter = new PropertyTreeNodeConverter(converterLibrary);

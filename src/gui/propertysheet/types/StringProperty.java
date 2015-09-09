@@ -16,11 +16,13 @@
 package gui.propertysheet.types;
 
 import gui.propertysheet.BasicProperty;
+import java.io.IOException;
 
 /**
  *
  * @author Jan-Philipp Kappmeier
  */
+@SuppressWarnings("serial")
 public class StringProperty extends BasicProperty<String> {
 
     public StringProperty() {
@@ -28,4 +30,13 @@ public class StringProperty extends BasicProperty<String> {
         setType(String.class);
     }
 
+    /** Prohibits serialization. */
+    private synchronized void writeObject(java.io.ObjectOutputStream s) throws IOException {
+        throw new UnsupportedOperationException("Serialization not supported");
+    }
+    
+    /** Prohibits serialization. */
+    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+        throw new UnsupportedOperationException("Serialization not supported");
+    }
 }

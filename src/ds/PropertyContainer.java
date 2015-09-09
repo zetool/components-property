@@ -29,7 +29,6 @@ import gui.propertysheet.types.StringProperty;
 import gui.propertysheet.types.StringListProperty;
 import java.awt.Color;
 import java.awt.Font;
-import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -110,6 +109,7 @@ public class PropertyContainer {
         return getAs(key, String.class);
     }
 
+    @SuppressWarnings("unchecked")
     public ArrayList<String> getAsStringList(String key) {
         return (ArrayList<String>) getAs(key, ArrayList.class);
     }
@@ -226,7 +226,7 @@ public class PropertyContainer {
         }
     }
     
-    public void store(PropertyValue p) {
+    public <T> void store(PropertyValue<T> p) {
         try {
             if (p.getName() != null && isDefined(p.getName())) {
                 set(p.getName(), p.getValue());

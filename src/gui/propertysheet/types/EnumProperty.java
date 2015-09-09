@@ -16,16 +16,13 @@
 package gui.propertysheet.types;
 
 import gui.propertysheet.BasicProperty;
-import javax.swing.JPanel;
 
 /**
- * A property that allows to switch the quality of visualization. The quality
- * is stored in an enumeration {@link QualityPreset}. There, several presets are
- * defined. The property allows to store one of the presets and provides a
- * {@link JPanel} containing a combo box to select the quality.
+ * A property that allows to store an enum.
  * @author Jan-Philipp Kappmeier
  */
-public class EnumProperty extends BasicProperty<Enum> {
+@SuppressWarnings("serial")
+public class EnumProperty extends BasicProperty<Enum<?>> {
 
     @Override
     public void setValue(Object value) {

@@ -21,6 +21,7 @@ import gui.propertysheet.BasicProperty;
  *
  * @author Jan-Philipp Kappmeier
  */
+@SuppressWarnings("serial")
 public class IntegerProperty extends BasicProperty<Integer> {
 
     public IntegerProperty() {

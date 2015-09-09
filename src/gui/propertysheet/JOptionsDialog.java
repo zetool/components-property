@@ -147,7 +147,7 @@ public class JOptionsDialog extends JDialog {
                 for (Component c : buttonBar.getComponents()) {
                     JPropertyButton pb = (JPropertyButton) c;
                     for (Property p : pb.pstm.getProperties()) {
-                        BasicProperty p2 = (BasicProperty) p;
+                        BasicProperty<?> p2 = (BasicProperty<?>) p;
                         System.out.println(p2.getName() + ": " + p2.getValue());
                         PropertyContainer.getGlobal().store(p2);
                     }
@@ -196,7 +196,7 @@ public class JOptionsDialog extends JDialog {
      * @param node the node from which the properties are displayed
      * @param property the parent property belonging to the {@code node}
      */
-    private void addProperty(PropertyTreeNode node, BasicProperty<?> property) {
+    private void addProperty(PropertyTreeNode node, GenericProperty property) {
         for( ChildPropertyTuple tuple : new ChildPropertyIterator(node, "")) {
             tuple.property.setParentProperty(property);
             property.addSubProperty(tuple.property);

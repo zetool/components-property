@@ -25,6 +25,7 @@ import java.util.List;
  *
  * @author Jan-Philipp Kappmeier
  */
+@SuppressWarnings("serial")
 public class StringListProperty extends BasicProperty<List<String>> implements Iterable<String> {
     private final List<String> list = new ArrayList<>();
 
