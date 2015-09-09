@@ -15,7 +15,6 @@
  */
 package org.zetool.components.property;
 
-import gui.propertysheet.GenericProperty;
 import gui.propertysheet.abs.ConverterFactory;
 import gui.propertysheet.abs.DefaultConverterFactory;
 import gui.propertysheet.abs.ManualConverterFactory;
@@ -40,26 +39,26 @@ import java.util.Map;
  *
  * @author Jan-Philipp Kappmeier
  */
-public class PropertyConverterLibrary implements Iterable<ConverterFactory<? extends GenericProperty>> {
-    private final Map<String, ConverterFactory<? extends GenericProperty>> converterMap = new HashMap<>();
+public class PropertyConverterLibrary implements Iterable<ConverterFactory> {
+    private final Map<String, ConverterFactory> converterMap = new HashMap<>();
     
-    public static final ConverterFactory<BooleanProperty> BOOL_CONVERTER_FACTORY
+    public static final ConverterFactory BOOL_CONVERTER_FACTORY
             = new DefaultConverterFactory<>("boolNode", () -> new BooleanProperty(), BooleanProperty.class, Boolean.class);
-    public static final ConverterFactory<IntegerProperty> INT_CONVERTER_FACTORY
+    public static final ConverterFactory INT_CONVERTER_FACTORY
             = new DefaultConverterFactory<>("intNode", () -> new IntegerProperty(), IntegerProperty.class, Integer.class);
-    public static final ConverterFactory<DoubleProperty> DOUBLE_CONVERTER_FACTORY
+    public static final ConverterFactory DOUBLE_CONVERTER_FACTORY
             = new DefaultConverterFactory<>("doubleNode", () -> new DoubleProperty(), DoubleProperty.class, Double.class);
-    public static final ConverterFactory<StringProperty> STRING_CONVERTER_FACTORY
+    public static final ConverterFactory STRING_CONVERTER_FACTORY
             = new DefaultConverterFactory<>("stringNode", () -> new StringProperty(), StringProperty.class, String.class);
-    public static final ConverterFactory<ColorProperty> COLOR_CONVERTER_FACTORY
+    public static final ConverterFactory COLOR_CONVERTER_FACTORY
             = new DefaultConverterFactory<>(ColorPropertyConverter.NODE_NAME, () -> new ColorProperty(), ColorProperty.class, Color.class);
-    public static final ConverterFactory<EnumProperty> ENUM_CONVERTER_FACTORY
+    public static final ConverterFactory ENUM_CONVERTER_FACTORY
             = new ManualConverterFactory<>(new EnumConverter(), EnumProperty.class);
-    public static final ConverterFactory<IntegerRangeProperty> INT_RANGE_CONVERTER_FACTORY
+    public static final ConverterFactory INT_RANGE_CONVERTER_FACTORY
             = new ManualConverterFactory<>(new IntegerRangePropertyConverter(), IntegerRangeProperty.class);
-    public static final ConverterFactory<StringListProperty> STRING_LIST_CONVERTER_FACTORY
+    public static final ConverterFactory STRING_LIST_CONVERTER_FACTORY
             = new ManualConverterFactory<>(new StringListPropertyConverter(), StringListProperty.class);
-    public static final ConverterFactory<ColorProperty> COLOR_CONVERTER_FACTORY_ALTERNATIVE
+    public static final ConverterFactory COLOR_CONVERTER_FACTORY_ALTERNATIVE
             = new ManualConverterFactory<>(new ColorPropertyConverter(), ColorProperty.class);
 
     public static final PropertyConverterLibrary createDefaultConverters() {
@@ -75,20 +74,20 @@ public class PropertyConverterLibrary implements Iterable<ConverterFactory<? ext
         return converters;
     }
     
-    public final void registerPropertyConverterFactory(ConverterFactory<? extends GenericProperty> factory) {
+    public final void registerPropertyConverterFactory(ConverterFactory factory) {
         converterMap.put(factory.getName(), factory);
     }
 
     @Override
-    public Iterator<ConverterFactory<? extends GenericProperty>> iterator() {
+    public Iterator<ConverterFactory> iterator() {
         return converterMap.values().iterator();
     }
 
-    public ConverterFactory<GenericProperty> getFactoryFor(String nodeName) {
-        return (ConverterFactory<GenericProperty>) converterMap.get(nodeName);
+    public ConverterFactory getFactoryFor(String nodeName) {
+        return converterMap.get(nodeName);
     }
     
-    public boolean canConvert(Class propertyClass) {
+    public boolean canConvert(Class<?> propertyClass) {
         return converterMap.values().stream().anyMatch(factory -> factory.getPropertyType().equals(propertyClass));
     }
     

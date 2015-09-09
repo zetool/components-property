@@ -14,6 +14,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */package gui.propertysheet.abs;
 
+import com.thoughtworks.xstream.converters.Converter;
 import gui.propertysheet.GenericProperty;
 
 /**
@@ -21,7 +22,7 @@ import gui.propertysheet.GenericProperty;
  * @param <P> The property type.
  * @author Jan-Philipp Kappmeier
  */
-public abstract class AbstractConverterFactory<P extends GenericProperty> implements ConverterFactory<P> {
+public abstract class AbstractConverterFactory<P extends GenericProperty> implements ConverterFactory {
 
     private final Class<P> propertyType;
     private final String name;
@@ -32,7 +33,7 @@ public abstract class AbstractConverterFactory<P extends GenericProperty> implem
     }
 
     @Override
-    public abstract AbstractPropertyConverter<P> getConverter();
+    public abstract Converter getConverter();
 
     @Override
     public String getName() {

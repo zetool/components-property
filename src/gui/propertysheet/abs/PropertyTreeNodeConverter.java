@@ -22,7 +22,6 @@ import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import org.zetool.components.property.PropertyConverterLibrary;
 import gui.propertysheet.BasicProperty;
-import gui.propertysheet.GenericProperty;
 import gui.propertysheet.PropertyTreeNode;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -119,7 +118,7 @@ public class PropertyTreeNodeConverter implements Converter {
                 PropertyTreeNode child = (PropertyTreeNode) context.convertAnother(node, PropertyTreeNode.class, this);
                 node.add(child);
             } else {
-                ConverterFactory<? extends GenericProperty> cf = converter.getFactoryFor(nodeName);
+                ConverterFactory cf = converter.getFactoryFor(nodeName);
                 if (cf != null) {
                     BasicProperty property = (BasicProperty) context.convertAnother(node, cf.getPropertyType(), cf.getConverter());
                     node.addProperty(property);

@@ -14,17 +14,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */package gui.propertysheet.abs;
 
-import gui.propertysheet.GenericProperty;
+import com.thoughtworks.xstream.converters.Converter;
 
 /**
  *
- * @param <P> The property type.
  * @author Jan-Philipp Kappmeier
  */
-public interface ConverterFactory<P extends GenericProperty> {
+public interface ConverterFactory {
 
     String getName();
-    Class<P> getPropertyType();
-    AbstractPropertyConverter<P> getConverter();
+    Class<?> getPropertyType();
+    Converter getConverter();
 
 }

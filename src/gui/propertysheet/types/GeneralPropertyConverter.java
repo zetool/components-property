@@ -26,7 +26,6 @@ public class GeneralPropertyConverter<P extends BasicProperty<T>, T> extends Abs
         this.valueType = valueType;
     }
     
-    
     @Override
     public String getNodeName() {
         return name;

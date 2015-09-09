@@ -14,6 +14,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */package gui.propertysheet.abs;
 
+import com.thoughtworks.xstream.converters.Converter;
 import gui.propertysheet.BasicProperty;
 import gui.propertysheet.types.GeneralPropertyConverter;
 import java.util.function.Supplier;
@@ -35,7 +36,7 @@ public class DefaultConverterFactory<P extends BasicProperty<T>, T> extends Abst
     }
     
     @Override
-    public AbstractPropertyConverter<P> getConverter() {
+    public Converter getConverter() {
         return new GeneralPropertyConverter<>(sup, getName(), super.getPropertyType(), valueType);
     }
 }
