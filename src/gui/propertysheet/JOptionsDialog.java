@@ -46,18 +46,17 @@ import org.zetool.components.framework.Button;
  *
  * @author Jan-Philipp Kappmeier
  */
+@SuppressWarnings("serial")
 public class JOptionsDialog extends JDialog {
-
-    private static final long serialVersionUID = 1L;
-    private final Localization loc = CommonLocalization.LOC;
+    private static final Localization LOC = CommonLocalization.LOC;
     private PropertySheetTableModel propertyTableModel = new PropertySheetTableModel();
     private final PropertySheetPanel propertyPanel = new PropertySheetPanel(new PropertySheetTable(propertyTableModel));
 
     private JButtonBar buttonBar;
 
-    private static final String path = "./icons/";
-    private static final String name = "open.png";
-    Icon icon = new ImageIcon(path + name);
+    private static final String PATH = "./icons/";
+    private static final String NAME = "open.png";
+    Icon icon = new ImageIcon(PATH + NAME);
 
     public JOptionsDialog(PropertyTreeModel ptm) {
         this(ptm, true);
@@ -95,9 +94,9 @@ public class JOptionsDialog extends JDialog {
     private void initNavigation() {
         int space = 10;
         JPanel buttonPanel = new JPanel();
-        JButton okButton = Button.newButton(loc.getString("gui.OK"), buttonListener, "ok");
-        JButton cancelButton = Button.newButton(loc.getString("gui.Cancel"), buttonListener, "cancel");
-        double size2[][] = {{TableLayout.FILL, TableLayout.PREFERRED, space, TableLayout.PREFERRED, space}, {space, TableLayout.PREFERRED, space}};
+        JButton okButton = Button.newButton(LOC.getString("gui.OK"), getDefaultButtonsListener(), "ok");
+        JButton cancelButton = Button.newButton(LOC.getString("gui.Cancel"), getDefaultButtonsListener(), "cancel");
+        double[][] size2 = {{TableLayout.FILL, TableLayout.PREFERRED, space, TableLayout.PREFERRED, space}, {space, TableLayout.PREFERRED, space}};
         buttonPanel.setLayout(new TableLayout(size2));
         buttonPanel.add(okButton, "1,1");
         buttonPanel.add(cancelButton, "3,1");
@@ -139,9 +138,9 @@ public class JOptionsDialog extends JDialog {
         }
     }
 
-    private final ActionListener buttonListener = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
+
+    protected ActionListener getDefaultButtonsListener() {
+        return (ActionEvent e) -> {
             if (e.getActionCommand().equals("ok")) {
                 // Store results in the Property container
                 for (Component c : buttonBar.getComponents()) {
@@ -154,11 +153,7 @@ public class JOptionsDialog extends JDialog {
                 }
             }
             JOptionsDialog.this.setVisible(false);
-        }
-    };
-
-    protected ActionListener getDefaultButtonsListener() {
-        return buttonListener;
+        };
     }
 
     private boolean useButtonBar() {
@@ -282,13 +277,10 @@ public class JOptionsDialog extends JDialog {
                 pstm.addProperty(p);
             }
 
-            this.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    propertyTableModel = pstm;
-                    propertyPanel.setTable(new PropertySheetTable(pstm));
-                    propertyPanel.setMode(1);
-                }
+            this.addActionListener((ActionEvent e) -> {
+                propertyTableModel = pstm;
+                propertyPanel.setTable(new PropertySheetTable(pstm));
+                propertyPanel.setMode(1);
             });
         }
     }

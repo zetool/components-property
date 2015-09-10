@@ -41,10 +41,10 @@ import org.zetool.common.localization.Localization;
  */
 public class PropertyContainer {
 
-    private final Localization loc = CommonLocalization.LOC;
+    private static final Localization LOC = CommonLocalization.LOC;
     private final Map<String, Object> properties;
     private final Map<String, Class<?>> propertyTypes;
-
+    private static final String NOT_DEFINED = "ds.PropertyNotDefinedException";
     public PropertyContainer() {
         properties = new HashMap<>();
         propertyTypes = new HashMap<>();
@@ -61,7 +61,7 @@ public class PropertyContainer {
 
     public <T> void define(String key, Class<T> type, T defaultValue) {
         if (propertyTypes.containsKey(key)) {
-            throw new IllegalArgumentException(loc.getString("ds.PropertyAlreadyDefinedException: " + key));
+            throw new IllegalArgumentException(LOC.getString("ds.PropertyAlreadyDefinedException: " + key));
         } else {
             properties.put(key, defaultValue);
             propertyTypes.put(key, type);
@@ -70,16 +70,16 @@ public class PropertyContainer {
 
     public Object get(String key) {
         if (!propertyTypes.containsKey(key)) {
-            throw new IllegalArgumentException(loc.getString("ds.PropertyNotDefinedException: " + key));
+            throw new IllegalArgumentException(LOC.getString(NOT_DEFINED) + ": " + key);
         }
         return properties.get(key);
     }
 
     public <T> T getAs(String key, Class<T> type) {
         if (!propertyTypes.containsKey(key)) {
-            throw new IllegalArgumentException(loc.getString("ds.PropertyNotDefinedException: " + key));
+            throw new IllegalArgumentException(LOC.getString(NOT_DEFINED) + ": " + key);
         } else if (!type.isAssignableFrom(propertyTypes.get(key))) {
-            throw new IllegalArgumentException(loc.getString("ds.PropertyTypeCastException: " + key + ", " + propertyTypes.get(key) + ", " + type));
+            throw new IllegalArgumentException(LOC.getString("ds.PropertyTypeCastException: " + key + ", " + propertyTypes.get(key) + ", " + type));
         } else {
             return type.cast(properties.get(key));
         }
@@ -128,9 +128,9 @@ public class PropertyContainer {
 
     public void set(String key, Object value) {
         if (!propertyTypes.containsKey(key)) {
-            throw new IllegalArgumentException(loc.getString("ds.PropertyNotDefinedException: " + key));
+            throw new IllegalArgumentException(LOC.getString(NOT_DEFINED) + ": " + key);
         } else if (!propertyTypes.get(key).isInstance(value)) {
-            throw new IllegalArgumentException(loc.getString("ds.PropertyValueException: " + key + ", " + propertyTypes.get(key) + ", " + value));
+            throw new IllegalArgumentException(LOC.getString("ds.PropertyValueException: " + key + ", " + propertyTypes.get(key) + ", " + value));
         } else {
             properties.put(key, value);
         }
@@ -231,7 +231,7 @@ public class PropertyContainer {
             if (p.getName() != null && isDefined(p.getName())) {
                 set(p.getName(), p.getValue());
             } else {
-                System.out.println("NOT DEFINED: " + p.getName());
+                System.out.println(LOC.getString(NOT_DEFINED) + ": " + p.getName());
             }
         } catch( Exception e ) {
             System.out.println( "ERROR STORING THIS" );
