@@ -15,8 +15,8 @@
  */
 package org.zetool.components.property;
 
-import com.sun.xml.internal.messaging.saaj.util.ByteInputStream;
-import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -43,7 +43,7 @@ public class SerializationMatchers {
 
             byte[] objectBytes = getDeserializedBytes(className, serialVersionUID);
 
-            ObjectInputStream in = new ObjectInputStream(new ByteInputStream(objectBytes, objectBytes.length));
+            ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(objectBytes));
             in.readObject();
         } catch (ClassNotFoundException | IOException ex) {
             throw new AssertionError(c.getName(), ex);
@@ -96,7 +96,7 @@ public class SerializationMatchers {
                 name = item.getClass().getName();
                 ObjectOutputStream out;
                 try {
-                    out = new ObjectOutputStream(new ByteOutputStream());
+                    out = new ObjectOutputStream(new ByteArrayOutputStream());
                     out.writeObject(item);
                 } catch (UnsupportedOperationException ex ) {
                     return true;
