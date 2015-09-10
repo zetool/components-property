@@ -17,6 +17,7 @@ package org.zetool.components.property;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.io.Serializable;
 
 /**
  * A {@code PropertyLoadException} is thrown if an error during loading of a property file occured.
@@ -25,28 +26,10 @@ import java.io.Reader;
  * @author Jan-Philipp Kappmeier
  */
 @SuppressWarnings("serial")
-public class PropertyLoadException extends IOException {
+public class PropertyLoadException extends IOException implements Serializable {
 
     /** The file that created the error. */
-    private Reader file;
-
-    /**
-     * Creates a new {@code PropertyLoadException} with default error string.
-     * @param t
-     */
-    public PropertyLoadException(Throwable t) {
-        this("Error loading properties.", t);
-    }
-
-    /**
-     * Creates a new {@code PropertyLoadException} with an error string.
-     *
-     * @param s the error string
-     * @param t
-     */
-    public PropertyLoadException(String s, Throwable t) {
-        super(s, t);
-    }
+    private final Reader file;
 
     /**
      * Creates a new {@code PropertyLoadException}, sets the file and sets an error message containing the filename.
@@ -55,7 +38,8 @@ public class PropertyLoadException extends IOException {
      * @param t
      */
     public PropertyLoadException(Reader f, Throwable t) {
-        this(f == null ? "" : "Error loading properties from '" + f + "'", t);
+        super(f == null ? "" : "Error loading properties from '" + f + "'", t);
+        this.file = f;
     }
 
     /**
