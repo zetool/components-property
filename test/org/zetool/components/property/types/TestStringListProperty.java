@@ -18,8 +18,8 @@ import org.junit.Test;
  */
 public class TestStringListProperty {
     private StringListProperty stringListProperty;
-    private final int COUNT = 3;
-    private Function<Integer, String> elementGenerator = i -> "element" + i;
+    private final int count = 5;
+    private final Function<Integer, String> elementGenerator = i -> "element" + i;
     
     @Before
     public void setUp() {
@@ -31,8 +31,8 @@ public class TestStringListProperty {
         stringListProperty.setValue(populate(new LinkedList<>()));
         
         List<String> values = stringListProperty.getValue();
-        assertThat(values.size(), is(equalTo(COUNT)));
-        for( int i = 1; i <= COUNT; ++i ) {
+        assertThat(values.size(), is(equalTo(count)));
+        for( int i = 1; i <= count; ++i ) {
             assertThat(values.get(i-1), is(equalTo(elementGenerator.apply(i))));
         }
     }
@@ -42,14 +42,14 @@ public class TestStringListProperty {
         stringListProperty.setValue(populate(new HashSet<>()));
         
         List<String> values = stringListProperty.getValue();
-        assertThat(values.size(), is(equalTo(COUNT)));
-        for(int i = 1; i <= COUNT; ++i) {
+        assertThat(values.size(), is(equalTo(count)));
+        for(int i = 1; i <= count; ++i) {
             assertThat(values.contains(elementGenerator.apply(i)), is(true));
         }
     }
     
      private <T extends Collection<String>> T populate(T c) {
-        for( int i = 1; i <= COUNT; ++i ) {
+        for( int i = 1; i <= count; ++i ) {
             c.add(elementGenerator.apply(i));
         }
         return c;

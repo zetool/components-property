@@ -18,6 +18,7 @@ package gui.propertysheet;
 import com.l2fprod.common.propertysheet.DefaultProperty;
 import gui.propertysheet.abs.PropertyElement;
 import java.io.IOException;
+import java.util.Objects;
 import org.zetool.common.localization.CommonLocalization;
 import org.zetool.common.localization.Localization;
 
@@ -45,6 +46,10 @@ public class GenericProperty extends DefaultProperty implements PropertyElement 
     @Override
     public void useAsLocString(boolean useAsLocString) {
         this.useAsLocString = useAsLocString;
+    }
+
+    public void setLoc(Localization loc) {
+        this.loc = loc;
     }
 
     @Override
@@ -76,6 +81,45 @@ public class GenericProperty extends DefaultProperty implements PropertyElement 
 
     public String getShortDescriptionTag() {
         return super.getShortDescription();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        return equalsMainProperties((GenericProperty) obj);
+    }
+    
+    /**
+     * Checks if two {@code GenericProperty} objects main properties are equal.
+     * @param other
+     * @return 
+     */
+    protected final boolean equalsMainProperties(GenericProperty other) {
+        if (!Objects.equals(this.getShortDescriptionTag(), other.getShortDescriptionTag())) {
+            return false;
+        }
+        if (!Objects.equals(this.getDisplayNameTag(), other.getDisplayNameTag())) {
+            return false;
+        }
+        if (!Objects.equals(this.getName(), other.getName())) {
+            return false;
+        }
+        return this.useAsLocString == other.useAsLocString;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 11 * hash + Objects.hashCode(this.getName());
+        hash = 11 * hash + Objects.hashCode(this.getDisplayNameTag());
+        hash = 11 * hash + Objects.hashCode(this.getShortDescriptionTag());
+        hash = 17 * hash + (this.useAsLocString ? 1 : 0);
+        return hash;
     }
 
     /** Prohibits serialization. */

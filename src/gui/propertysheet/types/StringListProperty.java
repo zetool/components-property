@@ -79,6 +79,7 @@ public class StringListProperty extends BasicProperty<List<String>> implements I
         return list.iterator();
     }
     
+    
     @Override
     public boolean equals(Object obj) {
         if (obj == this) {
@@ -87,7 +88,12 @@ public class StringListProperty extends BasicProperty<List<String>> implements I
         if (this.getClass() != obj.getClass() ) {
           return false;
         }
-        return super.equals(obj);
+        return equalsMainProperties((StringListProperty)obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return 19 * super.hashCode();
     }
 
     /** Prohibits serialization. */

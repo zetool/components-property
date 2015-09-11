@@ -38,7 +38,12 @@ public class StringProperty extends BasicProperty<String> {
         if (this.getClass() != obj.getClass() ) {
           return false;
         }
-        return super.equals(obj);
+        return equalsMainProperties((StringProperty)obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return 43 * super.hashCode();
     }
 
     /** Prohibits serialization. */
