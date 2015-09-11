@@ -16,6 +16,7 @@
 package gui.propertysheet.types;
 
 import gui.propertysheet.BasicProperty;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -63,6 +64,8 @@ public class StringListProperty extends BasicProperty<List<String>> implements I
             clear();
             ((Collection<?>) strings).stream().filter(object -> object instanceof String).forEach(stringObject ->
                     add((String) stringObject));
+        } else {
+            throw new IllegalArgumentException("StringListProperty stores Collection, but got : " + strings.getClass());
         }
     }
 
@@ -75,4 +78,24 @@ public class StringListProperty extends BasicProperty<List<String>> implements I
     public Iterator<String> iterator() {
         return list.iterator();
     }
-}
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (this.getClass() != obj.getClass() ) {
+          return false;
+        }
+        return super.equals(obj);
+    }
+
+    /** Prohibits serialization. */
+    private synchronized void writeObject(java.io.ObjectOutputStream s) throws IOException {
+        throw new UnsupportedOperationException("Serialization not supported");
+    }
+    
+    /** Prohibits serialization. */
+    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+        throw new UnsupportedOperationException("Serialization not supported");
+    }}

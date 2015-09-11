@@ -29,6 +29,17 @@ public class StringProperty extends BasicProperty<String> {
         setValue("");
         setType(String.class);
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (this.getClass() != obj.getClass() ) {
+          return false;
+        }
+        return super.equals(obj);
+    }
 
     /** Prohibits serialization. */
     private synchronized void writeObject(java.io.ObjectOutputStream s) throws IOException {
