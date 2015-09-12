@@ -51,9 +51,13 @@ import org.zetool.components.framework.Button;
 @SuppressWarnings("serial")
 public class JOptionsDialog extends JDialog {
     private final static Icon ICON = UIManager.getIcon("Tree.leafIcon");
+
     private static final Localization LOC = CommonLocalization.LOC;
+
     private PropertySheetTableModel propertyTableModel = new PropertySheetTableModel();
-    private final PropertySheetPanel propertyPanel = new PropertySheetPanel(new PropertySheetTable(propertyTableModel));
+
+    transient private PropertySheetTable table = new PropertySheetTable(propertyTableModel);
+    private final PropertySheetPanel propertyPanel = new PropertySheetPanel(table);
 
     private JButtonBar buttonBar;
 
@@ -80,8 +84,8 @@ public class JOptionsDialog extends JDialog {
 
     private void initButtonBar() {
         buttonBar = new JButtonBar(1);
-        add(buttonBar, BorderLayout.WEST);
         buttonBar.setUI(new BlueishButtonBarUI());
+        add(buttonBar, BorderLayout.WEST);
     }
 
     private void initProperties(PropertyTreeModel ptm) {
@@ -107,13 +111,13 @@ public class JOptionsDialog extends JDialog {
         Logger.getGlobal().log(Level.INFO, "Loading property {0}", ptm.getPropertyName());
         PropertyTreeNode root = ptm.getRoot();
 
-        buttonBar.removeAll();
         for (Property p : propertyTableModel.getProperties()) {
             propertyTableModel.removeProperty(p);
         }
 
         // we are at root level
         if (useButtonBar()) {
+            buttonBar.removeAll();
             addRootLevelChildrenToButtonBar(root);
             if (root.getChildCount() > 0) {
                 ((JButton) buttonBar.getComponent(0)).doClick();
