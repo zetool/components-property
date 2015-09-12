@@ -38,29 +38,34 @@ public class TestGenericProperty {
         TestGenericProperty.testUnEqual(new GenericProperty(), new GenericProperty());
     }
 
-    public static <T extends GenericProperty> void testEqual(T gp, T sp) {
-        populateEqually(gp, sp);
-        assertThat(gp.equals(sp), is(true));
-    }
-
-    public static <T extends GenericProperty> void testNotEqual(GenericProperty gp, T sp) {
-        populateEqually(gp, sp);
-        assertThat(gp.equals(sp), is(false));
+    public static <T extends GenericProperty> void testEqual(T sp1, T sp2) {
+        GenericProperty gp = new GenericProperty();
+        populateEqually(gp, sp1, sp2);
+        assertThat(sp1.equals(null), is(false));
+        assertThat(sp1.equals(sp2), is(true));
+        if( sp1.getClass() != GenericProperty.class ) {
+            assertThat(gp.equals(sp1), is(false));
+        }
     }
 
     public static <T extends GenericProperty> void testUnEqual(T gp, T sp) {
         populateEqually(gp, sp);
         sp.setName("different name");
         assertThat(gp.equals(sp), is(false));
+        populateEqually(gp, sp);
+        sp.setDisplayName("different displayname");
+        assertThat(gp.equals(sp), is(false));
+        populateEqually(gp, sp);
+        sp.setShortDescription("different description");
+        assertThat(gp.equals(sp), is(false));
     }
 
-    private static void populateEqually(GenericProperty gp, GenericProperty sp) {
-        gp.setName("name");
-        gp.setDisplayName("displayname");
-        gp.setShortDescription("description");
-        sp.setName("name");
-        sp.setDisplayName("displayname");
-        sp.setShortDescription("description");
+    private static void populateEqually(GenericProperty ... gps) {
+        for(GenericProperty gp : gps ) {
+            gp.setName("name");
+            gp.setDisplayName("displayname");
+            gp.setShortDescription("description");
+        }
     }
     
     

@@ -41,11 +41,6 @@ public class TestStringProperty {
     }
     
     @Test
-    public void testNotEqualSuper() {
-        TestGenericProperty.testNotEqual(new GenericProperty(), new StringProperty());
-    }
-    
-    @Test
     public void testSerializationFails() throws IOException {
          StringProperty ex = new StringProperty();
          assertThat(ex, is(notSerializable()));
