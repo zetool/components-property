@@ -101,7 +101,6 @@ public class SerializationMatchers {
                 } catch (UnsupportedOperationException ex ) {
                     return true;
                 } catch (IOException ex) {
-                    ex.printStackTrace();
                     throw new AssertionError(item.toString(), ex);
                 }
                 return false;

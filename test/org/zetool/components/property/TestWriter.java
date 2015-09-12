@@ -19,6 +19,7 @@ import gui.propertysheet.PropertyTreeModel;
 import gui.propertysheet.PropertyTreeNode;
 import gui.propertysheet.types.BooleanProperty;
 import gui.propertysheet.types.IntegerProperty;
+import gui.propertysheet.types.StringProperty;
 import java.io.IOException;
 import java.io.StringWriter;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -36,7 +37,6 @@ public class TestWriter {
 
     @Test
     public void testWrite() throws IOException {
-
         PropertyTreeNode root = new PropertyTreeNode("root_name");
         PropertyTreeModel ptm = new PropertyTreeModel(root);
         PropertyTreeModelWriter writer = new PropertyTreeModelWriter();
@@ -51,6 +51,25 @@ public class TestWriter {
         assertThat(output.contains("useAsLocString=\"false\""), is(true));
         assertThat(output.contains("propertyName=\"\""), is(true));
         assertThat(output.contains("\n"), is(false));
+    }
+    
+    @Test
+    public void testWriteWithName() throws IOException {
+        final String propertyTreeModelName = "ptm_name_property";
+        
+        PropertyTreeNode root = new PropertyTreeNode("");
+        StringProperty sp = new StringProperty();
+        sp.setValue(propertyTreeModelName);
+        root.addProperty(sp);
+        PropertyTreeModel ptm = new PropertyTreeModel(root);
+
+        PropertyTreeModelWriter writer = new PropertyTreeModelWriter();
+        StringWriter sw = new StringWriter();
+        writer.saveConfigFile(ptm, sw);
+
+        // Expected output <zp name="root_name" useAsLocString="false" propertyName="ptm_name_property"/>
+        String output = sw.toString();
+        assertThat(output.contains("propertyName=\"" + propertyTreeModelName + "\""), is(true));
     }
     
     @Test

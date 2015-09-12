@@ -51,16 +51,11 @@ import org.zetool.components.framework.Button;
 @SuppressWarnings("serial")
 public class JOptionsDialog extends JDialog {
     private final static Icon ICON = UIManager.getIcon("Tree.leafIcon");
-
     private static final Localization LOC = CommonLocalization.LOC;
-
     private PropertySheetTableModel propertyTableModel = new PropertySheetTableModel();
-
-    transient private PropertySheetTable table = new PropertySheetTable(propertyTableModel);
+    private PropertySheetTable table = new PropertySheetTable(propertyTableModel);
     private final PropertySheetPanel propertyPanel = new PropertySheetPanel(table);
-
     private JButtonBar buttonBar;
-
 
     public JOptionsDialog(PropertyTreeModel ptm) {
         this(ptm, true);
