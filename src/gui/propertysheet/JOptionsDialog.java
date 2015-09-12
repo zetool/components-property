@@ -33,11 +33,13 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 import org.zetool.common.localization.CommonLocalization;
 import org.zetool.common.localization.Localization;
 import org.zetool.components.framework.Button;
@@ -54,9 +56,7 @@ public class JOptionsDialog extends JDialog {
 
     private JButtonBar buttonBar;
 
-    private static final String PATH = "./icons/";
-    private static final String NAME = "open.png";
-    Icon icon = new ImageIcon(PATH + NAME);
+    private final static Icon ICON = UIManager.getIcon("Tree.leafIcon");
 
     public JOptionsDialog(PropertyTreeModel ptm) {
         this(ptm, true);
@@ -104,7 +104,7 @@ public class JOptionsDialog extends JDialog {
    }
 
     protected final void loadProperties(PropertyTreeModel ptm) {
-        System.out.println("Loading property " + ptm.getPropertyName());
+        Logger.getGlobal().log(Level.INFO, "Loading property {0}", ptm.getPropertyName());
         PropertyTreeNode root = ptm.getRoot();
 
         buttonBar.removeAll();
@@ -133,21 +133,29 @@ public class JOptionsDialog extends JDialog {
         for (int i = 0; i < root.getChildCount(); i++) {
             PropertyTreeNode child = root.getChildAt(i);
             JButton newButton = new JPropertyButton(child);
-            newButton.setIcon(icon); // ZETIconSet.Open.icon() );
+            newButton.setIcon(getIcon(root));
             buttonBar.add(newButton);
         }
+    }
+    
+    /**
+     * Returns the icon for a given root node to be displayed in the button bar.
+     * @param node the node
+     * @return the icon appropriate for the node
+     */
+    protected Icon getIcon(PropertyTreeNode node) {
+        return ICON;
     }
 
 
     protected ActionListener getDefaultButtonsListener() {
         return (ActionEvent e) -> {
-            if (e.getActionCommand().equals("ok")) {
+            if ("ok".equals(e.getActionCommand())) {
                 // Store results in the Property container
                 for (Component c : buttonBar.getComponents()) {
                     JPropertyButton pb = (JPropertyButton) c;
                     for (Property p : pb.pstm.getProperties()) {
                         BasicProperty<?> p2 = (BasicProperty<?>) p;
-                        System.out.println(p2.getName() + ": " + p2.getValue());
                         PropertyContainer.getGlobal().store(p2);
                     }
                 }
@@ -160,8 +168,8 @@ public class JOptionsDialog extends JDialog {
         return buttonBar != null;
     }
     
-    private BasicProperty<?> newProperty(PropertyTreeNode n, String category) {
-        BasicProperty<?> def = new BasicProperty<>(n.getDisplayNameTag(), n.getDisplayName());
+    private GenericProperty newProperty(PropertyTreeNode n, String category) {
+        GenericProperty def = new BasicProperty<>(n.getDisplayNameTag(), n.getDisplayName());
 
         if (!category.isEmpty()) {
             def.setCategory(category);
@@ -216,9 +224,9 @@ public class JOptionsDialog extends JDialog {
 
     private static class ChildPropertyTuple {
         private final PropertyTreeNode child;
-        private final BasicProperty<?> property;
+        private final GenericProperty property;
 
-        public ChildPropertyTuple(PropertyTreeNode child, BasicProperty<?> def) {
+        public ChildPropertyTuple(PropertyTreeNode child, GenericProperty def) {
             this.child = child;
             this.property = def;
         }
