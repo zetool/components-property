@@ -40,18 +40,18 @@ public class TestGenericProperty {
 
     public static <T extends GenericProperty> void testEqual(T gp, T sp) {
         populateEqually(gp, sp);
-        assertThat(gp, is(equalTo(sp)));
+        assertThat(gp.equals(sp), is(true));
     }
 
     public static <T extends GenericProperty> void testNotEqual(GenericProperty gp, T sp) {
         populateEqually(gp, sp);
-        assertThat(gp, is(not(equalTo(sp))));
+        assertThat(gp.equals(sp), is(false));
     }
 
     public static <T extends GenericProperty> void testUnEqual(T gp, T sp) {
         populateEqually(gp, sp);
         sp.setName("different name");
-        assertThat(gp, is(not(equalTo(sp))));
+        assertThat(gp.equals(sp), is(false));
     }
 
     private static void populateEqually(GenericProperty gp, GenericProperty sp) {

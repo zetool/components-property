@@ -54,4 +54,5 @@ public class TestStringProperty {
     @Test
     public void testDeserializationFails() {
         assertThat(StringProperty.class, is(notDeserializable()));
-    }}
+    }
+}

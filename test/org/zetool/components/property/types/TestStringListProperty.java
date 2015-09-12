@@ -109,8 +109,7 @@ public class TestStringListProperty {
         assertThat(stringListProperty.size(), is(equalTo(count)));
         for(int i = 1; i <= count; ++i){
             assertThat(stringListProperty.contains(elementGenerator.apply(i)), is(true));
-        }
-        
+        }   
     }
   
     @Test
@@ -124,6 +123,19 @@ public class TestStringListProperty {
         assertThat(stringListProperty.contains(elementGenerator.apply(1)), is(true));
         assertThat(stringListProperty.contains(elementGenerator.apply(2)), is(false));
         assertThat(stringListProperty.contains(elementGenerator.apply(3)), is(false));
+    }
+    
+    @Test
+    public void testIterator() {
+        stringListProperty.setValue(populate(new LinkedList<>()));
+        Collection<String> containedStrings = new HashSet<>();
+        for( String string : stringListProperty) {
+            containedStrings.add(string);
+        }
+        assertThat(containedStrings.size(), is(equalTo(count)));
+        for(int i = 1; i <= count; ++i){
+            assertThat(containedStrings.contains(elementGenerator.apply(i)), is(true));
+        }   
     }
 
     @Test
