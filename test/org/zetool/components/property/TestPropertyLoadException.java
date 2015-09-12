@@ -28,6 +28,7 @@ import static org.zetool.components.property.SerializationMatchers.notSerializab
  */
 public class TestPropertyLoadException {
     
+    @Test
     public void testSerializationFails() throws IOException {
          PropertyLoadException ex = new PropertyLoadException(null, null);
          assertThat(ex, is(notSerializable()));

@@ -50,13 +50,13 @@ import org.zetool.components.framework.Button;
  */
 @SuppressWarnings("serial")
 public class JOptionsDialog extends JDialog {
+    private final static Icon ICON = UIManager.getIcon("Tree.leafIcon");
     private static final Localization LOC = CommonLocalization.LOC;
     private PropertySheetTableModel propertyTableModel = new PropertySheetTableModel();
     private final PropertySheetPanel propertyPanel = new PropertySheetPanel(new PropertySheetTable(propertyTableModel));
 
     private JButtonBar buttonBar;
 
-    private final static Icon ICON = UIManager.getIcon("Tree.leafIcon");
 
     public JOptionsDialog(PropertyTreeModel ptm) {
         this(ptm, true);
