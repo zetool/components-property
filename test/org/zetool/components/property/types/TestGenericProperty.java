@@ -16,9 +16,7 @@
 package org.zetool.components.property.types;
 
 import gui.propertysheet.GenericProperty;
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
 import org.junit.Test;
 
@@ -41,9 +39,11 @@ public class TestGenericProperty {
     public static <T extends GenericProperty> void testEqual(T sp1, T sp2) {
         GenericProperty gp = new GenericProperty();
         populateEqually(gp, sp1, sp2);
+        assertThat(sp1.equals(sp1), is(true));
         assertThat(sp1.equals(null), is(false));
         assertThat(sp1.equals(sp2), is(true));
         if( sp1.getClass() != GenericProperty.class ) {
+            assertThat(sp1.equals(gp), is(false));
             assertThat(gp.equals(sp1), is(false));
         }
     }

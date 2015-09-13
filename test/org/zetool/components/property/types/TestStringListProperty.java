@@ -138,6 +138,16 @@ public class TestStringListProperty {
         }   
     }
 
+   @Test
+    public void testEqual() {
+        TestGenericProperty.testEqual(new StringListProperty(), new StringListProperty());
+    }
+    
+    @Test
+    public void testNotEqual() {
+        TestGenericProperty.testUnEqual(new StringListProperty(), new StringListProperty());
+    }
+
     @Test
     public void testSerializationFails() throws IOException {
          StringListProperty ex = new StringListProperty();

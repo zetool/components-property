@@ -29,23 +29,23 @@ import static org.zetool.components.property.SerializationMatchers.notSerializab
  * @author Jan-Philipp Kappmeier
  */
 public class TestStringProperty {
-    
+
     @Test
     public void testEqual() {
         TestGenericProperty.testEqual(new StringProperty(), new StringProperty());
     }
-    
+
     @Test
     public void testNotEqual() {
         TestGenericProperty.testUnEqual(new StringProperty(), new StringProperty());
     }
-    
+
     @Test
     public void testSerializationFails() throws IOException {
          StringProperty ex = new StringProperty();
          assertThat(ex, is(notSerializable()));
     }
-    
+
     @Test
     public void testDeserializationFails() {
         assertThat(StringProperty.class, is(notDeserializable()));
