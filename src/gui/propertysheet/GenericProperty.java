@@ -32,14 +32,6 @@ public class GenericProperty extends DefaultProperty implements PropertyElement 
     private boolean useAsLocString = false;
     private Localization loc = CommonLocalization.LOC;
 
-    @Override
-    public void setDisplayName(String displayName) {
-        super.setDisplayName(displayName); //To change body of generated methods, choose Tools | Templates.
-        
-    }
-
-    
-    
     public GenericProperty() {
         super();
         setDisplayName("");
