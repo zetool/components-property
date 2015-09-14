@@ -16,9 +16,17 @@
 package org.zetool.components.property.types;
 
 import gui.propertysheet.GenericProperty;
+import java.io.IOException;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
 import static org.junit.Assert.assertThat;
 import org.junit.Test;
+import org.zetool.common.localization.Localization;
+import static org.zetool.components.property.SerializationMatchers.notDeserializable;
+import static org.zetool.components.property.SerializationMatchers.notSerializable;
 
 /**
  *
@@ -52,12 +60,6 @@ public class TestGenericProperty {
         populateEqually(gp, sp);
         sp.setName("different name");
         assertThat(gp.equals(sp), is(false));
-        populateEqually(gp, sp);
-        sp.setDisplayName("different displayname");
-        assertThat(gp.equals(sp), is(false));
-        populateEqually(gp, sp);
-        sp.setShortDescription("different description");
-        assertThat(gp.equals(sp), is(false));
     }
 
     private static void populateEqually(GenericProperty ... gps) {
@@ -68,5 +70,76 @@ public class TestGenericProperty {
         }
     }
     
+    @Test
+    public void testLocalization() {
+        GenericProperty gp = new GenericProperty();
+        gp.setDisplayName("display.name");
+        gp.setShortDescription("description.tag");
+        
+        Mockery context = new Mockery();
+        final Localization loc = context.mock(Localization.class);
+        gp.setLoc(loc);
+        
+        gp.useAsLocString(true);
+        
+        context.checking(new Expectations() {{
+            allowing (loc).getString("display.name");
+            will(returnValue("Display Name"));
+            allowing (loc).getString("description.tag");
+            will(returnValue("Description"));
+        }});
+        
+        assertThat(gp.getDisplayName(), is(equalTo("Display Name")));
+        assertThat(gp.getDisplayNameTag(), is(equalTo("display.name")));
+        
+        assertThat(gp.getShortDescription(), is(equalTo("Description")));
+        assertThat(gp.getShortDescriptionTag(), is(equalTo("description.tag")));
+    }
     
+    @Test
+    public void testHashCode() {
+        GenericProperty gp = new GenericProperty();
+        GenericProperty gp2 = new GenericProperty();
+        
+        assertThat(gp.hashCode(), is(equalTo(gp2.hashCode())));
+        
+        gp2.setDisplayName("display.name");
+        assertThat(gp.hashCode(), is(equalTo(gp2.hashCode())));
+
+        gp2.setName("property.name");
+        assertThat(gp.hashCode(), is(not(equalTo(gp2.hashCode()))));
+    }
+    
+    @Test
+    public void testLocalizationFallbackToDefault() {
+        GenericProperty gp = new GenericProperty();
+        gp.setDisplayName("display.name");
+        gp.setShortDescription("description.tag");
+        
+        Mockery context = new Mockery();
+        final Localization loc = context.mock(Localization.class);
+        gp.setLoc(loc);
+        
+        gp.useAsLocString(true);
+        
+        context.checking(new Expectations() {{
+            allowing (loc).getString("display.name");
+            allowing (loc).getString("description.tag");
+        }});
+        
+        assertThat(gp.getDisplayName(), is(equalTo("")));
+        
+        assertThat(gp.getDisplayName(), is(equalTo("")));
+        assertThat(gp.getShortDescription(), is(equalTo("")));
+    }
+    @Test
+    public void testSerializationFails() throws IOException {
+         GenericProperty ex = new GenericProperty();
+         assertThat(ex, is(notSerializable()));
+    }
+
+    @Test
+    public void testDeserializationFails() {
+        assertThat(GenericProperty.class, is(notDeserializable()));
+    }
 }

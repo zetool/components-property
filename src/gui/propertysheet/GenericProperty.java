@@ -32,6 +32,14 @@ public class GenericProperty extends DefaultProperty implements PropertyElement 
     private boolean useAsLocString = false;
     private Localization loc = CommonLocalization.LOC;
 
+    @Override
+    public void setDisplayName(String displayName) {
+        super.setDisplayName(displayName); //To change body of generated methods, choose Tools | Templates.
+        
+    }
+
+    
+    
     public GenericProperty() {
         super();
         setDisplayName("");
@@ -100,25 +108,13 @@ public class GenericProperty extends DefaultProperty implements PropertyElement 
      * @return 
      */
     protected final boolean equalsMainProperties(GenericProperty other) {
-        if (!Objects.equals(this.getShortDescriptionTag(), other.getShortDescriptionTag())) {
-            return false;
-        }
-        if (!Objects.equals(this.getDisplayNameTag(), other.getDisplayNameTag())) {
-            return false;
-        }
-        if (!Objects.equals(this.getName(), other.getName())) {
-            return false;
-        }
-        return this.useAsLocString == other.useAsLocString;
+        return Objects.equals(this.getName(), other.getName());
     }
 
     @Override
     public int hashCode() {
         int hash = 7;
         hash = 11 * hash + Objects.hashCode(this.getName());
-        hash = 11 * hash + Objects.hashCode(this.getDisplayNameTag());
-        hash = 11 * hash + Objects.hashCode(this.getShortDescriptionTag());
-        hash = 17 * hash + (this.useAsLocString ? 1 : 0);
         return hash;
     }
 
