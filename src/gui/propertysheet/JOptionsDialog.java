@@ -20,6 +20,7 @@ import com.l2fprod.common.propertysheet.PropertySheetPanel;
 import com.l2fprod.common.propertysheet.PropertySheetTable;
 import com.l2fprod.common.propertysheet.PropertySheetTableModel;
 import com.l2fprod.common.swing.JButtonBar;
+import static com.l2fprod.common.swing.PercentLayout.VERTICAL;
 import com.l2fprod.common.swing.plaf.blue.BlueishButtonBarUI;
 import ds.PropertyContainer;
 import info.clearthought.layout.TableLayout;
@@ -33,6 +34,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Icon;
@@ -50,12 +52,12 @@ import org.zetool.components.framework.Button;
  */
 @SuppressWarnings("serial")
 public class JOptionsDialog extends JDialog {
-    private final static Icon ICON = UIManager.getIcon("Tree.leafIcon");
     private static final Localization LOC = CommonLocalization.LOC;
     private PropertySheetTableModel propertyTableModel = new PropertySheetTableModel();
     private PropertySheetTable table = new PropertySheetTable(propertyTableModel);
     private final PropertySheetPanel propertyPanel = new PropertySheetPanel(table);
     private JButtonBar buttonBar;
+    private Function<PropertyTreeNode,Icon> iconSupplier = (PropertyTreeNode) -> UIManager.getIcon("Tree.leafIcon");
 
     public JOptionsDialog(PropertyTreeModel ptm) {
         this(ptm, true);
@@ -78,7 +80,7 @@ public class JOptionsDialog extends JDialog {
     }
 
     private void initButtonBar() {
-        buttonBar = new JButtonBar(1);
+        buttonBar = new JButtonBar(VERTICAL);
         buttonBar.setUI(new BlueishButtonBarUI());
         add(buttonBar, BorderLayout.WEST);
     }
@@ -132,20 +134,18 @@ public class JOptionsDialog extends JDialog {
         for (int i = 0; i < root.getChildCount(); i++) {
             PropertyTreeNode child = root.getChildAt(i);
             JButton newButton = new JPropertyButton(child);
-            newButton.setIcon(getIcon(root));
+            newButton.setIcon(iconSupplier.apply(root));
             buttonBar.add(newButton);
         }
     }
-    
-    /**
-     * Returns the icon for a given root node to be displayed in the button bar.
-     * @param node the node
-     * @return the icon appropriate for the node
-     */
-    protected Icon getIcon(PropertyTreeNode node) {
-        return ICON;
-    }
 
+    /**
+     * Sets a function generating the icon used to be displayed for the given property tree node in the button bar.
+     * @param iconSupplier the function
+     */
+    public void setIconSupplier(Function<PropertyTreeNode, Icon> iconSupplier) {
+        this.iconSupplier = iconSupplier;
+    }
 
     protected ActionListener getDefaultButtonsListener() {
         return (ActionEvent e) -> {
