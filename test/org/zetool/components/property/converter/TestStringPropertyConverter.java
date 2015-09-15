@@ -51,7 +51,7 @@ public class TestStringPropertyConverter extends AbstractConverterTest<StringPro
 
     @Override
     protected String getPropertyString() {
-        return new String("string value");
+        return "string value";
     }
 
 }

@@ -15,6 +15,8 @@
  */
 package gui.propertysheet.types;
 
+import java.io.IOException;
+
 /**
  *
  * @author Jan-Philipp Kappmeier
@@ -56,5 +58,34 @@ public class IntegerRangeProperty extends IntegerProperty {
 
     public void setMinValue( int minValue ) {
         this.minValue = minValue;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        if (this.getClass() != obj.getClass() ) {
+          return false;
+        }
+        return equalsMainProperties((IntegerRangeProperty)obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return 71 * super.hashCode();
+    }
+
+    /** Prohibits serialization. */
+    private synchronized void writeObject(java.io.ObjectOutputStream s) throws IOException {
+        throw new UnsupportedOperationException("Serialization not supported");
+    }
+    
+    /** Prohibits serialization. */
+    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+        throw new UnsupportedOperationException("Serialization not supported");
     }
 }

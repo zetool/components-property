@@ -15,8 +15,9 @@
  */
 package org.zetool.components.property.types;
 
-import gui.propertysheet.types.StringProperty;
+import gui.propertysheet.types.IntegerRangeProperty;
 import java.io.IOException;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import org.junit.Test;
@@ -27,26 +28,40 @@ import static org.zetool.components.property.SerializationMatchers.notSerializab
  *
  * @author Jan-Philipp Kappmeier
  */
-public class TestStringProperty {
+public class TestIntegerRangeProperty {
 
     @Test
+    public void testParameter() {
+        IntegerRangeProperty irp = new IntegerRangeProperty();
+        irp.setMajorTick(10);
+        irp.setMinorTick(5);
+        irp.setMinValue(1);
+        irp.setMaxValue(100);
+        
+        assertThat(irp.getMajorTick(), is(equalTo(10)));
+        assertThat(irp.getMinorTick(), is(equalTo(5)));
+        assertThat(irp.getMinValue(), is(equalTo(1)));
+        assertThat(irp.getMaxValue(), is(equalTo(100)));
+    }
+    
+    @Test
     public void testEqual() {
-        TestGenericProperty.testEqual(new StringProperty(), new StringProperty());
+        TestGenericProperty.testEqual(new IntegerRangeProperty(), new IntegerRangeProperty());
     }
 
     @Test
     public void testNotEqual() {
-        TestGenericProperty.testUnEqual(new StringProperty(), new StringProperty());
+        TestGenericProperty.testUnEqual(new IntegerRangeProperty(), new IntegerRangeProperty());
     }
 
     @Test
     public void testSerializationFails() throws IOException {
-         StringProperty ex = new StringProperty();
+         IntegerRangeProperty ex = new IntegerRangeProperty();
          assertThat(ex, is(notSerializable()));
     }
 
     @Test
     public void testDeserializationFails() {
-        assertThat(StringProperty.class, is(notDeserializable()));
+        assertThat(IntegerRangeProperty.class, is(notDeserializable()));
     }
 }
