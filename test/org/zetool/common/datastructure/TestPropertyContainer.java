@@ -1,8 +1,10 @@
 package org.zetool.common.datastructure;
 
 import ds.PropertyContainer;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
+import org.hamcrest.CoreMatchers;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
@@ -54,6 +56,13 @@ public class TestPropertyContainer {
     @Test(expected = IllegalArgumentException.class)
     public void testSettingFailsForUndefined() {
         pc.set("not defined", 2);
-        
+    }
+    
+    @Test
+    public void testGlobalPropertyContainer() {
+        PropertyContainer pc1 = PropertyContainer.getGlobal();
+        PropertyContainer pc2 = PropertyContainer.getGlobal();
+        assertThat(pc1, is(notNullValue()));
+        assertThat(pc1, is(CoreMatchers.sameInstance(pc2)));
     }
 }
