@@ -25,13 +25,15 @@ import gui.propertysheet.abs.PropertyValue;
 import gui.propertysheet.types.ColorProperty;
 import gui.propertysheet.types.IntegerProperty;
 import gui.propertysheet.types.DoubleProperty;
+import gui.propertysheet.types.EnumProperty;
 import gui.propertysheet.types.StringProperty;
 import gui.propertysheet.types.StringListProperty;
 import java.awt.Color;
 import java.awt.Font;
 import java.io.FileReader;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import org.zetool.common.localization.CommonLocalization;
 import org.zetool.common.localization.Localization;
@@ -39,7 +41,7 @@ import org.zetool.common.localization.Localization;
 /**
  * Stores properties of arbitrary type accessible via a string.
  */
-public class PropertyContainer {
+public class PropertyContainer implements Iterable<String> {
 
     private static final Localization LOC = CommonLocalization.LOC;
     private final Map<String, Object> properties;
@@ -110,8 +112,8 @@ public class PropertyContainer {
     }
 
     @SuppressWarnings("unchecked")
-    public ArrayList<String> getAsStringList(String key) {
-        return (ArrayList<String>) getAs(key, ArrayList.class);
+    public List<String> getAsStringList(String key) {
+        return (List<String>) getAs(key, List.class);
     }
 
     /**
@@ -205,15 +207,16 @@ public class PropertyContainer {
                 }
             } else if (property instanceof StringListProperty) {
                 if (!pc.isDefined(property.getName())) {
-                    pc.define(property.getName(), ArrayList.class, (ArrayList) property.getValue());
+                    pc.define(property.getName(), List.class, (List) property.getValue());
                 } else {
-                    pc.set(property.getName(), (ArrayList) property.getValue());
+                    pc.set(property.getName(), (List) property.getValue());
                 }
-//            else if( property instanceof QualitySettingProperty ) {
-//                if( !pc.isDefined( property.getName() ) )
-//                    pc.define( property.getName(), QualityPreset.class, (QualityPreset)property.getValue() );
-//                else
-//                    pc.set( property.getName(), (QualityPreset)property.getValue() );
+            } else if( property instanceof EnumProperty) {
+                if( !pc.isDefined(property.getName())) {
+                    pc.define(property.getName(), Enum.class, (Enum)property.getValue());
+                } else {
+                    pc.set(property.getName(), (Enum)property.getValue() );
+                }
             } else if (property instanceof ColorProperty) {
                 if (!pc.isDefined(property.getName())) {
                     pc.define(property.getName(), Color.class, (Color) property.getValue());
@@ -236,6 +239,15 @@ public class PropertyContainer {
         } catch( Exception e ) {
             System.out.println( "ERROR STORING THIS" );
         }
+    }
+
+    @Override
+    public Iterator<String> iterator() {
+        return this.properties.keySet().iterator();
+    }
+    
+    public int size() {
+        return this.properties.size();
     }
 
 
