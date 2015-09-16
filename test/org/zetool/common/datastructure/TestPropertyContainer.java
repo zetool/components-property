@@ -2,6 +2,7 @@ package org.zetool.common.datastructure;
 
 import ds.PropertyContainer;
 import org.hamcrest.CoreMatchers;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -47,6 +48,14 @@ public class TestPropertyContainer {
     }
     
     @Test
+    public void typeStoredCorrect() {
+        pc.define("double parameter", Double.class, 1.0);
+        pc.define("float parameter", Float.class, 1.0f);
+        assertThat(pc.getType("double parameter"), is(equalTo(Double.class)));
+        assertThat(pc.getType("float parameter"), is(equalTo(Float.class)));
+    }
+    
+    @Test
     public void testSetting() {
         pc.define("param", Integer.class, -1);
         pc.set("param", 1);
@@ -56,6 +65,18 @@ public class TestPropertyContainer {
     @Test(expected = IllegalArgumentException.class)
     public void testSettingFailsForUndefined() {
         pc.set("not defined", 2);
+    }
+    
+    @Test
+    public void testSettingFailsWrongType() {
+        pc.define("intparam", Integer.class, 1);
+        try {
+            pc.set("intparam", 3.4);
+        } catch (IllegalArgumentException ex ) {
+            assertThat(ex.getMessage(), containsString("java.lang.Integer"));
+            return;
+        }
+        throw new AssertionError("Should throw " + IllegalAccessException.class);
     }
     
     @Test

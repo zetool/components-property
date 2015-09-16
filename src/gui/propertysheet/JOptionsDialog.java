@@ -155,7 +155,7 @@ public class JOptionsDialog extends JDialog {
                     JPropertyButton pb = (JPropertyButton) c;
                     for (Property p : pb.pstm.getProperties()) {
                         BasicProperty<?> p2 = (BasicProperty<?>) p;
-                        PropertyContainer.getGlobal().store(p2);
+                        p2.store(PropertyContainer.getGlobal());
                     }
                 }
             }

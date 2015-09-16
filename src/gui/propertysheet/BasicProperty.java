@@ -17,6 +17,8 @@ package gui.propertysheet;
 
 import ds.PropertyContainer;
 import gui.propertysheet.abs.PropertyValue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -52,5 +54,15 @@ public class BasicProperty<T> extends GenericProperty implements PropertyValue<T
 
     public void setPropertyValue( T defaultValue ) {
         setValue( defaultValue );
+    }
+
+    void store(PropertyContainer pc) {
+        if (getName() != null && pc.isDefined(getName())) {
+            pc.set(getName(), getValue());
+        } else {
+            Logger log = Logger.getGlobal();
+            log.log(Level.SEVERE, "Property {0} not defined!", getName());
+            throw new IllegalStateException("A property not defined in Property container!");
+        }
     }
 }

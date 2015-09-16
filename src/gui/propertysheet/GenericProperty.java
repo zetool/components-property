@@ -30,7 +30,7 @@ import org.zetool.common.localization.Localization;
 public class GenericProperty extends DefaultProperty implements PropertyElement {
 
     private boolean useAsLocString = false;
-    private Localization loc = CommonLocalization.LOC;
+    protected Localization loc = CommonLocalization.LOC;
 
     public GenericProperty() {
         super();

@@ -16,11 +16,22 @@
 package org.zetool.components.property;
 
 import com.thoughtworks.xstream.XStream;
+import ds.PropertyContainer;
+import gui.propertysheet.GenericProperty;
 import gui.propertysheet.PropertyTreeModel;
 import gui.propertysheet.PropertyTreeNode;
 import gui.propertysheet.abs.PropertyTreeNodeConverter;
 import gui.propertysheet.abs.PropertyTreeConverter;
+import gui.propertysheet.types.BooleanProperty;
+import gui.propertysheet.types.ColorProperty;
+import gui.propertysheet.types.DoubleProperty;
+import gui.propertysheet.types.EnumProperty;
+import gui.propertysheet.types.IntegerProperty;
+import gui.propertysheet.types.StringListProperty;
+import gui.propertysheet.types.StringProperty;
+import java.awt.Color;
 import java.io.Reader;
+import java.util.List;
 
 /**
  *
@@ -62,4 +73,87 @@ public class PropertyTreeModelLoader {
         return propertyTreeModel;
     }
 
+    /**
+     * Loads properties from an XML-file into the {@link PropertyContainer} and returns a {@link PropertyTreeModel} of
+     * the properties. This can be used to store the same (maybe changed) data later.
+     *
+     * @param file the property XML-file
+     * @param pc
+     * @return a model of the loaded properties
+     * @throws PropertyLoadException if an error occurs during loading of the specified file
+     */
+    public PropertyTreeModel applyParameters(Reader file, PropertyContainer pc) throws PropertyLoadException {
+        final PropertyTreeModel ptm = loadConfigFile(file);
+        applyParameters(ptm, pc);
+        return ptm;
+    }
+
+    /**
+     * Loads properties from an {@link PropertyTreeModel} into the {@link PropertyContainer}.
+     *
+     * @param propertyTreeModel the tree model containing the properties
+     * @param pc
+     */
+    public void applyParameters(PropertyTreeModel propertyTreeModel, PropertyContainer pc) {
+        applyParameters(propertyTreeModel.getRoot(), pc);
+    }
+
+    /**
+     * Loads properties stored in an node of an {@link PropertyTreeModel} into the {@link PropertyContainer}.
+     *
+     * @param node the node at which recursive loading starts.
+     * @param pc
+     */
+    protected void applyParameters(PropertyTreeNode node, PropertyContainer pc) {
+        for (int i = 0; i < node.getChildCount(); i++) {
+            applyParameters(node.getChildAt(i), pc);
+        }
+        for (GenericProperty property : node.getProperties()) {
+            if (property instanceof BooleanProperty) {
+                if (!pc.isDefined(property.getName())) {
+                    pc.define(property.getName(), Boolean.class, (Boolean) property.getValue());
+                } else {
+                    pc.set(property.getName(), (Boolean) property.getValue());
+                }
+            } else if (property instanceof IntegerProperty) {
+                if (!pc.isDefined(property.getName())) {
+                    pc.define(property.getName(), Integer.class, (Integer) property.getValue());
+                } else {
+                    pc.set(property.getName(), (Integer) property.getValue());
+                }
+            } else if (property instanceof DoubleProperty) {
+                if (!pc.isDefined(property.getName())) {
+                    pc.define(property.getName(), Double.class, (Double) property.getValue());
+                } else {
+                    pc.set(property.getName(), (Double) property.getValue());
+                }
+            } else if (property instanceof StringProperty) {
+                if (!pc.isDefined(property.getName())) {
+                    pc.define(property.getName(), String.class, (String) property.getValue());
+                } else {
+                    pc.set(property.getName(), (String) property.getValue());
+                }
+            } else if (property instanceof StringListProperty) {
+                if (!pc.isDefined(property.getName())) {
+                    pc.define(property.getName(), List.class, (List) property.getValue());
+                } else {
+                    pc.set(property.getName(), (List) property.getValue());
+                }
+            } else if( property instanceof EnumProperty) {
+                if( !pc.isDefined(property.getName())) {
+                    pc.define(property.getName(), Enum.class, (Enum)property.getValue());
+                } else {
+                    pc.set(property.getName(), (Enum)property.getValue() );
+                }
+            } else if (property instanceof ColorProperty) {
+                if (!pc.isDefined(property.getName())) {
+                    pc.define(property.getName(), Color.class, (Color) property.getValue());
+                } else {
+                    pc.set(property.getName(), (Color) property.getValue());
+                }
+            } else {
+                throw new UnsupportedOperationException("Type " + property.getName() + " not supported.");
+            }
+        }
+    }
 }

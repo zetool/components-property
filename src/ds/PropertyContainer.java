@@ -15,22 +15,8 @@
  */
 package ds;
 
-import gui.propertysheet.GenericProperty;
-import org.zetool.components.property.PropertyLoadException;
-import org.zetool.components.property.PropertyTreeModelLoader;
-import gui.propertysheet.PropertyTreeModel;
-import gui.propertysheet.types.BooleanProperty;
-import gui.propertysheet.PropertyTreeNode;
-import gui.propertysheet.abs.PropertyValue;
-import gui.propertysheet.types.ColorProperty;
-import gui.propertysheet.types.IntegerProperty;
-import gui.propertysheet.types.DoubleProperty;
-import gui.propertysheet.types.EnumProperty;
-import gui.propertysheet.types.StringProperty;
-import gui.propertysheet.types.StringListProperty;
 import java.awt.Color;
 import java.awt.Font;
-import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -146,101 +132,6 @@ public class PropertyContainer implements Iterable<String> {
         return propertyTypes.get(key);
     }
 
-    /**
-     * Loads properties from an XML-file into the {@link PropertyContainer} and returns a {@link PropertyTreeModel} of
-     * the properties. This can be used to store the same (maybe changed) data later.
-     *
-     * @param file the property XML-file
-     * @return a model of the loaded properties
-     * @throws PropertyLoadException if an error occurs during loading of the specified file
-     */
-    public PropertyTreeModel applyParameters(FileReader file) throws PropertyLoadException {
-        PropertyTreeModelLoader loader = new PropertyTreeModelLoader();
-        final PropertyTreeModel ptm = loader.loadConfigFile(file);
-        applyParameters(ptm);
-        return ptm;
-    }
-
-    /**
-     * Loads properties from an {@link PropertyTreeModel} into the {@link PropertyContainer}.
-     *
-     * @param propertyTreeModel the tree model containing the properties
-     */
-    public void applyParameters(PropertyTreeModel propertyTreeModel) {
-        applyParameters(propertyTreeModel.getRoot());
-    }
-
-    /**
-     * Loads properties stored in an node of an {@link PropertyTreeModel} into the {@link PropertyContainer}.
-     *
-     * @param node the node at which recursive loading starts.
-     */
-    protected void applyParameters(PropertyTreeNode node) {
-        for (int i = 0; i < node.getChildCount(); i++) {
-            applyParameters(node.getChildAt(i));
-        }
-        PropertyContainer pc = PropertyContainer.getGlobal();
-        for (GenericProperty property : node.getProperties()) {
-            if (property instanceof BooleanProperty) {
-                if (!pc.isDefined(property.getName())) {
-                    pc.define(property.getName(), Boolean.class, (Boolean) property.getValue());
-                } else {
-                    pc.set(property.getName(), (Boolean) property.getValue());
-                }
-            } else if (property instanceof IntegerProperty) {
-                if (!pc.isDefined(property.getName())) {
-                    pc.define(property.getName(), Integer.class, (Integer) property.getValue());
-                } else {
-                    pc.set(property.getName(), (Integer) property.getValue());
-                }
-            } else if (property instanceof DoubleProperty) {
-                if (!pc.isDefined(property.getName())) {
-                    pc.define(property.getName(), Double.class, (Double) property.getValue());
-                } else {
-                    pc.set(property.getName(), (Double) property.getValue());
-                }
-            } else if (property instanceof StringProperty) {
-                if (!pc.isDefined(property.getName())) {
-                    pc.define(property.getName(), String.class, (String) property.getValue());
-                } else {
-                    pc.set(property.getName(), (String) property.getValue());
-                }
-            } else if (property instanceof StringListProperty) {
-                if (!pc.isDefined(property.getName())) {
-                    pc.define(property.getName(), List.class, (List) property.getValue());
-                } else {
-                    pc.set(property.getName(), (List) property.getValue());
-                }
-            } else if( property instanceof EnumProperty) {
-                if( !pc.isDefined(property.getName())) {
-                    pc.define(property.getName(), Enum.class, (Enum)property.getValue());
-                } else {
-                    pc.set(property.getName(), (Enum)property.getValue() );
-                }
-            } else if (property instanceof ColorProperty) {
-                if (!pc.isDefined(property.getName())) {
-                    pc.define(property.getName(), Color.class, (Color) property.getValue());
-                } else {
-                    pc.set(property.getName(), (Color) property.getValue());
-                }
-            } else {
-                throw new UnsupportedOperationException("Type " + property.getName() + " not supported.");
-            }
-        }
-    }
-    
-    public <T> void store(PropertyValue<T> p) {
-        try {
-            if (p.getName() != null && isDefined(p.getName())) {
-                set(p.getName(), p.getValue());
-            } else {
-                System.out.println(LOC.getString(NOT_DEFINED) + ": " + p.getName());
-            }
-        } catch( Exception e ) {
-            System.out.println( "ERROR STORING THIS" );
-        }
-    }
-
     @Override
     public Iterator<String> iterator() {
         return this.properties.keySet().iterator();
@@ -258,6 +149,9 @@ public class PropertyContainer implements Iterable<String> {
      * @see #getGlobal()
      */
     private static class GlobalInstanceHolder {
+        private GlobalInstanceHolder() {
+        }
+        
         private static final PropertyContainer INSTANCE = new PropertyContainer();
     }
 }
