@@ -98,11 +98,6 @@ public class StringListProperty extends BasicProperty<List<String>> implements I
     public int hashCode() {
         return 19 * super.hashCode();
     }
-
-    /** Prohibits serialization. */
-    private synchronized void writeObject(java.io.ObjectOutputStream s) throws IOException {
-        throw new UnsupportedOperationException("Serialization not supported");
-    }
     
     /** Prohibits serialization. */
     private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {

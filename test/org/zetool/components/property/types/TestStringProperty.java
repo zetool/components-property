@@ -40,6 +40,11 @@ public class TestStringProperty {
     }
 
     @Test
+    public void testHashCode() {
+        TestGenericProperty.testHashcode(new StringProperty(), new StringProperty());
+    }
+
+    @Test
     public void testSerializationFails() throws IOException {
          StringProperty ex = new StringProperty();
          assertThat(ex, is(notSerializable()));

@@ -15,6 +15,7 @@
  */
 package org.zetool.components.property.types;
 
+import gui.propertysheet.types.IntegerRangeProperty;
 import gui.propertysheet.types.StringListProperty;
 import java.io.IOException;
 import java.util.Collection;
@@ -146,6 +147,11 @@ public class TestStringListProperty {
     @Test
     public void testNotEqual() {
         TestGenericProperty.testUnEqual(new StringListProperty(), new StringListProperty());
+    }
+
+    @Test
+    public void testHashcode() {
+        TestGenericProperty.testHashcode(new StringListProperty(), new StringListProperty());
     }
 
     @Test

@@ -55,6 +55,11 @@ public class TestIntegerRangeProperty {
     }
 
     @Test
+    public void testHashcode() {
+        TestGenericProperty.testHashcode(new IntegerRangeProperty(), new IntegerRangeProperty());
+    }
+
+    @Test
     public void testSerializationFails() throws IOException {
          IntegerRangeProperty ex = new IntegerRangeProperty();
          assertThat(ex, is(notSerializable()));

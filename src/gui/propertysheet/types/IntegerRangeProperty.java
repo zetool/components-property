@@ -80,12 +80,7 @@ public class IntegerRangeProperty extends IntegerProperty {
     }
 
     /** Prohibits serialization. */
-    private synchronized void writeObject(java.io.ObjectOutputStream s) throws IOException {
-        throw new UnsupportedOperationException("Serialization not supported");
-    }
-    
-    /** Prohibits serialization. */
     private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
-        throw new UnsupportedOperationException("Serialization not supported");
+        throw new UnsupportedOperationException("Deserialization of " + this.getClass() + " is not supported");
     }
 }

@@ -149,9 +149,9 @@ public class PropertyContainer implements Iterable<String> {
      * @see #getGlobal()
      */
     private static class GlobalInstanceHolder {
+        private static final PropertyContainer INSTANCE = new PropertyContainer();
+
         private GlobalInstanceHolder() {
         }
-        
-        private static final PropertyContainer INSTANCE = new PropertyContainer();
     }
 }

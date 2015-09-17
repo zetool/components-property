@@ -43,6 +43,11 @@ public class TestGenericProperty {
     public void testNotEqual() {
         TestGenericProperty.testUnEqual(new GenericProperty(), new GenericProperty());
     }
+    
+    @Test
+    public void testHashCode() {
+        TestGenericProperty.testHashcode(new GenericProperty(), new GenericProperty());
+    }
 
     public static <T extends GenericProperty> void testEqual(T sp1, T sp2) {
         GenericProperty gp = new GenericProperty();
@@ -60,6 +65,17 @@ public class TestGenericProperty {
         populateEqually(gp, sp);
         sp.setName("different name");
         assertThat(gp.equals(sp), is(false));
+    }
+
+
+    public static <T extends GenericProperty> void testHashcode(T sp1, T sp2) {
+        populateEqually(sp1, sp2);
+        sp2.setDisplayName("other displayname");
+        sp2.setShortDescription("other description");
+        assertThat(sp1.hashCode(), is(equalTo(sp2.hashCode())));
+        
+        sp2.setName("other name");
+        assertThat(sp1.hashCode(), is(not(equalTo(sp2.hashCode()))));
     }
 
     private static void populateEqually(GenericProperty ... gps) {
@@ -94,20 +110,6 @@ public class TestGenericProperty {
         
         assertThat(gp.getShortDescription(), is(equalTo("Description")));
         assertThat(gp.getShortDescriptionTag(), is(equalTo("description.tag")));
-    }
-    
-    @Test
-    public void testHashCode() {
-        GenericProperty gp = new GenericProperty();
-        GenericProperty gp2 = new GenericProperty();
-        
-        assertThat(gp.hashCode(), is(equalTo(gp2.hashCode())));
-        
-        gp2.setDisplayName("display.name");
-        assertThat(gp.hashCode(), is(equalTo(gp2.hashCode())));
-
-        gp2.setName("property.name");
-        assertThat(gp.hashCode(), is(not(equalTo(gp2.hashCode()))));
     }
     
     @Test
