@@ -115,7 +115,7 @@ public class TestPropertyContainer {
     
     @Test
     public void testGetAsSpecific() {
-        assertSpecificProperty(propertyContainer::get, new Object());
+        assertSpecificProperty(propertyContainer::get, this);
         assertSpecificProperty(propertyContainer::getAsBoolean, true);
         assertSpecificProperty(propertyContainer::getAsColor, Color.DARK_GRAY);
         assertSpecificProperty(propertyContainer::getAsInt, 1);
@@ -125,9 +125,9 @@ public class TestPropertyContainer {
         assertSpecificProperty(propertyContainer::getAsStringList, Arrays.asList(new String[] {"item 1", "item 2"}));
     }
     
-    private <T> void assertSpecificProperty(Function<String,T> specificAccessor, T propertyValue) {
-        propertyContainer.define(propertyValue.getClass().toString(), (Class<T>)propertyValue.getClass(), propertyValue);
-        assertThat(specificAccessor.apply(propertyValue.getClass().toString()), is(equalTo(propertyValue)));
+    private <T> void assertSpecificProperty(Function<String,T> specificAccessor, T value) {
+        propertyContainer.define(value.getClass().toString(), (Class<T>)value.getClass(), value);
+        assertThat(specificAccessor.apply(value.getClass().toString()), is(equalTo(value)));
         try {
             specificAccessor.apply("not contained");
         } catch (IllegalArgumentException ex) {
