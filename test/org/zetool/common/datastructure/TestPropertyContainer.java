@@ -115,9 +115,10 @@ public class TestPropertyContainer {
     
     @Test
     public void testGetAsSpecific() {
-        assertSpecificProperty(propertyContainer::get, Integer.MAX_VALUE);
+        assertSpecificProperty(propertyContainer::get, new Object());
         assertSpecificProperty(propertyContainer::getAsBoolean, true);
         assertSpecificProperty(propertyContainer::getAsColor, Color.DARK_GRAY);
+        assertSpecificProperty(propertyContainer::getAsInt, 1);
         assertSpecificProperty(propertyContainer::getAsDouble, Math.PI);
         assertSpecificProperty(propertyContainer::getAsFont, UIManager.getFont("TextField.font"));
         assertSpecificProperty(propertyContainer::getAsString, "some string");
@@ -133,6 +134,15 @@ public class TestPropertyContainer {
             return;
         }
         throw new AssertionError();
+    }
+    
+    @Test
+    public void testSpecialOperators() {
+        propertyContainer.define("boolean", Boolean.class, true);
+        assertThat(propertyContainer.getAsBoolean("boolean"), is(true));
+        boolean newValue = propertyContainer.toggle("boolean");
+        assertThat(newValue, is(false));
+        assertThat(propertyContainer.getAsBoolean("boolean"), is(false));
     }
     
     @Test
