@@ -121,4 +121,8 @@ public class PropertyTreeNode implements PropertyElement {
     public void add(PropertyTreeNode child) {
         children.add(child);
     }
+
+    public void setLoc(Localization loc) {
+        this.loc = loc;
+    }
 }

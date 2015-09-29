@@ -34,6 +34,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -57,14 +58,23 @@ public class JOptionsDialog extends JDialog {
     private PropertySheetTable table = new PropertySheetTable(propertyTableModel);
     private final PropertySheetPanel propertyPanel = new PropertySheetPanel(table);
     private JButtonBar buttonBar;
-    private Function<PropertyTreeNode,Icon> iconSupplier = (PropertyTreeNode) -> UIManager.getIcon("Tree.leafIcon");
+    private Function<PropertyTreeNode,Icon> iconSupplier;
 
     public JOptionsDialog(PropertyTreeModel ptm) {
         this(ptm, true);
     }
     
+    public JOptionsDialog(PropertyTreeModel ptm, Function<PropertyTreeNode,Icon> iconSupplier) {
+        this(ptm, true, iconSupplier);
+    }
+    
     public JOptionsDialog(PropertyTreeModel ptm, boolean useButtonBar) {
+        this(ptm, useButtonBar, (PropertyTreeNode) -> UIManager.getIcon("Tree.leafIcon"));
+    }
+
+    public JOptionsDialog(PropertyTreeModel ptm, boolean useButtonBar, Function<PropertyTreeNode,Icon> iconSupplier) {
         super((Frame) null, "test");
+        this.iconSupplier = Objects.requireNonNull(iconSupplier);
 
         setSize(650, 450);
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
@@ -134,7 +144,7 @@ public class JOptionsDialog extends JDialog {
         for (int i = 0; i < root.getChildCount(); i++) {
             PropertyTreeNode child = root.getChildAt(i);
             JButton newButton = new JPropertyButton(child);
-            newButton.setIcon(iconSupplier.apply(root));
+            newButton.setIcon(iconSupplier.apply(child));
             buttonBar.add(newButton);
         }
     }
@@ -247,15 +257,15 @@ public class JOptionsDialog extends JDialog {
 
                 @Override
                 public boolean hasNext() {
-                    return index++ < node.getChildCount();
+                    return index < node.getChildCount();
                 }
-
+                
                 @Override
                 public ChildPropertyTuple next() {
-                    if (!hasNext()) {
+                    if ( !hasNext() ) {
                         throw new NoSuchElementException();
                     }
-                    final PropertyTreeNode child = node.getChildAt(index);
+                    final PropertyTreeNode child = node.getChildAt(index++);
                     return new ChildPropertyTuple(child, newProperty(child, category));
                 }
             };

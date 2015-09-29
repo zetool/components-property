@@ -16,6 +16,7 @@
 package gui.propertysheet;
 
 import java.util.Objects;
+import org.zetool.common.localization.Localization;
 
 /**
  *
@@ -40,5 +41,20 @@ public class PropertyTreeModel {
 
     public PropertyTreeNode getRoot() {
         return root;
+    }
+
+    public void setLoc(Localization loc) {
+        setLocRecursive(root, loc);
+    }
+    
+    private void setLocRecursive(PropertyTreeNode node, Localization loc) {
+        System.out.println("Setting for node " + node.getDisplayNameTag());
+        node.setLoc(loc);
+        for( PropertyTreeNode child : node.children) {
+            setLocRecursive(child, loc);
+        }
+        for(GenericProperty p : node.properties) {
+            p.setLoc(loc);
+        }
     }
 }
