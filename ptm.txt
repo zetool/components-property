@@ -1,0 +1,17 @@
+<zp name="my_displayname" useAsLocString="false" propertyName="string_property_name">
+  <treeNode name="child1" useAsLocString="false">
+    <treeNode name="child2" useAsLocString="false">
+      <boolNode name="cbp2" useAsLocString="false" information="cbp2-short" parameter="cbp2-name">true</boolNode>
+      <stringListNode name="stringlist" useAsLocString="false" information="stringshort" parameter="mystringlist">
+        <string>newly created string</string>
+      </stringListNode>
+    </treeNode>
+    <boolNode name="cbp1" useAsLocString="false" information="cbp1-short" parameter="cbp1-name">false</boolNode>
+    <enumNode name="enum" useAsLocString="false" information="enum-short" parameter="enum">propertysheet.TestSavePropertyTreeModel$PropertyEnum#EnumA</enumNode>
+    <intRangeNode name="irp-dn" useAsLocString="false" information="irp-short" parameter="irp" minValue="5" maxValue="45" minorTick="1" majorTick="5">20</intRangeNode>
+    <colorNode name="mycolor" useAsLocString="false" information="color-desc" parameter="mycolor-name">#ff0000</colorNode>
+  </treeNode>
+  <treeNode name="child3" useAsLocString="false">
+    <boolNode name="cbp3" useAsLocString="false" information="cbp3-short" parameter="cbp3-name">false</boolNode>
+  </treeNode>
+</zp>

@@ -51,7 +51,6 @@ public class TestSavePropertyTreeModel {
         EnumA, EnumB;
     }
 
-    @Test
     public void testRead() throws IOException {
         PropertyTreeModelLoader loader = new PropertyTreeModelLoader();
         PropertyTreeModel ptm = loader.loadConfigFile(new FileReader("./ptm.txt"));
@@ -70,13 +69,16 @@ public class TestSavePropertyTreeModel {
         }
     }
 
+    @Test
     public void testSimple() throws IOException {
         PropertyTreeNode root = new PropertyTreeNode("my_root_name");
         PropertyTreeModel ptm = new PropertyTreeModel(root);
         root.setDisplayName("my_displayname");
+        
         StringProperty sp = new StringProperty();
         sp.setValue("string_property_name");
         root.addProperty(sp);
+        
         BooleanProperty bp1 = new BooleanProperty();
         root.addProperty(bp1);
         BooleanProperty bp2 = new BooleanProperty();
@@ -155,7 +157,7 @@ public class TestSavePropertyTreeModel {
         d.setVisible(true);
     }
 
-    public static void main(String[] args) {
+    public static void maina(String[] args) {
         PropertyTreeNode root = new PropertyTreeNode("my_root_name");
         PropertyTreeModel ptm = new PropertyTreeModel(root);
         root.setDisplayName("my_displayname");
