@@ -28,8 +28,8 @@ jobs:
       uses: whelk-io/maven-settings-xml-action@v4
       with:
         repositories: '[
-        { "id": "github-zetool-common", "name": "GitHub zetool Apache Maven Packages", "url": "https://maven.pkg.github.com/zetool/common" },
-        { "id": "github-zetool-components", "name": "GitHub zetool Apache Maven Packages", "url": "https://maven.pkg.github.com/zetool/components" },
+        { "id": "github", "name": "GitHub zetool common Apache Maven Packages", "url": "https://maven.pkg.github.com/zetool/common" },
+        { "id": "github", "name": "GitHub zetool components Apache Maven Packages", "url": "https://maven.pkg.github.com/zetool/components" },
         { "id": "tweety", "name": "TweetyProject", "url": "https://tweetyproject.org/mvn" },
         { "id": "ekito-public-releases", "name": "Ekito", "url": "https://raw.github.com/Ekito/maven-repo/master/releases" }
         ]'

@@ -26,13 +26,13 @@
                     <url>https://raw.github.com/Ekito/maven-repo/master/releases</url>                
                 </repository>
                 <repository>
-                    <id>github-zetool-common</id>
-                    <name>GitHub zetool Apache Maven Packages</name>
+                    <id>github</id>
+                    <name>GitHub zetool common Apache Maven Packages</name>
                     <url>https://maven.pkg.github.com/zetool/common</url>
                 </repository>
                 <repository>
-                    <id>github-zetool-components</id>
-                    <name>GitHub zetool Apache Maven Packages</name>
+                    <id>github</id>
+                    <name>GitHub zetool components Apache Maven Packages</name>
                     <url>https://maven.pkg.github.com/zetool/components</url>
                 </repository>
             </repositories>
