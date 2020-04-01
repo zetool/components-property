@@ -21,7 +21,7 @@
 
     <groupId>org.zetool</groupId>
     <artifactId>components-property</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1-SNAPSHOT</version>
     <name>zetool-components-property</name>
     <url>https://zetool.org</url>
 
@@ -134,6 +134,6 @@
     <scm>
         <connection>scm:git:https://github.com/zetool/components-property.git</connection>
         <url>https://github.com/zetool/components-property.git</url>
-        <tag>components-property-0.1.0</tag>
+        <tag>HEAD</tag>
     </scm>
 </project>
