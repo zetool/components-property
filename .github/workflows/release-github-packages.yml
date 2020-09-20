@@ -2,7 +2,7 @@
 # It uses Maven release to release the process including deploy.
 # Deployment is done to GitHub Package registry.
 
-name: Maven Release
+name: Release GitHub Packages
 
 on:
   workflow_dispatch:
@@ -13,7 +13,7 @@ on:
 
 jobs:
   release:
-    name: Maven Release
+    name: Release with Maven
     if: github.event.pull_request.merged == true
 
     runs-on: ubuntu-latest
