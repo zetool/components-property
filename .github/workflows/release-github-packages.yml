@@ -56,4 +56,4 @@ jobs:
         git-release-bot-name: "zetool-bot"
         git-release-bot-email: "github@zetool.org"
 
-        access-token: ${{ secrets.GITHUB_RELEASE_TOKEN }}
+        access-token: ${{ secrets.GH_PACKAGE_DEPLOY_TOKEN }}
